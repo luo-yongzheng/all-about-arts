@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "Luma Bottle",
+  "style": "glass-product",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "Luma Bottle",
+    "subtitle": "A fictional refillable fragrance concept.",
+    "motif": "bottle",
+    "items": [
+      {
+        "label": "Refill",
+        "value": 100
+      },
+      {
+        "label": "Glass",
+        "value": 85
+      },
+      {
+        "label": "Reuse",
+        "value": 60
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "A clearer daily ritual",
+      "body": "A fictional refillable fragrance concept.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Designed to be refilled",
+      "body": "A fictional refillable fragrance concept.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Keep what matters",
+      "body": "A fictional refillable fragrance concept.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

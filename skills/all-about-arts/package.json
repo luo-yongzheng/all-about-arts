@@ -1,0 +1,11 @@
+{
+  "name": "all-about-arts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Independent agent skill and deterministic film production tools",
+  "type": "module",
+  "bin": {"aaa": "scripts/aaa.mjs"},
+  "engines": {"node": ">=22"},
+  "license": "MIT",
+  "dependencies": {"playwright-core": "1.63.0", "three": "0.170.0"}
+}

@@ -1,0 +1,1038 @@
+{
+  "schemaVersion": 1,
+  "source": "lemo-opuscar",
+  "sourceCommit": "508848acb2b4930c4041fef4d594120da1525bff",
+  "statusDefinitions": {
+    "reference": "Imported style grammar; no built-in renderer.",
+    "integrated": "Implemented reusable renderer; acceptance certification is separate.",
+    "certified": "Recorded acceptance evidence for exact source fingerprint."
+  },
+  "styles": [
+    {
+      "id": "archive-lighttable",
+      "slug": "archive-lighttable",
+      "name": "Archive Light Table",
+      "en": "Archive Light Table",
+      "cn": "档案灯台",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Brand history & anniversaries",
+        "Documentary & archive explainers",
+        "Museum & collection stories"
+      ],
+      "status": "reference",
+      "reference": "references/styles/archive-lighttable/STYLE.md",
+      "sourceSha256": "2f18ac9a42822b7a9941866c42b0642e5417dea5431d61f141f6e11b29c1ec14",
+      "certification": null
+    },
+    {
+      "id": "art-deco",
+      "slug": "art-deco",
+      "name": "Art Deco",
+      "en": "Art Deco",
+      "cn": "装饰艺术",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Luxury & hospitality",
+        "Galas",
+        "Invitations"
+      ],
+      "status": "reference",
+      "reference": "references/styles/art-deco/STYLE.md",
+      "sourceSha256": "d73b30c0fa6d153487549d32d8c6c599733cf5e7576badec862a12da6d284761",
+      "certification": null
+    },
+    {
+      "id": "ascii-crt",
+      "slug": "ascii-crt",
+      "name": "ASCII / CRT Terminal",
+      "en": "ASCII / CRT Terminal",
+      "cn": "ASCII / CRT 终端",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Developer tools",
+        "Sci-fi",
+        "Tech brands"
+      ],
+      "status": "reference",
+      "reference": "references/styles/ascii-crt/STYLE.md",
+      "sourceSha256": "cbe0b8957c785a165f85ccb3b8eba61c30c0462b32983db6a16c76046a2bb333",
+      "certification": null
+    },
+    {
+      "id": "backrooms",
+      "slug": "backrooms",
+      "name": "Liminal Found Footage",
+      "en": "Liminal Found Footage",
+      "cn": "后室 / 新怪谈",
+      "category": "Cinema & Eras",
+      "category_cn": "电影与时代",
+      "uses": [
+        "Horror",
+        "Mystery & ARG",
+        "Game teasers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/backrooms/STYLE.md",
+      "sourceSha256": "621f204f5bc4576af497a169f2442b91caffee99046989a117ba06c6c1d572a0",
+      "certification": null
+    },
+    {
+      "id": "blueprint",
+      "slug": "blueprint",
+      "name": "Blueprint",
+      "en": "Blueprint",
+      "cn": "蓝图 / 工程制图",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Engineering",
+        "Hardware launches",
+        "Tech explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/blueprint/STYLE.md",
+      "sourceSha256": "de01fc7fcb38b17b58eb017c9cdbcb36b9242b029435a33587614c93088e1717",
+      "certification": null
+    },
+    {
+      "id": "brick-toy",
+      "slug": "brick-toy",
+      "name": "Brick Toy",
+      "en": "Brick Toy",
+      "cn": "积木玩具",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Toys & kids",
+        "Product builds",
+        "Space"
+      ],
+      "status": "reference",
+      "reference": "references/styles/brick-toy/STYLE.md",
+      "sourceSha256": "29b23e846951856b722a698a03c9458cfc17b4fc71d044f45d773acf2a742768",
+      "certification": null
+    },
+    {
+      "id": "briefing-board",
+      "slug": "briefing-board",
+      "name": "Engineering Briefing Board",
+      "en": "Engineering Briefing Board",
+      "cn": "工程简报板",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Engineering decisions",
+        "Option comparisons",
+        "Briefings & explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/briefing-board/STYLE.md",
+      "sourceSha256": "44669da808da4ed37e2a4a0f6e5d2b23008775a3c4870add04641d714e9f323d",
+      "certification": null
+    },
+    {
+      "id": "cel-anime-80s",
+      "slug": "cel-anime-80s",
+      "name": "80s Cel Anime",
+      "en": "80s Cel Anime",
+      "cn": "80 年代赛璐璐动画",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Music videos",
+        "Game trailers",
+        "Nostalgia"
+      ],
+      "status": "reference",
+      "reference": "references/styles/cel-anime-80s/STYLE.md",
+      "sourceSha256": "1e16f5c6f90ebf09556ec94d37434400d309c978e00ee89e9d38dec476664eaf",
+      "certification": null
+    },
+    {
+      "id": "crayon-book",
+      "slug": "crayon-book",
+      "name": "Crayon Picture Book",
+      "en": "Crayon Picture Book",
+      "cn": "蜡笔儿童绘本",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Picture books",
+        "Bedtime stories",
+        "Kids' learning"
+      ],
+      "status": "reference",
+      "reference": "references/styles/crayon-book/STYLE.md",
+      "sourceSha256": "ba558478fe519fa6777fe28fa7d1980117297c7beb6fe2e366ef6f00688aa175",
+      "certification": null
+    },
+    {
+      "id": "dark-keynote",
+      "slug": "dark-keynote",
+      "name": "Dark Tech Keynote",
+      "en": "Dark Tech Keynote",
+      "cn": "暗色科技发布",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Product launches",
+        "SaaS",
+        "Keynotes"
+      ],
+      "status": "reference",
+      "reference": "references/styles/dark-keynote/STYLE.md",
+      "sourceSha256": "b0791b5e95f56bf46c621e6064d426ebbee810c7515fb87e951b73668a2a0d24",
+      "certification": null
+    },
+    {
+      "id": "data-physical",
+      "slug": "data-physical",
+      "name": "Data Physicalization",
+      "en": "Data Physicalization",
+      "cn": "数据实物化",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Annual reports & ESG",
+        "Investor communications",
+        "Energy & climate statistics"
+      ],
+      "status": "reference",
+      "reference": "references/styles/data-physical/STYLE.md",
+      "sourceSha256": "2d2e6685b0dcf8a1e2ba2ff904ab02d51aede1f5dbb246fd2f6e81c8d146f208",
+      "certification": null
+    },
+    {
+      "id": "dataviz",
+      "slug": "dataviz",
+      "name": "Data Storytelling",
+      "en": "Data Storytelling",
+      "cn": "数据叙事",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Data journalism",
+        "Reports",
+        "Climate & science"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/dataviz/STYLE.md",
+      "sourceSha256": "e94013d5a7c548c8844598a671ff0b49bc78770696cbca0d8d00846336f3c67f",
+      "certification": null,
+      "renderer": "canvas-pencil-chart",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/dataviz/examples/1-energy.json",
+        "styles/dataviz/examples/2-museum.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": []
+    },
+    {
+      "id": "engraving",
+      "slug": "engraving",
+      "name": "Copperplate Engraving",
+      "en": "Copperplate Engraving",
+      "cn": "铜版画",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Museum labels",
+        "Science explainers",
+        "Brand heritage"
+      ],
+      "status": "reference",
+      "reference": "references/styles/engraving/STYLE.md",
+      "sourceSha256": "0c6816b8b47163d158ae0ea668feecf53dcbef9d1310e27b9e797d9b9e7aac0d",
+      "certification": null
+    },
+    {
+      "id": "game-show",
+      "slug": "game-show",
+      "name": "Game Show Flat",
+      "en": "Game Show Flat",
+      "cn": "综艺节奏扁平",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Tech timelines",
+        "Year in review",
+        "Variety shows"
+      ],
+      "status": "reference",
+      "reference": "references/styles/game-show/STYLE.md",
+      "sourceSha256": "027ed83dbee6596dbd255bcaf20275db18b41b4f7b8f2f5ef72d1d3ebf06ba8f",
+      "certification": null
+    },
+    {
+      "id": "glass-product",
+      "slug": "glass-product",
+      "name": "Glass Product Render",
+      "en": "Glass Product Render",
+      "cn": "玻璃质感产品",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Product launches",
+        "Consumer tech",
+        "Beauty"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/glass-product/STYLE.md",
+      "sourceSha256": "630fa80cde0930154ba64f15bce5c8ee0c8dcf48d921253f8c7e3194712c8fb5",
+      "certification": null,
+      "renderer": "three-physical-transmission",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/glass-product/examples/1-bottle.json",
+        "styles/glass-product/examples/2-orb.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "WebGL required; procedural bottle and orb subjects.",
+        "User image is an inset; no automatic 3D reconstruction."
+      ]
+    },
+    {
+      "id": "halftone-dossier",
+      "slug": "halftone-dossier",
+      "name": "Halftone Dossier",
+      "en": "Halftone Dossier",
+      "cn": "复古半调案卷",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Humour",
+        "Pet content",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/halftone-dossier/STYLE.md",
+      "sourceSha256": "afe98514f065c9f924dda0a483388617122f38df99462025542d2f23d9eb7e3b",
+      "certification": null
+    },
+    {
+      "id": "hd-2d",
+      "slug": "hd-2d",
+      "name": "HD-2D",
+      "en": "HD-2D",
+      "cn": "HD-2D",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Fantasy",
+        "Story films"
+      ],
+      "status": "reference",
+      "reference": "references/styles/hd-2d/STYLE.md",
+      "sourceSha256": "23c027f48b5342bb8ac5dcd3ea6e5baab901628d89f4ef6dd857764ce78c9c92",
+      "certification": null
+    },
+    {
+      "id": "hologram-hud",
+      "slug": "hologram-hud",
+      "name": "Sci-fi Hologram HUD",
+      "en": "Sci-fi Hologram HUD",
+      "cn": "科幻全息界面",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Product spec walkthroughs",
+        "Launch & crowdfunding videos",
+        "Trade-show screens"
+      ],
+      "status": "reference",
+      "reference": "references/styles/hologram-hud/STYLE.md",
+      "sourceSha256": "81e2c6b0ede2cc211a8dd676417a1ce5efda278514f273c5249165e38ff34573",
+      "certification": null
+    },
+    {
+      "id": "impasto",
+      "slug": "impasto",
+      "name": "Impasto Oil Painting",
+      "en": "Impasto Oil Painting",
+      "cn": "油画厚涂",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Music videos",
+        "Art & culture",
+        "Emotional ads"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/impasto/STYLE.md",
+      "sourceSha256": "38a0dcb2808c2ff03ef721c1319b9145438b4074ed37ab7a09dcf20b7268e062",
+      "certification": null,
+      "renderer": "webgl2-paint-height-light",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/impasto/examples/1-garden.json",
+        "styles/impasto/examples/2-city.json"
+      ],
+      "transparent": false,
+      "alpha": false,
+      "limitations": [
+        "WebGL2 and EXT_color_buffer_float required.",
+        "Opaque paint ground; transparent mode is rejected.",
+        "Procedural subjects currently garden and city."
+      ]
+    },
+    {
+      "id": "ink-wash",
+      "slug": "ink-wash",
+      "name": "Chinese Ink Wash",
+      "en": "Chinese Ink Wash",
+      "cn": "中国水墨",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Wuxia",
+        "Cultural brands",
+        "Poetry"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/ink-wash/STYLE.md",
+      "sourceSha256": "5d71598f0b9cf4034c6461956b0d8bd63bd33750b4045376044f0d956b01d645",
+      "certification": null,
+      "renderer": "canvas-wet-dry-ink",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/ink-wash/examples/1-mountains.json",
+        "styles/ink-wash/examples/2-river.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": []
+    },
+    {
+      "id": "iso-infographic",
+      "slug": "iso-infographic",
+      "name": "Isometric Infographic",
+      "en": "Isometric Infographic",
+      "cn": "等距信息图",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Process explainers",
+        "Supply chains",
+        "Annual reports"
+      ],
+      "status": "reference",
+      "reference": "references/styles/iso-infographic/STYLE.md",
+      "sourceSha256": "17fc6b78512548483d8bf21723882a4fef6f1e266e4d173c883a2b45ef9ab0d2",
+      "certification": null
+    },
+    {
+      "id": "lidar-survey",
+      "slug": "lidar-survey",
+      "name": "LiDAR Survey",
+      "en": "LiDAR Survey",
+      "cn": "点云测绘",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Archaeology & heritage",
+        "Forestry & environment",
+        "Infrastructure & site surveys"
+      ],
+      "status": "reference",
+      "reference": "references/styles/lidar-survey/STYLE.md",
+      "sourceSha256": "d1b60fda2793932286372e7cf68d62af5723bba14c37e9a437639ea57b1a310d",
+      "certification": null
+    },
+    {
+      "id": "living-screencast",
+      "slug": "living-screencast",
+      "name": "Living Screencast",
+      "en": "Living Screencast",
+      "cn": "活体实机录屏",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Product tutorials",
+        "Feature launches",
+        "Onboarding"
+      ],
+      "status": "reference",
+      "reference": "references/styles/living-screencast/STYLE.md",
+      "sourceSha256": "91e75f666a6ab5122ead52aa5c47a603f83d0578bab0b9aa223cf83b639fbb16",
+      "certification": null
+    },
+    {
+      "id": "lowpoly-island",
+      "slug": "lowpoly-island",
+      "name": "Low-poly Isometric Island",
+      "en": "Low-poly Isometric Island",
+      "cn": "低多边形等距",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Game trailers",
+        "World building",
+        "Calm content"
+      ],
+      "status": "reference",
+      "reference": "references/styles/lowpoly-island/STYLE.md",
+      "sourceSha256": "d87e56fd3677841e19f273352ea3481328a237403012ffa7ccb6089c97401702",
+      "certification": null
+    },
+    {
+      "id": "microgame",
+      "slug": "microgame",
+      "name": "Microgame Frenzy",
+      "en": "Microgame Frenzy",
+      "cn": "微游戏快闪（瓦里奥制造式）",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Onboarding",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/microgame/STYLE.md",
+      "sourceSha256": "ce209dde1270d032436e02569857bed373cee86e45870bf853d4d8797dc719fb",
+      "certification": null
+    },
+    {
+      "id": "microscope",
+      "slug": "microscope",
+      "name": "Microscope Story",
+      "en": "Microscope Story",
+      "cn": "显微叙事",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Biomedicine & pathology",
+        "Materials & surface science",
+        "Skincare & cosmetic science"
+      ],
+      "status": "reference",
+      "reference": "references/styles/microscope/STYLE.md",
+      "sourceSha256": "63040631bdc28a3c7f8cf05e2e8523969becd0267741e00dd3e171c22be16e92",
+      "certification": null
+    },
+    {
+      "id": "midcentury-toon",
+      "slug": "midcentury-toon",
+      "name": "Mid-century Cartoon",
+      "en": "Mid-century Cartoon",
+      "cn": "50s 扁平卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Product set-up guides",
+        "Help-centre explainers",
+        "How-to steps"
+      ],
+      "status": "reference",
+      "reference": "references/styles/midcentury-toon/STYLE.md",
+      "sourceSha256": "e73614b6f9e2f2e8ee279f4909da8429235b96f6d13a12345b6e57d5823c30b8",
+      "certification": null
+    },
+    {
+      "id": "one-line",
+      "slug": "one-line",
+      "name": "One-line Drawing",
+      "en": "One-line Drawing",
+      "cn": "一笔画",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Brand stories",
+        "Life milestones",
+        "Minimal ads"
+      ],
+      "status": "reference",
+      "reference": "references/styles/one-line/STYLE.md",
+      "sourceSha256": "69d26cb06f48ab6b03c12a76c2390d0945cdaddc38bc109b7d5e292b9af1399b",
+      "certification": null
+    },
+    {
+      "id": "paper-lantern",
+      "slug": "paper-lantern",
+      "name": "Paper-cut Lightbox",
+      "en": "Paper-cut Lightbox",
+      "cn": "纸雕灯影",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Festivals",
+        "Gift brands",
+        "Cultural stories"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/paper-lantern/STYLE.md",
+      "sourceSha256": "6f3001ad45657262384b3012f441883ef5ac9c558b82d23e503d14e2f672ac91",
+      "certification": null,
+      "renderer": "canvas-layered-paper-lightbox",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/paper-lantern/examples/1-festival.json",
+        "styles/paper-lantern/examples/2-home.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "Canvas2D fiber, edge-lighting and layered shadow adaptation; upstream 3D paper shader remains reference only."
+      ]
+    },
+    {
+      "id": "paper-popup",
+      "slug": "paper-popup",
+      "name": "Paper Pop-up Book",
+      "en": "Paper Pop-up Book",
+      "cn": "纸片立体书",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Children's books",
+        "Game trailers",
+        "Story films"
+      ],
+      "status": "reference",
+      "reference": "references/styles/paper-popup/STYLE.md",
+      "sourceSha256": "8e5c0ca430fd96b75c4d9c2af92a87c84d4d1af8cda64280a189c51279e1ee9b",
+      "certification": null
+    },
+    {
+      "id": "papercut-red",
+      "slug": "papercut-red",
+      "name": "Red Paper-cut",
+      "en": "Red Paper-cut",
+      "cn": "红色窗花剪纸",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Lunar New Year",
+        "Festive greetings",
+        "Folk tales"
+      ],
+      "status": "reference",
+      "reference": "references/styles/papercut-red/STYLE.md",
+      "sourceSha256": "65e317d83335e0cb34696b643e31ad9e46fb0bb93fd748c2e21d74358aea61ec",
+      "certification": null
+    },
+    {
+      "id": "pictogram-motion",
+      "slug": "pictogram-motion",
+      "name": "Pictogram Motion",
+      "en": "Pictogram Motion",
+      "cn": "象形运动图形",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Sports events",
+        "Visual identity",
+        "Event openers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/pictogram-motion/STYLE.md",
+      "sourceSha256": "e982606f3d7d132d320abdc1a74c226b1e0642b664a0c41582bc76fec646da1a",
+      "certification": null
+    },
+    {
+      "id": "pixel-rpg",
+      "slug": "pixel-rpg",
+      "name": "16-bit Pixel RPG",
+      "en": "16-bit Pixel RPG",
+      "cn": "16-bit 像素 RPG",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Recaps",
+        "Nostalgia"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/pixel-rpg/STYLE.md",
+      "sourceSha256": "a935373e444a9d28954220e3bd725d40e9048dd1ca36eb3971faede78d23b4ea",
+      "certification": null,
+      "renderer": "indexed-framebuffer",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/pixel-rpg/examples/1-library.json",
+        "styles/pixel-rpg/examples/2-garden.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "Latin uses the original bitmap font; Chinese and other glyphs are threshold-rasterized from installed system fonts into the indexed framebuffer.",
+        "Native portrait canvas 180×320; landscape 320×180."
+      ]
+    },
+    {
+      "id": "risograph",
+      "slug": "risograph",
+      "name": "Risograph Print",
+      "en": "Risograph Print",
+      "cn": "Risograph 丝网印刷",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Indie brands",
+        "Zines",
+        "Lifestyle"
+      ],
+      "status": "reference",
+      "reference": "references/styles/risograph/STYLE.md",
+      "sourceSha256": "c3d85c91a81b0afde091d964482749482adc66c12730afe124708f7b18b331a6",
+      "certification": null
+    },
+    {
+      "id": "rubber-hose",
+      "slug": "rubber-hose",
+      "name": "1930s Rubber Hose Cartoon",
+      "en": "1930s Rubber Hose Cartoon",
+      "cn": "1930s 橡皮管卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Food & drink",
+        "Retro ads",
+        "Kids"
+      ],
+      "status": "reference",
+      "reference": "references/styles/rubber-hose/STYLE.md",
+      "sourceSha256": "bf850f9cd22e68b2125fed00d1b9804e91479620b44420ba7ec50e570e472a94",
+      "certification": null
+    },
+    {
+      "id": "satellite-briefing",
+      "slug": "satellite-briefing",
+      "name": "Satellite Briefing",
+      "en": "Satellite Briefing",
+      "cn": "卫星简报",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Climate & environment",
+        "Investigations & news explainers",
+        "Geography & history"
+      ],
+      "status": "reference",
+      "reference": "references/styles/satellite-briefing/STYLE.md",
+      "sourceSha256": "39fec0c7fda13600de04f1a9631ca636dc8850429033c1f65bb6d3283ec2988d",
+      "certification": null
+    },
+    {
+      "id": "scifi-toon",
+      "slug": "scifi-toon",
+      "name": "Sci-Fi Sitcom Toon",
+      "en": "Sci-Fi Sitcom Toon",
+      "cn": "科幻情景喜剧卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Comedy",
+        "Tech brands",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/scifi-toon/STYLE.md",
+      "sourceSha256": "9a720a57ce50dc554e9237e698a979cdf7311527e6e6a0dad803278dfe8ad2ce",
+      "certification": null
+    },
+    {
+      "id": "shadow-puppet",
+      "slug": "shadow-puppet",
+      "name": "Shadow Puppetry",
+      "en": "Shadow Puppetry",
+      "cn": "皮影戏",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Myths & folklore",
+        "Heritage",
+        "Festivals"
+      ],
+      "status": "reference",
+      "reference": "references/styles/shadow-puppet/STYLE.md",
+      "sourceSha256": "8be075a8262d5a3deea9b05684d8a9abdc1e54c0d90649bf14609ecb4106c3af",
+      "certification": null
+    },
+    {
+      "id": "silent-film",
+      "slug": "silent-film",
+      "name": "1920s Silent Film",
+      "en": "1920s Silent Film",
+      "cn": "1920s 默片",
+      "category": "Cinema & Eras",
+      "category_cn": "电影与时代",
+      "uses": [
+        "Comedy",
+        "Retro brands",
+        "Silent storytelling"
+      ],
+      "status": "reference",
+      "reference": "references/styles/silent-film/STYLE.md",
+      "sourceSha256": "44633a4edd4ec6b84be809bd48b38503a75a71531112b3d28a52f27135012b20",
+      "certification": null
+    },
+    {
+      "id": "silkscreen-poster",
+      "slug": "silkscreen-poster",
+      "name": "Silkscreen Travel Poster",
+      "en": "Silkscreen Travel Poster",
+      "cn": "丝印旅行海报",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Trail & destination guides",
+        "Tourism promos",
+        "Event posters"
+      ],
+      "status": "reference",
+      "reference": "references/styles/silkscreen-poster/STYLE.md",
+      "sourceSha256": "a8b3792efb1476b78493f86a033221b27f60c1927463cc435f8816e4d9eda148",
+      "certification": null
+    },
+    {
+      "id": "spy-titles",
+      "slug": "spy-titles",
+      "name": "60s Spy Title Sequence",
+      "en": "60s Spy Title Sequence",
+      "cn": "60s 间谍片头",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Title sequences",
+        "Event openers",
+        "Trailers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/spy-titles/STYLE.md",
+      "sourceSha256": "ea6e9e9073af43ef0bb860e368f60b16ec32a91668386115a142907d92cb1f75",
+      "certification": null
+    },
+    {
+      "id": "stained-glass",
+      "slug": "stained-glass",
+      "name": "Stained Glass",
+      "en": "Stained Glass",
+      "cn": "彩色玻璃窗",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Legends",
+        "Heritage",
+        "Holiday stories"
+      ],
+      "status": "reference",
+      "reference": "references/styles/stained-glass/STYLE.md",
+      "sourceSha256": "0f6551bd109a4127404068aa1e75f18f16b58c80b486c23480b3d193e597b060",
+      "certification": null
+    },
+    {
+      "id": "swiss-motion",
+      "slug": "swiss-motion",
+      "name": "Swiss Motion Graphics",
+      "en": "Swiss Motion Graphics",
+      "cn": "瑞士动态排版",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Brand identity",
+        "Events",
+        "Design education"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/swiss-motion/STYLE.md",
+      "sourceSha256": "14ddeb6dc495e691a220497069a2ee4827d820f9ee7a3173de5846489ef41f57",
+      "certification": null,
+      "renderer": "canvas-swiss-grid",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/swiss-motion/examples/1-urban.json",
+        "styles/swiss-motion/examples/2-reading.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": []
+    },
+    {
+      "id": "teardown",
+      "slug": "teardown",
+      "name": "Exploded Teardown",
+      "en": "Exploded Teardown",
+      "cn": "产品拆解",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Hardware launches",
+        "E-commerce product pages",
+        "Technical marketing & spec explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/teardown/STYLE.md",
+      "sourceSha256": "90df05a02a3d33add58e0dd99bef19ca20ea16b10390b3c2350d8483106922ee",
+      "certification": null
+    },
+    {
+      "id": "tilt-shift",
+      "slug": "tilt-shift",
+      "name": "Tilt-Shift Miniature",
+      "en": "Tilt-Shift Miniature",
+      "cn": "移轴微缩",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "City promos",
+        "Real estate",
+        "Transport"
+      ],
+      "status": "reference",
+      "reference": "references/styles/tilt-shift/STYLE.md",
+      "sourceSha256": "131ae50c6bddd30922638cbd5f2fae5c047223360a3f6924b074b0db525a5c63",
+      "certification": null
+    },
+    {
+      "id": "ukiyoe",
+      "slug": "ukiyoe",
+      "name": "Ukiyo-e",
+      "en": "Ukiyo-e",
+      "cn": "浮世绘",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Travel",
+        "Japanese culture",
+        "Poetry"
+      ],
+      "status": "reference",
+      "reference": "references/styles/ukiyoe/STYLE.md",
+      "sourceSha256": "a668f2bc5b0b74675c57819e75acc318417a77cb695fa89041b3ed78cb085655",
+      "certification": null
+    },
+    {
+      "id": "urban-sketch",
+      "slug": "urban-sketch",
+      "name": "Urban Sketch · Pen & Wash",
+      "en": "Urban Sketch · Pen & Wash",
+      "cn": "钢笔淡彩",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "City & travel",
+        "Architecture",
+        "Lifestyle brands"
+      ],
+      "status": "reference",
+      "reference": "references/styles/urban-sketch/STYLE.md",
+      "sourceSha256": "2baf1a19f31b06e55d66d62e4c3449c7a2686c689190976f3e3d0cbdce2faa9a",
+      "certification": null
+    },
+    {
+      "id": "watercolor",
+      "slug": "watercolor",
+      "name": "Watercolor Brush",
+      "en": "Watercolor Brush",
+      "cn": "水彩笔刷",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Nature documentary",
+        "Travel",
+        "Science explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/watercolor/STYLE.md",
+      "sourceSha256": "662d57568408a7c82ef8f64980ca85798b8bb239df3dc3a6715283d7f4555ef0",
+      "certification": null
+    },
+    {
+      "id": "white-model",
+      "slug": "white-model",
+      "name": "Projection on White Model",
+      "en": "Projection on White Model",
+      "cn": "白模投影",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Urban planning & real estate",
+        "Exhibitions & showrooms",
+        "City data & history"
+      ],
+      "status": "reference",
+      "reference": "references/styles/white-model/STYLE.md",
+      "sourceSha256": "02b6423a69ac5a30322997ec9523bd6b6f776b7c8cf14f249eeb996b9d21e2c2",
+      "certification": null
+    },
+    {
+      "id": "whiteboard",
+      "slug": "whiteboard",
+      "name": "Whiteboard Explainer",
+      "en": "Whiteboard Explainer",
+      "cn": "白板讲解",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Explainers",
+        "Online courses",
+        "Science"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/whiteboard/STYLE.md",
+      "sourceSha256": "1a3a707f94c2da8f014a14cf7860cd5414dcf1a9faa76c96104bb91ae1ac7ff5",
+      "certification": null,
+      "renderer": "canvas-marker-ribbon",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/whiteboard/examples/1-learning.json",
+        "styles/whiteboard/examples/2-travel.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": []
+    },
+    {
+      "id": "woodcut",
+      "slug": "woodcut",
+      "name": "Woodcut Print",
+      "en": "Woodcut Print",
+      "cn": "木刻版画",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Folk tales",
+        "Craft brands",
+        "Book trailers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/woodcut/STYLE.md",
+      "sourceSha256": "b96fda6eeac038137310cc0766d979c8d8a5f3ff6acd87bada5aa50d5136a6a0",
+      "certification": null
+    }
+  ]
+}

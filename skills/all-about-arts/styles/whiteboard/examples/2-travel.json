@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "title": "A Better Bike Trip",
+  "style": "whiteboard",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "A Better Bike Trip",
+    "subtitle": "Plan a simple journey across town.",
+    "motif": "travel",
+    "items": [
+      {
+        "label": "Route",
+        "value": 20
+      },
+      {
+        "label": "Check",
+        "value": 45
+      },
+      {
+        "label": "Ride",
+        "value": 90
+      }
+    ],
+    "subject": "travel",
+    "variation": "bike-route",
+    "stations": [
+      "Home",
+      "Park",
+      "Library"
+    ],
+    "essentials": [
+      "Helmet",
+      "Lights",
+      "Water"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Choose a useful route",
+      "body": "Link home, the park and the library on one calm route.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Prepare the essentials",
+      "body": "Helmet on. Lights checked. Water packed.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Enjoy a better journey",
+      "body": "Follow the marked route, one useful stop at a time.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

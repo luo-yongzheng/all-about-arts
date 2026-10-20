@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "title": "Prism Sensor",
+  "style": "glass-product",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "Prism Sensor",
+    "subtitle": "A fictional concept for ambient sensing.",
+    "motif": "orb",
+    "items": [
+      {
+        "label": "Light",
+        "value": 85
+      },
+      {
+        "label": "Comfort",
+        "value": 70
+      },
+      {
+        "label": "Focus",
+        "value": 92
+      }
+    ],
+    "subject": "orb",
+    "variation": "ambient-sensing"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Technology with presence",
+      "body": "A fictional ambient sensor, quietly listening.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Sense the room",
+      "body": "A light pulse marks the moment of sensing.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "A quieter kind of insight",
+      "body": "The glow settles into a calm response.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

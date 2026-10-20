@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "title": "Garden Guild",
+  "style": "pixel-rpg",
+  "width": 1080,
+  "height": 1920,
+  "fps": 24,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "Garden Guild",
+    "subtitle": "Small actions grow together.",
+    "motif": "garden",
+    "items": [
+      {
+        "label": "Seeds",
+        "value": 12
+      },
+      {
+        "label": "Water",
+        "value": 48
+      },
+      {
+        "label": "Growth",
+        "value": 85
+      }
+    ],
+    "subject": "garden"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Plant a first seed",
+      "body": "Place small seeds in the waiting soil.",
+      "kind": "establish",
+      "action": "plant"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Care for every shoot",
+      "body": "Water reaches the seeds below.",
+      "kind": "develop",
+      "action": "water"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Welcome new growth",
+      "body": "Small shoots rise into a flowering bed.",
+      "kind": "resolve",
+      "action": "grow"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

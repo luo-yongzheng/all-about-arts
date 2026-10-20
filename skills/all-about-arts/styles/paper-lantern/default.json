@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "title": "Festival of Ideas",
+  "style": "paper-lantern",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "Festival of Ideas",
+    "subtitle": "Each small light belongs to someone.",
+    "motif": "festival",
+    "items": [
+      {
+        "label": "Wonder",
+        "value": 25
+      },
+      {
+        "label": "Share",
+        "value": 60
+      },
+      {
+        "label": "Celebrate",
+        "value": 90
+      }
+    ],
+    "subject": "festival"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Light a first idea",
+      "body": "A small flame wakes one paper lantern.",
+      "kind": "establish",
+      "action": "light"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Bring the lights together",
+      "body": "More hands gather. Each lantern catches the light.",
+      "kind": "develop",
+      "action": "gather"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Release a shared sky",
+      "body": "Let the lanterns rise into a sky we share.",
+      "kind": "resolve",
+      "action": "release"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

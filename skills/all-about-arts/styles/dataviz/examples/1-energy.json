@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "The Energy Mix",
+  "style": "dataviz",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "The Energy Mix",
+    "subtitle": "Illustrative values, not measured data.",
+    "motif": "energy",
+    "items": [
+      {
+        "label": "Solar",
+        "value": 28
+      },
+      {
+        "label": "Wind",
+        "value": 61
+      },
+      {
+        "label": "Storage",
+        "value": 83
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Where power begins",
+      "body": "Illustrative values, not measured data.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Compare three sources",
+      "body": "Illustrative values, not measured data.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "A more balanced mix",
+      "body": "Illustrative values, not measured data.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

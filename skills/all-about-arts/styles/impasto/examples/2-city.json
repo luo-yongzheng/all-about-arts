@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "City at Dusk",
+  "style": "impasto",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "City at Dusk",
+    "subtitle": "A painted study of a shared horizon.",
+    "motif": "city",
+    "items": [
+      {
+        "label": "Homes",
+        "value": 35
+      },
+      {
+        "label": "Paths",
+        "value": 65
+      },
+      {
+        "label": "Light",
+        "value": 90
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Windows catch the light",
+      "body": "A painted study of a shared horizon.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "A city finds its rhythm",
+      "body": "A painted study of a shared horizon.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "The evening opens",
+      "body": "A painted study of a shared horizon.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

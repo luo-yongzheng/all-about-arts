@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';
+import {renderProject} from '../../skills/all-about-arts/lib/render.mjs';import {defaultConfig} from '../../skills/all-about-arts/lib/project.mjs';import {writeJSON,run} from '../../skills/all-about-arts/lib/util.mjs';
+test('transparent MOV and WebM retain decoded alpha, not only metadata',{timeout:60000},async t=>{
+ const p=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-alpha-'));t.after(()=>fs.rm(p,{recursive:true,force:true}));const c=defaultConfig({duration:1});Object.assign(c,{width:160,height:90,fps:4,transparent:true});await writeJSON(path.join(p,'aaa.json'),c);
+ await fs.writeFile(path.join(p,'index.html'),`<style>html,body{margin:0;background:transparent}</style><canvas width="160" height="90"></canvas><script>const c=window.__AAA_CONFIG,g=document.querySelector('canvas').getContext('2d');window.AAA={ready:Promise.resolve(),describe:()=>c,texts:()=>[],render:t=>{g.clearRect(0,0,160,90);g.fillStyle='#f80';g.fillRect(40+t*10,20,50,50)}};</script>`);
+ for(const format of ['mov','webm']){const r=await renderProject(p,{format});const {stdout}=await run('ffmpeg',['-v','error',...(format==='webm'?['-c:v','libvpx-vp9']:[]),'-i',r.path,'-frames:v','1','-vf','alphaextract','-pix_fmt','gray','-f','rawvideo','-']);assert.equal(stdout.length,160*90);assert.equal(stdout[0],0,`${format} corner transparency`);assert.equal(stdout[30*160+50],255,`${format} painted region opacity`);}
+});

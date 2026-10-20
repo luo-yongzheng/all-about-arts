@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "title": "Library Quest",
+  "style": "pixel-rpg",
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "Library Quest",
+    "subtitle": "Find a book worth sharing.",
+    "motif": "library",
+    "items": [
+      {
+        "label": "Explore",
+        "value": 24
+      },
+      {
+        "label": "Read",
+        "value": 62
+      },
+      {
+        "label": "Share",
+        "value": 90
+      }
+    ],
+    "subject": "library"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Search the shelves",
+      "body": "Choose one book from the shelf.",
+      "kind": "establish",
+      "action": "search"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Follow a new idea",
+      "body": "Open the book and follow its pages.",
+      "kind": "develop",
+      "action": "read"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Share what you found",
+      "body": "Pass the book to the next reader.",
+      "kind": "resolve",
+      "action": "share"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

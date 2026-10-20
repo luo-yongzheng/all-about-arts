@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {"id":"explicit-style-zh","request":"用 all-about-arts 做一个水墨短片，安静慢节奏，不要旁白，不要配乐。","evidence":["ink-wash selected","audio remains silent","no rapid-motion rule imposed","actual still/video"]},
+    {"id":"unspecified-style-en","request":"Make a short explanation of how a seed germinates; choose a suitable visual direction.","evidence":["topic-specific treatment before demo reading","small relevant style choice","hard shot preview"]},
+    {"id":"recorded-voice","request":"Use this supplied narration recording and script; time the chart reveal to the word water.","fixtures":["voice.wav","script.txt"],"evidence":["imports original audio","timing precision stated","shared word anchor","real mux/subtitles"]},
+    {"id":"revision","request":"Keep the existing look; hold this scene two seconds longer and replace this sentence.","fixtures":["project","anchored note"],"evidence":["snapshot before edit","correct scene/object","audio and subtitles rebuilt","undo restores source"]},
+    {"id":"offline-missing-generator","request":"Make the film fully offline. No image generator or voice model is available.","evidence":["no downloads or network calls","procedural or user assets","does not claim TTS/ASR ran"]},
+    {"id":"preserve-visuals","request":"Use my logo and photos and retain our existing visual identity.","evidence":["imports user assets","preserves identity","does not force unrelated preset"]},
+    {"id":"unrelated","request":"Explain this SQL query.","evidence":["film skill not invoked"]},
+    {"id":"coexistence","request":"Explicitly use all-about-arts for this film even though other video skills are installed.","evidence":["correct skill route","same package/toolkit","no required unrelated workflow"]}
+  ],
+  "note":"These are evaluation briefs, not claims that host behavior has passed. Run in independent contexts, retain logs and inspect artifacts."
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "component": "local-studio-history-inbox",
+  "implementation": "original",
+  "upstreams": [
+    {
+      "name": "huashu-motion",
+      "repository": "https://github.com/alchaincyf/huashu-motion",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "license": "MIT",
+      "copyright": "Copyright (c) 2026 Huashu",
+      "licenseNotice": "licenses/huashu-motion.txt",
+      "referenceFiles": ["studio/studio.js", "studio/studio.css", "cli/lib/inbox.js"],
+      "relationship": "Conceptual reference for a local scene timeline, point-at-frame notes, declared parameter editing, and an agent-readable inbox. No source code copied or ported into this component.",
+      "localFiles": ["studio/index.html", "studio/studio.js", "studio/studio.css", "lib/history.mjs", "lib/inbox.mjs", "lib/studio-state.mjs"],
+      "changes": [
+        "Independent window.AAA browser contract and same-origin HTTP API",
+        "Project-pixel anchors using registered regions with coordinate fallback",
+        "Optimistic configuration saves and content-addressed multi-file source history",
+        "Strictly validated notes with atomic cross-process storage",
+        "No OM player, timeline globals, token boot object, or upstream project assumptions"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2489 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Historical attribution of the initial integration. Not a lock on current destination files; no regeneration or original checkout is required.",
+  "repositories": [
+    {
+      "name": "lemo-opuscar",
+      "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "license": "MIT",
+      "licenseFile": "licenses/lemo-opuscar.txt"
+    },
+    {
+      "name": "huashu-art-motion",
+      "repository": "https://github.com/alchaincyf/huashu-art-motion",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "license": "MIT",
+      "licenseFile": "licenses/huashu-art-motion.txt"
+    },
+    {
+      "name": "huashu-motion",
+      "repository": "https://github.com/alchaincyf/huashu-motion",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "license": "MIT",
+      "licenseFile": "licenses/huashu-motion.txt"
+    }
+  ],
+  "sources": [
+    {
+      "id": "huashu-art-motion:LICENSE",
+      "upstream": "huashu-art-motion",
+      "path": "LICENSE",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "sha256": "6d6a2a9caf2e6d2b76974050427053b2892d8aa4c33fd168ce63a537fcee9d96",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-art-motion:scripts/engine/engine.js",
+      "upstream": "huashu-art-motion",
+      "path": "scripts/engine/engine.js",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "sha256": "04b64953037ced7016ffb211cb12891dc4f1c840378a366e35572db8098fd3cd",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-art-motion:scripts/engine/lib/brush.js",
+      "upstream": "huashu-art-motion",
+      "path": "scripts/engine/lib/brush.js",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "sha256": "e83db04e5fc9fef83237d984d2ceba3c1ec71c0c2a8f8a798ecc939fc8c3b2d4",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-art-motion:scripts/engine/lib/kit.js",
+      "upstream": "huashu-art-motion",
+      "path": "scripts/engine/lib/kit.js",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "sha256": "a066c4d0d4dc7189dd9de7776938b4cbc6025a4bf4a38d2e181a6667744f3024",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-art-motion:scripts/engine/lib/paint.js",
+      "upstream": "huashu-art-motion",
+      "path": "scripts/engine/lib/paint.js",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "sha256": "95ccd1945a4a19b6e2d89a422d7ea7de96174acdbae1801090ca9ee48131f9a3",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:LICENSE",
+      "upstream": "huashu-motion",
+      "path": "LICENSE",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "b8fa8ecfc57cf8339ecdab05e62e811a5d00d1e1f9373ff1de64cc9f261e2d3e",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:cli/lib/dsp.js",
+      "upstream": "huashu-motion",
+      "path": "cli/lib/dsp.js",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "2609e6d93ac51667f67345d3ba84d71d83c3b792656de97e95d12da57c6235fa",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:cli/lib/inbox.js",
+      "upstream": "huashu-motion",
+      "path": "cli/lib/inbox.js",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "d695b93a0333c460202a0e901ab6fd269abc5176f8309d678cd596c90e600ddf",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:cli/lib/sound.js",
+      "upstream": "huashu-motion",
+      "path": "cli/lib/sound.js",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "92cf6d5e97df9e4b5b9123142b1169f7395d0a8995bb7aa46926425fc1a64e90",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:runtime/om-engine.js",
+      "upstream": "huashu-motion",
+      "path": "runtime/om-engine.js",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "9141fecc75dead2c4f6a1cefd8282144eaaecc5d3418ce6f567dbddb573693ab",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:studio/studio.css",
+      "upstream": "huashu-motion",
+      "path": "studio/studio.css",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "f56a617097eef7a91e67d841618aa520143e41aefe149ac7c9f88c2fcc4f7081",
+      "license": "MIT"
+    },
+    {
+      "id": "huashu-motion:studio/studio.js",
+      "upstream": "huashu-motion",
+      "path": "studio/studio.js",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "sha256": "41f66f4462db33d5f7fcd7fdacc0046b36ae79d1a8ffbdf9f42712ca22b8d422",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:LICENSE",
+      "upstream": "lemo-opuscar",
+      "path": "LICENSE",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "14c9ff6f14bfb2391e74fedb01c256891d2a3bba1c2acf5789901bdf77e54e33",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:core/README.md",
+      "upstream": "lemo-opuscar",
+      "path": "core/README.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0092f98f44a773b3d4a031b4fd9abab4d4d8abadd7b01c758821a4d8c01a3aa2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:core/lib.js",
+      "upstream": "lemo-opuscar",
+      "path": "core/lib.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "770c8fde7c43e6a8aa9f69235869eb2a6ef5dc43453d0e56d4ff0da576c83907",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:core/render/browser.mjs",
+      "upstream": "lemo-opuscar",
+      "path": "core/render/browser.mjs",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "3ab7f7310b4280445239ca3de537654531ff2d8bcc362fdd444f0f524c7e8c73",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:core/render/video.mjs",
+      "upstream": "lemo-opuscar",
+      "path": "core/render/video.mjs",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "1615965f62b1eac4696540171d6961bcae53feffd9922d90ce76358d06381755",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/archive-lighttable/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/archive-lighttable/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "2f18ac9a42822b7a9941866c42b0642e5417dea5431d61f141f6e11b29c1ec14",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/archive-lighttable/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/archive-lighttable/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "9f6647c3456c99117748a065cb1ec67e85a284b5d0f87e440558049a778b116b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/art-deco/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/art-deco/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d73b30c0fa6d153487549d32d8c6c599733cf5e7576badec862a12da6d284761",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/art-deco/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/art-deco/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0ea0e1866adf9c601ca4118229555a563f0f9f0b2dca433f60c2b70a21bf23d5",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ascii-crt/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ascii-crt/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "cbe0b8957c785a165f85ccb3b8eba61c30c0462b32983db6a16c76046a2bb333",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ascii-crt/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ascii-crt/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6698b02e4a68e1c12c3c7dc95874337e40642e813dc2ae50f1d3530cbb9dac8d",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/backrooms/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/backrooms/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "621f204f5bc4576af497a169f2442b91caffee99046989a117ba06c6c1d572a0",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/backrooms/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/backrooms/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "8e40af80d492119fd0ec63ab5a4284d52c65c0ce2e5b12a71d9e7d41e35a9299",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/blueprint/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/blueprint/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "de01fc7fcb38b17b58eb017c9cdbcb36b9242b029435a33587614c93088e1717",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/blueprint/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/blueprint/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6d50613e83879a1741bc1ca60f2ad528c2a0e35778fdac6f55d4af7e67ea4da7",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/brick-toy/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/brick-toy/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "29b23e846951856b722a698a03c9458cfc17b4fc71d044f45d773acf2a742768",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/brick-toy/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/brick-toy/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "74691fbe30fb39816e51f8a0290f79a7b130e980e67967400f98267b7d31aa56",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/briefing-board/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/briefing-board/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "44669da808da4ed37e2a4a0f6e5d2b23008775a3c4870add04641d714e9f323d",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/briefing-board/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/briefing-board/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "71dddab315ee8836442646e7185435610be499c6ed8a4948575a0b7e734ed65e",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/cel-anime-80s/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/cel-anime-80s/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "1e16f5c6f90ebf09556ec94d37434400d309c978e00ee89e9d38dec476664eaf",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/cel-anime-80s/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/cel-anime-80s/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6a4afb02b4d388d7c8462b930556cfa2d79c61092efe9606783be7b626a62c4c",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/crayon-book/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/crayon-book/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "ba558478fe519fa6777fe28fa7d1980117297c7beb6fe2e366ef6f00688aa175",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/crayon-book/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/crayon-book/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6a03a6548019ba3393a8e2c73c96aa38aefc3257cdf8f6b87f32c808da27f098",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/dark-keynote/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/dark-keynote/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "b0791b5e95f56bf46c621e6064d426ebbee810c7515fb87e951b73668a2a0d24",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/dark-keynote/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/dark-keynote/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "c992e65414bb4e96ff6e0eeeba2cfc7a795d332fadfb3baa5301faa0b0c6b992",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/data-physical/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/data-physical/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "2d2e6685b0dcf8a1e2ba2ff904ab02d51aede1f5dbb246fd2f6e81c8d146f208",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/data-physical/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/data-physical/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "7777378d05ccc25f7e242d5a84aec1a8a283970af40b3714062bceac6661f9e7",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/dataviz/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/dataviz/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e94013d5a7c548c8844598a671ff0b49bc78770696cbca0d8d00846336f3c67f",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/dataviz/demo/engine.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/dataviz/demo/engine.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d4e4a84552a81eb8bc75c7031783ba7c42dad5376c787b48cf9d44a6ffde2bb2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/dataviz/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/dataviz/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "a459b5b712af023a00112b94c6812f0bf7e0b3a7cd39ae818e4a47805f57a8f3",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/engraving/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/engraving/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0c6816b8b47163d158ae0ea668feecf53dcbef9d1310e27b9e797d9b9e7aac0d",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/engraving/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/engraving/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "f5c99e129f786bfb75185f3d61c6be212c55b497e269ded71f55e0b971b6db80",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/game-show/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/game-show/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "027ed83dbee6596dbd255bcaf20275db18b41b4f7b8f2f5ef72d1d3ebf06ba8f",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/game-show/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/game-show/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "4596e00ca6942c151ae4cba763bf4f91c26a001c88f2ac0a1b0353c1f6b069aa",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/glass-product/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/glass-product/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "630fa80cde0930154ba64f15bce5c8ee0c8dcf48d921253f8c7e3194712c8fb5",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/glass-product/demo/product.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/glass-product/demo/product.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "9c0c35d19ca58de4be21f4833c906c1bd6364db90cdb8731374fb6a7c2afd5a3",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/glass-product/demo/studio.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/glass-product/demo/studio.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "4a9ee087d7c55eba5e1149961985144ee88a336528e33fb62650cb09623a17b2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/glass-product/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/glass-product/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "12a59c3c50e9fdd6d5613d9d093c5da7489c6baa746037dd4686ecad4a899290",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/halftone-dossier/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/halftone-dossier/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "afe98514f065c9f924dda0a483388617122f38df99462025542d2f23d9eb7e3b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/halftone-dossier/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/halftone-dossier/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "c732c96a0d0b117252fda4cc734dac4f73ab14c323742d6ace0eff04f45c6d95",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/hd-2d/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/hd-2d/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "23c027f48b5342bb8ac5dcd3ea6e5baab901628d89f4ef6dd857764ce78c9c92",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/hd-2d/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/hd-2d/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e3dd21ebeb8b4efc07e9caa85fb7264105ef4a43e85d875ff8a0ede8a3998e29",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/hologram-hud/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/hologram-hud/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "81e2c6b0ede2cc211a8dd676417a1ce5efda278514f273c5249165e38ff34573",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/hologram-hud/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/hologram-hud/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "4073df5e0dd8b65da243652b92a0406664189881c4d0d5827c5cb520ceb5f238",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/impasto/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/impasto/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "38a0dcb2808c2ff03ef721c1319b9145438b4074ed37ab7a09dcf20b7268e062",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/impasto/demo/engine/impasto.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/impasto/demo/engine/impasto.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d7e2d33cbecd21c905615260a65cd7dc9fdf5f9dffaf9d9eeae933d30b7eae1e",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/impasto/demo/engine/plate.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/impasto/demo/engine/plate.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "7120f53f1827481c97ea7204f4ef269c46339c0b87181c7f56603d0150964567",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/impasto/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/impasto/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "8eb0c2c320a2c7dd58600d2eaee537bd6f3137bed1d40f65b7e05a52bd600c31",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ink-wash/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ink-wash/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "5d71598f0b9cf4034c6461956b0d8bd63bd33750b4045376044f0d956b01d645",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ink-wash/demo/ink.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ink-wash/demo/ink.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "dbe6474ab0a0798193a7b49be9a8166511bc67ced90594e4390bdb2b70eef399",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ink-wash/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ink-wash/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "19fca58eb8e84cecaae62837f88b33e286f4ed8e45942b3395e9a320af172bde",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/iso-infographic/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/iso-infographic/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "17fc6b78512548483d8bf21723882a4fef6f1e266e4d173c883a2b45ef9ab0d2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/iso-infographic/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/iso-infographic/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "53b58520900edafef0a5229e456206fbcfdeb0665fcc8c661b73792bfc985b97",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/lidar-survey/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/lidar-survey/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d1b60fda2793932286372e7cf68d62af5723bba14c37e9a437639ea57b1a310d",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/lidar-survey/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/lidar-survey/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6b00b0b23bb74147180fd675f7210e70a3eaccdbbd43c9393d434db62a866f7e",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/living-screencast/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/living-screencast/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "91e75f666a6ab5122ead52aa5c47a603f83d0578bab0b9aa223cf83b639fbb16",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/living-screencast/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/living-screencast/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e5f0f41ee19ed771ece9f5c1b920e3e17cda0c406f2c687f66165f9eda2e9d25",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/lowpoly-island/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/lowpoly-island/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d87e56fd3677841e19f273352ea3481328a237403012ffa7ccb6089c97401702",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/lowpoly-island/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/lowpoly-island/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "7ab82e432e2e725a361ef54b1df252ba19416aead6f87897bc0bc79a48c8177a",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/microgame/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/microgame/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "ce209dde1270d032436e02569857bed373cee86e45870bf853d4d8797dc719fb",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/microgame/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/microgame/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "127fadb595ab731b959e33e1b34ade60379ca2b0d5d1e104a7ddd4fbb498cec1",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/microscope/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/microscope/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "63040631bdc28a3c7f8cf05e2e8523969becd0267741e00dd3e171c22be16e92",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/microscope/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/microscope/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "262542b3fb6724687c79573425b3fcb14ccde5492920885e15c8a07de72b3ab7",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/midcentury-toon/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/midcentury-toon/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e73614b6f9e2f2e8ee279f4909da8429235b96f6d13a12345b6e57d5823c30b8",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/midcentury-toon/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/midcentury-toon/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "9410925eb719d7d6ef3a6612749f1f70692ad1c26e6f771e852b8f986f8d730c",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/one-line/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/one-line/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "69d26cb06f48ab6b03c12a76c2390d0945cdaddc38bc109b7d5e292b9af1399b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/one-line/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/one-line/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "52f2dec514028b976dfa080270b45b1bbbe1a0e965ae358fdd929ad4f2035ea0",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/paper-lantern/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/paper-lantern/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6f3001ad45657262384b3012f441883ef5ac9c558b82d23e503d14e2f672ac91",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/paper-lantern/demo/src/paper.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/paper-lantern/demo/src/paper.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d63f0efdefe46604046bf202a86f8483928536c877af4687f441d8b8f637e17e",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/paper-lantern/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/paper-lantern/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "39d839aafce6dfa94455e9857e852951bce92cac30c0153bba6e5c6c47d935e2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/paper-popup/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/paper-popup/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "8e5c0ca430fd96b75c4d9c2af92a87c84d4d1af8cda64280a189c51279e1ee9b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/paper-popup/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/paper-popup/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "aa52b5e53c3125c0a3dcb74f9964200dad1780efba557129512bafcaf817e490",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/papercut-red/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/papercut-red/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "65e317d83335e0cb34696b643e31ad9e46fb0bb93fd748c2e21d74358aea61ec",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/papercut-red/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/papercut-red/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "9dd9b45e83f3eafd09c2740cfc93f9021fd2239f915af9011f4fa01063e3dc05",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pictogram-motion/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pictogram-motion/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e982606f3d7d132d320abdc1a74c226b1e0642b664a0c41582bc76fec646da1a",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pictogram-motion/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pictogram-motion/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "55f9659926edf159471051da1bed0d2d48b2bc2c4571afee738ba5e2711bd111",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pixel-rpg/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pixel-rpg/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "a935373e444a9d28954220e3bd725d40e9048dd1ca36eb3971faede78d23b4ea",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pixel-rpg/demo/font.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pixel-rpg/demo/font.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "b342a8aae21619f12ad7d837b607160515cc985d9b5e891b0eddf060fc804f91",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pixel-rpg/demo/px.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pixel-rpg/demo/px.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "11d3816a6f2d97818f754fe5c8871ec44985911ae261735c8e6485f011e71443",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/pixel-rpg/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/pixel-rpg/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "79e57f1bf9536dda3826519f4b09be75f6643e34abace9fcd98d056840721c6b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/risograph/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/risograph/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "c3d85c91a81b0afde091d964482749482adc66c12730afe124708f7b18b331a6",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/risograph/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/risograph/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "7291dad1d77834e67ec3d624a97b9e758c93cb5a83d7d1d933b7f692938c5a04",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/rubber-hose/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/rubber-hose/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "bf850f9cd22e68b2125fed00d1b9804e91479620b44420ba7ec50e570e472a94",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/rubber-hose/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/rubber-hose/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "c23b23f1363450dd324e8c6ca14a4e980d61e570faae64d08fa57f63a2848fcf",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/satellite-briefing/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/satellite-briefing/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "39fec0c7fda13600de04f1a9631ca636dc8850429033c1f65bb6d3283ec2988d",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/satellite-briefing/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/satellite-briefing/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "bacf1de569d170adeb3cdb162508f42a9d74b6001bc8f208156fa3ef6c0cb500",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/scifi-toon/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/scifi-toon/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "9a720a57ce50dc554e9237e698a979cdf7311527e6e6a0dad803278dfe8ad2ce",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/scifi-toon/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/scifi-toon/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "e8920bbceae36c8811e88f15ccb0cf8b04158c4b93d008320b2c4643d272cbf9",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/shadow-puppet/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/shadow-puppet/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "8be075a8262d5a3deea9b05684d8a9abdc1e54c0d90649bf14609ecb4106c3af",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/shadow-puppet/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/shadow-puppet/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "de2e5662f81e12a95a2f6370bed8d706d8a4d8387a2715532f15e18bc9441e1f",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/silent-film/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/silent-film/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "44633a4edd4ec6b84be809bd48b38503a75a71531112b3d28a52f27135012b20",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/silent-film/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/silent-film/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0afe1c8a86cb16bcea47782d43abd90ef206b8e9ab380102a2ef44c5943f29d0",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/silkscreen-poster/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/silkscreen-poster/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "a8b3792efb1476b78493f86a033221b27f60c1927463cc435f8816e4d9eda148",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/silkscreen-poster/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/silkscreen-poster/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "00213dcbda74152413c3e4a76e471a250c9244bd6e2573226ef1087878db4944",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/spy-titles/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/spy-titles/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "ea6e9e9073af43ef0bb860e368f60b16ec32a91668386115a142907d92cb1f75",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/spy-titles/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/spy-titles/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "229b04a3a23d83c29840c3e8ba8e077ed1586dde14c57ba635c54e7b807d1885",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/stained-glass/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/stained-glass/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0f6551bd109a4127404068aa1e75f18f16b58c80b486c23480b3d193e597b060",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/stained-glass/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/stained-glass/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "f65be17f876377c074be18f641e9e003b5b1d8e3567bac59294318611e4c9b23",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/swiss-motion/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/swiss-motion/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "14ddeb6dc495e691a220497069a2ee4827d820f9ee7a3173de5846489ef41f57",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/swiss-motion/demo/ease.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/swiss-motion/demo/ease.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "c6b8aefb1b2f49d173a224fa74d1d49f2936dbe4b5f3ef340d520954139ee9c8",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/swiss-motion/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/swiss-motion/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "90019625917e8461bb2ed091cc7cd0cc7dc47ba8a32f8d9cc9ca3a39cae9ed5e",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/teardown/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/teardown/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "90df05a02a3d33add58e0dd99bef19ca20ea16b10390b3c2350d8483106922ee",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/teardown/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/teardown/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "98011b0068006b13f9ceb47d2cd581c893ae6472a04abd17a882d9a225552893",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/tilt-shift/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/tilt-shift/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "131ae50c6bddd30922638cbd5f2fae5c047223360a3f6924b074b0db525a5c63",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/tilt-shift/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/tilt-shift/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "a41aa18fd789273c049562d08f0d6e63ba8fbb8c95527c3fce212428b653ebe9",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ukiyoe/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ukiyoe/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "a668f2bc5b0b74675c57819e75acc318417a77cb695fa89041b3ed78cb085655",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/ukiyoe/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/ukiyoe/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "902ea1d0578c49cf45f623b16ff52fed7355026457cd0c224159b83943f20106",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/urban-sketch/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/urban-sketch/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "2baf1a19f31b06e55d66d62e4c3449c7a2686c689190976f3e3d0cbdce2faa9a",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/urban-sketch/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/urban-sketch/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "0a7d9cfef5b650413a9d8ea4516bd8d56aa0ef9b1c10f2ce4afbf3604bc4f179",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/watercolor/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/watercolor/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "662d57568408a7c82ef8f64980ca85798b8bb239df3dc3a6715283d7f4555ef0",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/watercolor/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/watercolor/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "fe64241069de6aaf0173de56b6ff038ae03eb131ef96c799512a5efea7821b47",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/white-model/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/white-model/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "02b6423a69ac5a30322997ec9523bd6b6f776b7c8cf14f249eeb996b9d21e2c2",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/white-model/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/white-model/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "6a23bc924f9caabfb0b6455b0109b17c5bfb69d1c7b0092b5fca5e51537c8ac9",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/whiteboard/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/whiteboard/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "1a3a707f94c2da8f014a14cf7860cd5414dcf1a9faa76c96104bb91ae1ac7ff5",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/whiteboard/demo/engine/wb.js",
+      "upstream": "lemo-opuscar",
+      "path": "styles/whiteboard/demo/engine/wb.js",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "b3b0e4bb8e139aef98b5628012dfe71469474e6a59ed1e1955bcd745fbcf5aad",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/whiteboard/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/whiteboard/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "d0037e21fb291faca08cd0f379d51f8a452bb73992165b713d7b229653648f5b",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/woodcut/STYLE.md",
+      "upstream": "lemo-opuscar",
+      "path": "styles/woodcut/STYLE.md",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "b96fda6eeac038137310cc0766d979c8d8a5f3ff6acd87bada5aa50d5136a6a0",
+      "license": "MIT"
+    },
+    {
+      "id": "lemo-opuscar:styles/woodcut/style.json",
+      "upstream": "lemo-opuscar",
+      "path": "styles/woodcut/style.json",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "sha256": "5143205fccfc7977a594f360ce1549630cd15c4a0df04873e9428fe352f152c4",
+      "license": "MIT"
+    },
+    {
+      "id": "npm:three@0.170.0:LICENSE",
+      "upstream": "npm:three",
+      "version": "0.170.0",
+      "path": "LICENSE",
+      "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "license": "MIT",
+      "repository": "https://github.com/mrdoob/three.js",
+      "resolved": "https://registry.npmjs.org/three/-/three-0.170.0.tgz",
+      "integrity": "sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==",
+      "verification": "Destination is byte-identical to the locally installed pinned package. Tarball integrity is recorded from package-lock.json; no archive was downloaded or reverified.",
+      "commit": null
+    },
+    {
+      "id": "npm:three@0.170.0:build/three.module.js",
+      "upstream": "npm:three",
+      "version": "0.170.0",
+      "path": "build/three.module.js",
+      "sha256": "ce1fa418de16a19495a9f72495580e3015d7745c296d3ce0485897f902ddedfb",
+      "license": "MIT",
+      "repository": "https://github.com/mrdoob/three.js",
+      "resolved": "https://registry.npmjs.org/three/-/three-0.170.0.tgz",
+      "integrity": "sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==",
+      "verification": "Destination is byte-identical to the locally installed pinned package. Tarball integrity is recorded from package-lock.json; no archive was downloaded or reverified.",
+      "commit": null
+    }
+  ],
+  "relationships": [
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "huashu-art-motion:scripts/engine/lib/brush.js"
+      ],
+      "destinations": [
+        "runtime/upstream/procedural.mjs"
+      ],
+      "changes": [
+        "extract tapered single-stroke leaf geometry"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "huashu-art-motion:scripts/engine/lib/kit.js"
+      ],
+      "destinations": [
+        "runtime/upstream/procedural.mjs"
+      ],
+      "changes": [
+        "extract variable-width ribbon path geometry"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "huashu-art-motion:scripts/engine/lib/paint.js"
+      ],
+      "destinations": [
+        "runtime/upstream/procedural.mjs"
+      ],
+      "changes": [
+        "extract seeded Perlin noise and fractional Brownian motion as ES module"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "huashu-motion:cli/lib/dsp.js"
+      ],
+      "destinations": [
+        "lib/audio.mjs"
+      ],
+      "changes": [
+        "Seeded PRNG and struck-note partial synthesis ported into lib/audio.mjs; oscillator evaluation uses Math.sin."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "huashu-motion:cli/lib/sound.js"
+      ],
+      "destinations": [
+        "lib/audio.mjs"
+      ],
+      "changes": [
+        "Narration span bridging and attack/release ducking adapted into lib/audio.mjs; parameters simplified, no presence-band carving."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:core/lib.js"
+      ],
+      "destinations": [
+        "runtime/upstream/lemo-lib.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/dataviz/demo/engine.js"
+      ],
+      "destinations": [
+        "runtime/upstream/pencil.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/glass-product/demo/product.js"
+      ],
+      "destinations": [
+        "runtime/styles/glass-product.mjs"
+      ],
+      "changes": [
+        "Port physical glass material; original content-driven bottle/orb subject"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/glass-product/demo/studio.js"
+      ],
+      "destinations": [
+        "runtime/styles/glass-product.mjs"
+      ],
+      "changes": [
+        "Adapt emissive light cards and PMREM environment; omit original product rig and reflection shader"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/impasto/demo/engine/impasto.js"
+      ],
+      "destinations": [
+        "runtime/upstream/impasto.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime",
+        "deterministic default stroke seed; callers use explicit content-derived seeds"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/impasto/demo/engine/plate.js"
+      ],
+      "destinations": [
+        "runtime/upstream/impasto-plate.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/ink-wash/demo/ink.js"
+      ],
+      "destinations": [
+        "runtime/upstream/ink.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/paper-lantern/demo/src/paper.js"
+      ],
+      "destinations": [
+        "runtime/upstream/paper.mjs"
+      ],
+      "changes": [
+        "extract seeded fiber texture and top-edge light/bottom-edge shadow finish",
+        "lazy texture construction; new Canvas2D layered lightbox composition"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/pixel-rpg/demo/font.js"
+      ],
+      "destinations": [
+        "runtime/upstream/pixel-font.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime",
+        "Export hasGlyph coverage query so unsupported characters use actual system-font rasterization in the indexed framebuffer, not a question-mark substitute"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/pixel-rpg/demo/px.js"
+      ],
+      "destinations": [
+        "runtime/upstream/pixel.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/swiss-motion/demo/ease.js"
+      ],
+      "destinations": [
+        "runtime/upstream/swiss-ease.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "adapted-code",
+      "sources": [
+        "lemo-opuscar:styles/whiteboard/demo/engine/wb.js"
+      ],
+      "destinations": [
+        "runtime/upstream/marker.mjs"
+      ],
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "architectural-reference",
+      "sources": [
+        "lemo-opuscar:core/render/browser.mjs"
+      ],
+      "destinations": [
+        "lib/browser.mjs"
+      ],
+      "changes": [
+        "Browser capture settings adapted: macOS Metal backend, sRGB color profile, and disabled font hinting.",
+        "Independent AAA browser resolution, page contract, deadlines, cancellation, and owned-resource cleanup."
+      ],
+      "license": "MIT",
+      "destinationHashScope": "Architecture attribution only; these independently evolving root libraries are outside this port lock."
+    },
+    {
+      "kind": "architectural-reference",
+      "sources": [
+        "lemo-opuscar:core/render/video.mjs"
+      ],
+      "destinations": [
+        "lib/render.mjs"
+      ],
+      "changes": [
+        "Architectural reference for absolute-time frame workers, FFmpeg image pipes with drain backpressure, segment concatenation, and output locking.",
+        "Independent library implementation with source fingerprints, check reports, audio mux, cancellation, and atomic output publication."
+      ],
+      "license": "MIT",
+      "destinationHashScope": "Architecture attribution only; these independently evolving root libraries are outside this port lock."
+    },
+    {
+      "kind": "conceptual-reference",
+      "sources": [
+        "huashu-motion:studio/studio.js",
+        "huashu-motion:studio/studio.css",
+        "huashu-motion:cli/lib/inbox.js"
+      ],
+      "destinations": [
+        "studio/index.html",
+        "studio/studio.js",
+        "studio/studio.css",
+        "lib/history.mjs",
+        "lib/inbox.mjs",
+        "lib/studio-state.mjs"
+      ],
+      "relationship": "Conceptual reference for a local scene timeline, point-at-frame notes, declared parameter editing, and an agent-readable inbox. No source code copied or ported into this component.",
+      "changes": [
+        "Independent window.AAA browser contract and same-origin HTTP API",
+        "Project-pixel anchors using registered regions with coordinate fallback",
+        "Optimistic configuration saves and content-addressed multi-file source history",
+        "Strictly validated notes with atomic cross-process storage",
+        "No OM player, timeline globals, token boot object, or upstream project assumptions"
+      ],
+      "implementation": "original",
+      "license": "MIT"
+    },
+    {
+      "kind": "interface-reference",
+      "sources": [
+        "huashu-art-motion:scripts/engine/engine.js"
+      ],
+      "destinations": [
+        "runtime/adapters/index.mjs"
+      ],
+      "changes": [
+        "Original adapter for window.__ready, renderFrame(t), __total; no upstream engine is bundled through this adapter."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "interface-reference",
+      "sources": [
+        "huashu-motion:runtime/om-engine.js"
+      ],
+      "destinations": [
+        "runtime/adapters/index.mjs"
+      ],
+      "changes": [
+        "Original adapter for window.__omEngine.seek(t), duration(), __omReady; no upstream engine is bundled through this adapter."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "interface-reference",
+      "sources": [
+        "lemo-opuscar:core/README.md"
+      ],
+      "destinations": [
+        "runtime/adapters/index.mjs"
+      ],
+      "changes": [
+        "Original adapter for window.READY, render(t), TEXTS(t); no upstream engine is bundled through this adapter."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "license-notice",
+      "sources": [
+        "huashu-art-motion:LICENSE"
+      ],
+      "destinations": [
+        "licenses/huashu-art-motion.txt",
+        "runtime/upstream/LICENSE-huashu-art.txt"
+      ],
+      "changes": [
+        "Full upstream MIT license, copied verbatim."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "license-notice",
+      "sources": [
+        "huashu-motion:LICENSE"
+      ],
+      "destinations": [
+        "lib/audio.mjs"
+      ],
+      "changes": [
+        "The full MIT notice is retained in the lib/audio.mjs header and in this record."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "license-notice",
+      "sources": [
+        "huashu-motion:LICENSE"
+      ],
+      "destinations": [
+        "licenses/huashu-motion.txt",
+        "runtime/upstream/LICENSE-huashu-motion.txt"
+      ],
+      "changes": [
+        "Full upstream MIT license, copied verbatim."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "license-notice",
+      "sources": [
+        "lemo-opuscar:LICENSE"
+      ],
+      "destinations": [
+        "licenses/lemo-opuscar.txt",
+        "runtime/upstream/LICENSE-lemo.txt"
+      ],
+      "changes": [
+        "Full upstream MIT license, copied verbatim."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/dataviz/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/dataviz.mjs",
+        "styles/dataviz/default.json",
+        "styles/dataviz/examples/1-energy.json",
+        "styles/dataviz/examples/2-museum.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/glass-product/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/glass-product.mjs",
+        "styles/glass-product/default.json",
+        "styles/glass-product/examples/1-bottle.json",
+        "styles/glass-product/examples/2-orb.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/impasto/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/impasto.mjs",
+        "styles/impasto/default.json",
+        "styles/impasto/examples/1-garden.json",
+        "styles/impasto/examples/2-city.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/ink-wash/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/ink-wash.mjs",
+        "styles/ink-wash/default.json",
+        "styles/ink-wash/examples/1-mountains.json",
+        "styles/ink-wash/examples/2-river.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/paper-lantern/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/paper-lantern.mjs",
+        "styles/paper-lantern/default.json",
+        "styles/paper-lantern/examples/1-festival.json",
+        "styles/paper-lantern/examples/2-home.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/pixel-rpg/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/pixel-rpg.mjs",
+        "styles/pixel-rpg/default.json",
+        "styles/pixel-rpg/examples/1-library.json",
+        "styles/pixel-rpg/examples/2-garden.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/swiss-motion/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/swiss-motion.mjs",
+        "styles/swiss-motion/default.json",
+        "styles/swiss-motion/examples/1-urban.json",
+        "styles/swiss-motion/examples/2-reading.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "original-integration",
+      "sources": [
+        "lemo-opuscar:styles/whiteboard/STYLE.md"
+      ],
+      "destinations": [
+        "runtime/styles/whiteboard.mjs",
+        "styles/whiteboard/default.json",
+        "styles/whiteboard/examples/1-learning.json",
+        "styles/whiteboard/examples/2-travel.json"
+      ],
+      "changes": [
+        "Content-driven AAA wrapper around the separately attributed algorithms.",
+        "Examples are starting compositions with subject/layout reuse; they are not universal content transfer or certified storytelling."
+      ],
+      "acceptance": "integrated; creative acceptance and exact-source certification remain separate"
+    },
+    {
+      "kind": "style-reference",
+      "style": "archive-lighttable",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/archive-lighttable/STYLE.md",
+        "lemo-opuscar:styles/archive-lighttable/style.json"
+      ],
+      "destinations": [
+        "references/styles/archive-lighttable/STYLE.md",
+        "references/styles/archive-lighttable/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "art-deco",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/art-deco/STYLE.md",
+        "lemo-opuscar:styles/art-deco/style.json"
+      ],
+      "destinations": [
+        "references/styles/art-deco/STYLE.md",
+        "references/styles/art-deco/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "ascii-crt",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/ascii-crt/STYLE.md",
+        "lemo-opuscar:styles/ascii-crt/style.json"
+      ],
+      "destinations": [
+        "references/styles/ascii-crt/STYLE.md",
+        "references/styles/ascii-crt/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "backrooms",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/backrooms/STYLE.md",
+        "lemo-opuscar:styles/backrooms/style.json"
+      ],
+      "destinations": [
+        "references/styles/backrooms/STYLE.md",
+        "references/styles/backrooms/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "blueprint",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/blueprint/STYLE.md",
+        "lemo-opuscar:styles/blueprint/style.json"
+      ],
+      "destinations": [
+        "references/styles/blueprint/STYLE.md",
+        "references/styles/blueprint/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "brick-toy",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/brick-toy/STYLE.md",
+        "lemo-opuscar:styles/brick-toy/style.json"
+      ],
+      "destinations": [
+        "references/styles/brick-toy/STYLE.md",
+        "references/styles/brick-toy/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "briefing-board",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/briefing-board/STYLE.md",
+        "lemo-opuscar:styles/briefing-board/style.json"
+      ],
+      "destinations": [
+        "references/styles/briefing-board/STYLE.md",
+        "references/styles/briefing-board/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "cel-anime-80s",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/cel-anime-80s/STYLE.md",
+        "lemo-opuscar:styles/cel-anime-80s/style.json"
+      ],
+      "destinations": [
+        "references/styles/cel-anime-80s/STYLE.md",
+        "references/styles/cel-anime-80s/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "crayon-book",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/crayon-book/STYLE.md",
+        "lemo-opuscar:styles/crayon-book/style.json"
+      ],
+      "destinations": [
+        "references/styles/crayon-book/STYLE.md",
+        "references/styles/crayon-book/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "dark-keynote",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/dark-keynote/STYLE.md",
+        "lemo-opuscar:styles/dark-keynote/style.json"
+      ],
+      "destinations": [
+        "references/styles/dark-keynote/STYLE.md",
+        "references/styles/dark-keynote/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "data-physical",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/data-physical/STYLE.md",
+        "lemo-opuscar:styles/data-physical/style.json"
+      ],
+      "destinations": [
+        "references/styles/data-physical/STYLE.md",
+        "references/styles/data-physical/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "dataviz",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/dataviz/STYLE.md",
+        "lemo-opuscar:styles/dataviz/style.json"
+      ],
+      "destinations": [
+        "references/styles/dataviz/STYLE.md",
+        "references/styles/dataviz/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "engraving",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/engraving/STYLE.md",
+        "lemo-opuscar:styles/engraving/style.json"
+      ],
+      "destinations": [
+        "references/styles/engraving/STYLE.md",
+        "references/styles/engraving/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "game-show",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/game-show/STYLE.md",
+        "lemo-opuscar:styles/game-show/style.json"
+      ],
+      "destinations": [
+        "references/styles/game-show/STYLE.md",
+        "references/styles/game-show/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "glass-product",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/glass-product/STYLE.md",
+        "lemo-opuscar:styles/glass-product/style.json"
+      ],
+      "destinations": [
+        "references/styles/glass-product/STYLE.md",
+        "references/styles/glass-product/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "halftone-dossier",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/halftone-dossier/STYLE.md",
+        "lemo-opuscar:styles/halftone-dossier/style.json"
+      ],
+      "destinations": [
+        "references/styles/halftone-dossier/STYLE.md",
+        "references/styles/halftone-dossier/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "hd-2d",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/hd-2d/STYLE.md",
+        "lemo-opuscar:styles/hd-2d/style.json"
+      ],
+      "destinations": [
+        "references/styles/hd-2d/STYLE.md",
+        "references/styles/hd-2d/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "hologram-hud",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/hologram-hud/STYLE.md",
+        "lemo-opuscar:styles/hologram-hud/style.json"
+      ],
+      "destinations": [
+        "references/styles/hologram-hud/STYLE.md",
+        "references/styles/hologram-hud/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "impasto",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/impasto/STYLE.md",
+        "lemo-opuscar:styles/impasto/style.json"
+      ],
+      "destinations": [
+        "references/styles/impasto/STYLE.md",
+        "references/styles/impasto/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "ink-wash",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/ink-wash/STYLE.md",
+        "lemo-opuscar:styles/ink-wash/style.json"
+      ],
+      "destinations": [
+        "references/styles/ink-wash/STYLE.md",
+        "references/styles/ink-wash/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "iso-infographic",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/iso-infographic/STYLE.md",
+        "lemo-opuscar:styles/iso-infographic/style.json"
+      ],
+      "destinations": [
+        "references/styles/iso-infographic/STYLE.md",
+        "references/styles/iso-infographic/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "lidar-survey",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/lidar-survey/STYLE.md",
+        "lemo-opuscar:styles/lidar-survey/style.json"
+      ],
+      "destinations": [
+        "references/styles/lidar-survey/STYLE.md",
+        "references/styles/lidar-survey/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "living-screencast",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/living-screencast/STYLE.md",
+        "lemo-opuscar:styles/living-screencast/style.json"
+      ],
+      "destinations": [
+        "references/styles/living-screencast/STYLE.md",
+        "references/styles/living-screencast/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "lowpoly-island",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/lowpoly-island/STYLE.md",
+        "lemo-opuscar:styles/lowpoly-island/style.json"
+      ],
+      "destinations": [
+        "references/styles/lowpoly-island/STYLE.md",
+        "references/styles/lowpoly-island/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "microgame",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/microgame/STYLE.md",
+        "lemo-opuscar:styles/microgame/style.json"
+      ],
+      "destinations": [
+        "references/styles/microgame/STYLE.md",
+        "references/styles/microgame/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "microscope",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/microscope/STYLE.md",
+        "lemo-opuscar:styles/microscope/style.json"
+      ],
+      "destinations": [
+        "references/styles/microscope/STYLE.md",
+        "references/styles/microscope/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "midcentury-toon",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/midcentury-toon/STYLE.md",
+        "lemo-opuscar:styles/midcentury-toon/style.json"
+      ],
+      "destinations": [
+        "references/styles/midcentury-toon/STYLE.md",
+        "references/styles/midcentury-toon/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "one-line",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/one-line/STYLE.md",
+        "lemo-opuscar:styles/one-line/style.json"
+      ],
+      "destinations": [
+        "references/styles/one-line/STYLE.md",
+        "references/styles/one-line/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "paper-lantern",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/paper-lantern/STYLE.md",
+        "lemo-opuscar:styles/paper-lantern/style.json"
+      ],
+      "destinations": [
+        "references/styles/paper-lantern/STYLE.md",
+        "references/styles/paper-lantern/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "paper-popup",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/paper-popup/STYLE.md",
+        "lemo-opuscar:styles/paper-popup/style.json"
+      ],
+      "destinations": [
+        "references/styles/paper-popup/STYLE.md",
+        "references/styles/paper-popup/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "papercut-red",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/papercut-red/STYLE.md",
+        "lemo-opuscar:styles/papercut-red/style.json"
+      ],
+      "destinations": [
+        "references/styles/papercut-red/STYLE.md",
+        "references/styles/papercut-red/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "pictogram-motion",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/pictogram-motion/STYLE.md",
+        "lemo-opuscar:styles/pictogram-motion/style.json"
+      ],
+      "destinations": [
+        "references/styles/pictogram-motion/STYLE.md",
+        "references/styles/pictogram-motion/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "pixel-rpg",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/pixel-rpg/STYLE.md",
+        "lemo-opuscar:styles/pixel-rpg/style.json"
+      ],
+      "destinations": [
+        "references/styles/pixel-rpg/STYLE.md",
+        "references/styles/pixel-rpg/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "risograph",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/risograph/STYLE.md",
+        "lemo-opuscar:styles/risograph/style.json"
+      ],
+      "destinations": [
+        "references/styles/risograph/STYLE.md",
+        "references/styles/risograph/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "rubber-hose",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/rubber-hose/STYLE.md",
+        "lemo-opuscar:styles/rubber-hose/style.json"
+      ],
+      "destinations": [
+        "references/styles/rubber-hose/STYLE.md",
+        "references/styles/rubber-hose/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "satellite-briefing",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/satellite-briefing/STYLE.md",
+        "lemo-opuscar:styles/satellite-briefing/style.json"
+      ],
+      "destinations": [
+        "references/styles/satellite-briefing/STYLE.md",
+        "references/styles/satellite-briefing/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "scifi-toon",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/scifi-toon/STYLE.md",
+        "lemo-opuscar:styles/scifi-toon/style.json"
+      ],
+      "destinations": [
+        "references/styles/scifi-toon/STYLE.md",
+        "references/styles/scifi-toon/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "shadow-puppet",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/shadow-puppet/STYLE.md",
+        "lemo-opuscar:styles/shadow-puppet/style.json"
+      ],
+      "destinations": [
+        "references/styles/shadow-puppet/STYLE.md",
+        "references/styles/shadow-puppet/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "silent-film",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/silent-film/STYLE.md",
+        "lemo-opuscar:styles/silent-film/style.json"
+      ],
+      "destinations": [
+        "references/styles/silent-film/STYLE.md",
+        "references/styles/silent-film/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "silkscreen-poster",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/silkscreen-poster/STYLE.md",
+        "lemo-opuscar:styles/silkscreen-poster/style.json"
+      ],
+      "destinations": [
+        "references/styles/silkscreen-poster/STYLE.md",
+        "references/styles/silkscreen-poster/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "spy-titles",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/spy-titles/STYLE.md",
+        "lemo-opuscar:styles/spy-titles/style.json"
+      ],
+      "destinations": [
+        "references/styles/spy-titles/STYLE.md",
+        "references/styles/spy-titles/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "stained-glass",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/stained-glass/STYLE.md",
+        "lemo-opuscar:styles/stained-glass/style.json"
+      ],
+      "destinations": [
+        "references/styles/stained-glass/STYLE.md",
+        "references/styles/stained-glass/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "swiss-motion",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/swiss-motion/STYLE.md",
+        "lemo-opuscar:styles/swiss-motion/style.json"
+      ],
+      "destinations": [
+        "references/styles/swiss-motion/STYLE.md",
+        "references/styles/swiss-motion/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "teardown",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/teardown/STYLE.md",
+        "lemo-opuscar:styles/teardown/style.json"
+      ],
+      "destinations": [
+        "references/styles/teardown/STYLE.md",
+        "references/styles/teardown/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "tilt-shift",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/tilt-shift/STYLE.md",
+        "lemo-opuscar:styles/tilt-shift/style.json"
+      ],
+      "destinations": [
+        "references/styles/tilt-shift/STYLE.md",
+        "references/styles/tilt-shift/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "ukiyoe",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/ukiyoe/STYLE.md",
+        "lemo-opuscar:styles/ukiyoe/style.json"
+      ],
+      "destinations": [
+        "references/styles/ukiyoe/STYLE.md",
+        "references/styles/ukiyoe/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "urban-sketch",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/urban-sketch/STYLE.md",
+        "lemo-opuscar:styles/urban-sketch/style.json"
+      ],
+      "destinations": [
+        "references/styles/urban-sketch/STYLE.md",
+        "references/styles/urban-sketch/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "watercolor",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/watercolor/STYLE.md",
+        "lemo-opuscar:styles/watercolor/style.json"
+      ],
+      "destinations": [
+        "references/styles/watercolor/STYLE.md",
+        "references/styles/watercolor/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "white-model",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/white-model/STYLE.md",
+        "lemo-opuscar:styles/white-model/style.json"
+      ],
+      "destinations": [
+        "references/styles/white-model/STYLE.md",
+        "references/styles/white-model/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "whiteboard",
+      "status": "integrated",
+      "sources": [
+        "lemo-opuscar:styles/whiteboard/STYLE.md",
+        "lemo-opuscar:styles/whiteboard/style.json"
+      ],
+      "destinations": [
+        "references/styles/whiteboard/STYLE.md",
+        "references/styles/whiteboard/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "style-reference",
+      "style": "woodcut",
+      "status": "reference",
+      "sources": [
+        "lemo-opuscar:styles/woodcut/STYLE.md",
+        "lemo-opuscar:styles/woodcut/style.json"
+      ],
+      "destinations": [
+        "references/styles/woodcut/STYLE.md",
+        "references/styles/woodcut/upstream.json"
+      ],
+      "changes": [
+        "Copied verbatim. Relative links within STYLE.md refer to the upstream library."
+      ],
+      "license": "MIT"
+    },
+    {
+      "kind": "vendored-dependency",
+      "sources": [
+        "npm:three@0.170.0:build/three.module.js",
+        "npm:three@0.170.0:LICENSE"
+      ],
+      "destinations": [
+        "runtime/vendor/three.module.js",
+        "licenses/three.txt"
+      ],
+      "changes": [
+        "Unmodified ES module build and full MIT license from three@0.170.0."
+      ],
+      "license": "MIT"
+    }
+  ]
+}

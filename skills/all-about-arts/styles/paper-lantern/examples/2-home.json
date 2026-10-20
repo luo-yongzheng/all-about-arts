@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "title": "Letters from Home",
+  "style": "paper-lantern",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "Letters from Home",
+    "subtitle": "Connections cross the quiet distance.",
+    "motif": "home",
+    "items": [
+      {
+        "label": "Write",
+        "value": 20
+      },
+      {
+        "label": "Send",
+        "value": 55
+      },
+      {
+        "label": "Welcome",
+        "value": 80
+      }
+    ],
+    "subject": "home"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "A note begins a journey",
+      "body": "Write a note, fold the paper, and seal it with care.",
+      "kind": "establish",
+      "action": "write"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "The message finds its way",
+      "body": "The envelope crosses the quiet distance.",
+      "kind": "develop",
+      "action": "send"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "A welcome waits at home",
+      "body": "The letter arrives. A window glows in welcome.",
+      "kind": "resolve",
+      "action": "welcome"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

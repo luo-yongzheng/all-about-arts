@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "component": "audio",
+  "upstreams": [
+    {
+      "repository": "https://github.com/alchaincyf/huashu-motion",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "license": "MIT",
+      "copyright": "Copyright (c) 2026 Huashu",
+      "status": "integrated",
+      "files": [
+        {
+          "path": "cli/lib/dsp.js",
+          "sha256": "2609e6d93ac51667f67345d3ba84d71d83c3b792656de97e95d12da57c6235fa",
+          "adaptation": "Seeded PRNG and struck-note partial synthesis ported into lib/audio.mjs; oscillator evaluation uses Math.sin."
+        },
+        {
+          "path": "cli/lib/sound.js",
+          "sha256": "92cf6d5e97df9e4b5b9123142b1169f7395d0a8995bb7aa46926425fc1a64e90",
+          "adaptation": "Narration span bridging and attack/release ducking adapted into lib/audio.mjs; parameters simplified, no presence-band carving."
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "b8fa8ecfc57cf8339ecdab05e62e811a5d00d1e1f9373ff1de64cc9f261e2d3e",
+          "adaptation": "The full MIT notice is retained in the lib/audio.mjs header and in this record."
+        }
+      ],
+      "destination": [
+        "lib/audio.mjs"
+      ],
+      "licenseText": "MIT License\n\nCopyright (c) 2026 Huashu\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+    }
+  ],
+  "originalImplementation": [
+    "lib/audio.mjs: project-scene score orchestration, event synthesis, strict decode, complete source/config/code cache hashing, WAV writer",
+    "lib/timeline.mjs: common word anchor clock, precision metadata, SRT generation",
+    "lib/voice.mjs: content-addressed import and explicitly configured voice providers",
+    "scripts/voice-local.py: local macOS say adapter"
+  ],
+  "scope": "A deliberately small integrated DSP subset, not the complete upstream sound/score system. No upstream source is modified."
+}

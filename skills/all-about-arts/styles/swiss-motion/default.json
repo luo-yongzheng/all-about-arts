@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "Make Space",
+  "style": "swiss-motion",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "Make Space",
+    "subtitle": "A manifesto for better public places.",
+    "motif": "urban",
+    "items": [
+      {
+        "label": "Access",
+        "value": 30
+      },
+      {
+        "label": "Connect",
+        "value": 70
+      },
+      {
+        "label": "Care",
+        "value": 90
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Make space for people",
+      "body": "A manifesto for better public places.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Connect the essential",
+      "body": "A manifesto for better public places.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Leave room for change",
+      "body": "A manifesto for better public places.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

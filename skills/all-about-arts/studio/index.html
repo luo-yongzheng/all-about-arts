@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>all-about-arts · Studio</title>
+  <link rel="stylesheet" href="/studio.css">
+  <script type="module" src="/studio.js"></script>
+</head>
+<body>
+  <audio id="preview-audio" preload="auto"></audio>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="all-about-arts Studio"><span class="brand-mark" aria-hidden="true">a<span>✳</span></span><span>all-about-arts<small>STUDIO</small></span></a>
+    <div class="project-heading"><h1 id="project-name">Opening your film</h1><p id="project-meta">Local film workspace</p></div>
+    <div class="top-actions"><button id="undo" class="quiet" disabled>Undo last save</button><button id="render" class="secondary" disabled>Render film</button><button id="export" class="primary" disabled>Export package <span aria-hidden="true">↗</span></button></div>
+  </header>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <main class="workspace">
+    <aside class="sequence-panel" aria-label="Film scenes">
+      <div class="panel-heading"><h2>Sequence</h2><span id="scene-count" class="count">00</span></div>
+      <p class="muted section-caption">A story, scene by scene.</p>
+      <nav id="scenes" aria-label="Scene navigation"></nav>
+      <div class="sequence-footer"><span class="live-dot"></span> Your local workspace<small>Source stays with your film.</small></div>
+    </aside>
+    <section class="editor" aria-label="Film preview and timeline">
+      <div class="preview-heading"><div><span class="eyebrow">THE FRAME</span><span id="current-scene">Preview</span></div><span id="preview-status" class="preview-status">Loading</span></div>
+      <div id="stage" class="stage">
+        <div id="frame" class="film-frame">
+          <iframe id="film" title="Film preview" src="about:blank"></iframe>
+          <div id="note-overlay" class="note-overlay" tabindex="-1" aria-label="Choose a note position on the film">
+            <div id="selection" class="selection" hidden></div>
+            <div id="pins" class="pins"></div>
+          </div>
+        </div>
+        <div id="stage-empty" class="stage-empty"><span class="loading-orbit" aria-hidden="true"></span><p>Preparing the first frame…</p></div>
+      </div>
+      <div class="preview-tools"><span id="frame-size" class="muted">—</span><button id="add-note" class="quiet" disabled><span aria-hidden="true">⊕</span> Add note</button></div>
+      <section class="timeline" aria-label="Playback controls">
+        <div class="transport"><div class="transport-buttons"><button id="previous-frame" class="icon-button" aria-label="Previous frame" disabled>‹</button><button id="play" class="play-button" aria-label="Play" disabled><span aria-hidden="true">▶</span></button><button id="next-frame" class="icon-button" aria-label="Next frame" disabled>›</button></div><div class="timecode"><output id="time">00:00.00</output><span>/</span><span id="duration">00:00.00</span></div><span class="keyboard-hint">Space to play · ← → to step</span></div>
+        <div id="scene-track" class="scene-track" aria-hidden="true"></div>
+        <input id="scrubber" aria-label="Playhead" type="range" min="0" max="1" step="0.033333" value="0" disabled>
+        <div class="timeline-endpoints"><span>00:00</span><span id="timeline-end">00:00</span></div>
+      </section>
+    </section>
+    <aside class="inspector" aria-label="Film inspector">
+      <div class="inspector-tabs" role="tablist" aria-label="Inspector sections"><button id="tab-parameters" role="tab" aria-selected="true" aria-controls="panel-parameters">Parameters</button><button id="tab-notes" role="tab" aria-selected="false" aria-controls="panel-notes">Notes <span id="note-count">0</span></button><button id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history">History</button></div>
+      <section id="panel-parameters" role="tabpanel" aria-labelledby="tab-parameters"><div class="inspector-heading"><h2>Make it yours</h2><p>Adjust the details your film exposes.</p></div><form id="parameters-form"><div id="parameters"></div><div class="save-actions"><p id="save-state" class="muted">All changes saved</p><button id="save" class="primary" type="submit" disabled>Save changes</button><button id="reload" class="quiet" type="button">Reload project</button></div></form></section>
+      <section id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" hidden><div class="inspector-heading"><h2>A conversation with the frame</h2><p>Point to a detail. Leave a clear direction.</p></div><form id="note-form" class="note-form" hidden><p id="note-anchor" class="anchor-caption"></p><label for="note-text">Note text</label><textarea id="note-text" maxlength="10000" rows="4" placeholder="What should change here?" required></textarea><div class="form-actions"><button type="button" id="cancel-note" class="quiet">Cancel</button><button type="submit" class="primary">Save note</button></div></form><div id="notes-list"></div></section>
+      <section id="panel-history" role="tabpanel" aria-labelledby="tab-history" hidden><div class="inspector-heading"><h2>Room to explore</h2><p>Return to an earlier version of your source and assets.</p></div><div id="history-list"></div></section>
+    </aside>
+  </main>
+  <footer class="app-footer"><span><i class="live-dot"></i> LOCAL STUDIO</span><span id="footer-state">Your film, in progress.</span><span>all-about-arts / 01</span></footer>
+</body>
+</html>

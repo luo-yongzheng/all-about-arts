@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "How Ideas Travel",
+  "style": "whiteboard",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "How Ideas Travel",
+    "subtitle": "A practical learning loop.",
+    "motif": "learning",
+    "items": [
+      {
+        "label": "Ask",
+        "value": 10
+      },
+      {
+        "label": "Try",
+        "value": 30
+      },
+      {
+        "label": "Learn",
+        "value": 60
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Start with a question",
+      "body": "A practical learning loop.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Test what you notice",
+      "body": "A practical learning loop.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Share the next question",
+      "body": "A practical learning loop.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

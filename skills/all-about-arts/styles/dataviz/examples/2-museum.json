@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "Museum Attendance",
+  "style": "dataviz",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "Museum Attendance",
+    "subtitle": "Illustrative monthly visitors in hundreds.",
+    "motif": "museum",
+    "items": [
+      {
+        "label": "April",
+        "value": 24
+      },
+      {
+        "label": "May",
+        "value": 38
+      },
+      {
+        "label": "June",
+        "value": 72
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "A quiet beginning",
+      "body": "Illustrative monthly visitors in hundreds.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "A wider invitation",
+      "body": "Illustrative monthly visitors in hundreds.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Room for new audiences",
+      "body": "Illustrative monthly visitors in hundreds.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

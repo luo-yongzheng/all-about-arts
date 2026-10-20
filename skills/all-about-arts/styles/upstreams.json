@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "repositories": [
+    {
+      "name": "lemo-opuscar",
+      "commit": "508848acb2b4930c4041fef4d594120da1525bff",
+      "license": "MIT",
+      "licenseFile": "runtime/upstream/LICENSE-lemo.txt"
+    },
+    {
+      "name": "huashu-art-motion",
+      "commit": "8a0d7d72ca65fcce6f8ba82c4a6c8dfe35b8422c",
+      "license": "MIT",
+      "licenseFile": "runtime/upstream/LICENSE-huashu-art.txt"
+    },
+    {
+      "name": "huashu-motion",
+      "commit": "3e927801e78b587878fb7dbb65d616326df00c21",
+      "license": "MIT",
+      "licenseFile": "runtime/upstream/LICENSE-huashu-motion.txt"
+    }
+  ],
+  "ports": [
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/core/lib.js",
+      "sourceSha256": "770c8fde7c43e6a8aa9f69235869eb2a6ef5dc43453d0e56d4ff0da576c83907",
+      "destination": "runtime/upstream/lemo-lib.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/pixel-rpg/demo/px.js",
+      "sourceSha256": "11d3816a6f2d97818f754fe5c8871ec44985911ae261735c8e6485f011e71443",
+      "destination": "runtime/upstream/pixel.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/pixel-rpg/demo/font.js",
+      "sourceSha256": "b342a8aae21619f12ad7d837b607160515cc985d9b5e891b0eddf060fc804f91",
+      "destination": "runtime/upstream/pixel-font.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime",
+        "Export hasGlyph coverage query so unsupported characters use actual system-font rasterization in the indexed framebuffer, not a question-mark substitute"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/swiss-motion/demo/ease.js",
+      "sourceSha256": "c6b8aefb1b2f49d173a224fa74d1d49f2936dbe4b5f3ef340d520954139ee9c8",
+      "destination": "runtime/upstream/swiss-ease.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/impasto/demo/engine/impasto.js",
+      "sourceSha256": "d7e2d33cbecd21c905615260a65cd7dc9fdf5f9dffaf9d9eeae933d30b7eae1e",
+      "destination": "runtime/upstream/impasto.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime",
+        "deterministic default stroke seed; callers use explicit content-derived seeds"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/impasto/demo/engine/plate.js",
+      "sourceSha256": "7120f53f1827481c97ea7204f4ef269c46339c0b87181c7f56603d0150964567",
+      "destination": "runtime/upstream/impasto-plate.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/ink-wash/demo/ink.js",
+      "sourceSha256": "dbe6474ab0a0798193a7b49be9a8166511bc67ced90594e4390bdb2b70eef399",
+      "destination": "runtime/upstream/ink.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/dataviz/demo/engine.js",
+      "sourceSha256": "d4e4a84552a81eb8bc75c7031783ba7c42dad5376c787b48cf9d44a6ffde2bb2",
+      "destination": "runtime/upstream/pencil.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/whiteboard/demo/engine/wb.js",
+      "sourceSha256": "b3b0e4bb8e139aef98b5628012dfe71469474e6a59ed1e1955bcd745fbcf5aad",
+      "destination": "runtime/upstream/marker.mjs",
+      "changes": [
+        "ES module relative imports for standalone runtime"
+      ]
+    },
+    {
+      "upstream": "huashu-art-motion",
+      "source": "huashu-art-motion/scripts/engine/lib/paint.js",
+      "sourceSha256": "95ccd1945a4a19b6e2d89a422d7ea7de96174acdbae1801090ca9ee48131f9a3",
+      "destination": "runtime/upstream/procedural.mjs",
+      "changes": [
+        "extract seeded Perlin noise and fractional Brownian motion as ES module"
+      ]
+    },
+    {
+      "upstream": "huashu-art-motion",
+      "source": "huashu-art-motion/scripts/engine/lib/kit.js",
+      "sourceSha256": "a066c4d0d4dc7189dd9de7776938b4cbc6025a4bf4a38d2e181a6667744f3024",
+      "destination": "runtime/upstream/procedural.mjs",
+      "changes": [
+        "extract variable-width ribbon path geometry"
+      ]
+    },
+    {
+      "upstream": "huashu-art-motion",
+      "source": "huashu-art-motion/scripts/engine/lib/brush.js",
+      "sourceSha256": "e83db04e5fc9fef83237d984d2ceba3c1ec71c0c2a8f8a798ecc939fc8c3b2d4",
+      "destination": "runtime/upstream/procedural.mjs",
+      "changes": [
+        "extract tapered single-stroke leaf geometry"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/paper-lantern/demo/src/paper.js",
+      "sourceSha256": "d63f0efdefe46604046bf202a86f8483928536c877af4687f441d8b8f637e17e",
+      "destination": "runtime/upstream/paper.mjs",
+      "changes": [
+        "extract seeded fiber texture and top-edge light/bottom-edge shadow finish",
+        "lazy texture construction; new Canvas2D layered lightbox composition"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/glass-product/demo/product.js",
+      "sourceSha256": "9c0c35d19ca58de4be21f4833c906c1bd6364db90cdb8731374fb6a7c2afd5a3",
+      "destination": "runtime/styles/glass-product.mjs",
+      "changes": [
+        "Port physical glass material; original content-driven bottle/orb subject"
+      ]
+    },
+    {
+      "upstream": "lemo-opuscar",
+      "source": "lemo-opuscar/styles/glass-product/demo/studio.js",
+      "sourceSha256": "4a9ee087d7c55eba5e1149961985144ee88a336528e33fb62650cb09623a17b2",
+      "destination": "runtime/styles/glass-product.mjs",
+      "changes": [
+        "Adapt emissive light cards and PMREM environment; omit original product rig and reflection shader"
+      ]
+    }
+  ],
+  "compatibilityReferences": [
+    {
+      "source": "lemo-opuscar/core/README.md",
+      "interface": "window.READY, render(t), TEXTS(t)"
+    },
+    {
+      "source": "huashu-motion/runtime/om-engine.js",
+      "interface": "window.__omEngine.seek(t), duration(), __omReady"
+    },
+    {
+      "source": "huashu-art-motion/scripts/engine/engine.js",
+      "interface": "window.__ready, renderFrame(t), __total"
+    }
+  ],
+  "styleReferences": {
+    "count": 51,
+    "sourceGlob": "lemo-opuscar/styles/*/STYLE.md",
+    "destination": "references/styles/<slug>/STYLE.md",
+    "changes": "none; copied verbatim excluding template"
+  }
+}

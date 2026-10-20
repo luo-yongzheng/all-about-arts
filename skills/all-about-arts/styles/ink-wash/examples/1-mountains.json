@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "title": "A Quiet Practice",
+  "style": "ink-wash",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "A Quiet Practice",
+    "subtitle": "Attention grows through small choices.",
+    "motif": "mountains",
+    "items": [
+      {
+        "label": "Notice",
+        "value": 18
+      },
+      {
+        "label": "Listen",
+        "value": 42
+      },
+      {
+        "label": "Rest",
+        "value": 72
+      }
+    ],
+    "subject": "mountains"
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "Begin with a breath",
+      "body": "Mist lifts across the ridge with a slow breath.",
+      "kind": "establish",
+      "action": "breathe"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Follow a patient line",
+      "body": "A dry brush finds a winding path through the hills.",
+      "kind": "develop",
+      "action": "trace"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Leave room for quiet",
+      "body": "The mist settles. Ripples rest below the mountains.",
+      "kind": "resolve",
+      "action": "rest"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

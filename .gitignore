@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# all-about-arts source package and generated work
+!skills/all-about-arts/lib/
+!skills/all-about-arts/lib/**
+node_modules/
+.aaa/
+artifacts/
+.superpowers/

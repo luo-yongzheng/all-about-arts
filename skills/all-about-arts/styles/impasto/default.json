@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "A Community Garden",
+  "style": "impasto",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 18,
+  "seed": 42,
+  "genre": "art",
+  "content": {
+    "title": "A Community Garden",
+    "subtitle": "Every small contribution leaves a mark.",
+    "motif": "garden",
+    "items": [
+      {
+        "label": "Seeds",
+        "value": 20
+      },
+      {
+        "label": "Water",
+        "value": 50
+      },
+      {
+        "label": "Bloom",
+        "value": 85
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "A place to begin",
+      "body": "Every small contribution leaves a mark.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Different hands together",
+      "body": "Every small contribution leaves a mark.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "A season of possibility",
+      "body": "Every small contribution leaves a mark.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

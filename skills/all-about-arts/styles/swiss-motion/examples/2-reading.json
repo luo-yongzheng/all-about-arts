@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "title": "Reading Rhythm",
+  "style": "swiss-motion",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 18,
+  "seed": 61,
+  "genre": "art",
+  "content": {
+    "title": "Reading Rhythm",
+    "subtitle": "A small habit, clearly designed.",
+    "motif": "reading",
+    "items": [
+      {
+        "label": "Read",
+        "value": 10
+      },
+      {
+        "label": "Reflect",
+        "value": 30
+      },
+      {
+        "label": "Repeat",
+        "value": 60
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "establish",
+      "start": 0,
+      "end": 6,
+      "title": "One page at a time",
+      "body": "A small habit, clearly designed.",
+      "kind": "establish"
+    },
+    {
+      "id": "develop",
+      "start": 6,
+      "end": 12,
+      "title": "Build a daily rhythm",
+      "body": "A small habit, clearly designed.",
+      "kind": "develop"
+    },
+    {
+      "id": "resolve",
+      "start": 12,
+      "end": 18,
+      "title": "Ideas become a practice",
+      "body": "A small habit, clearly designed.",
+      "kind": "resolve"
+    }
+  ],
+  "audio": {
+    "music": {
+      "enabled": false
+    },
+    "sfx": [],
+    "voice": null
+  },
+  "assets": []
+}

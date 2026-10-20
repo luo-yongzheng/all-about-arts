@@ -1,0 +1,11 @@
+{
+  "name": "all-about-arts-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/all-about-arts/*.test.mjs",
+    "test:integration": "node --test --test-concurrency=1 tests/all-about-arts/pipeline.test.mjs tests/all-about-arts/cancellation.test.mjs tests/all-about-arts/export-integration.test.mjs tests/all-about-arts/styles-browser.test.mjs tests/all-about-arts/studio-browser.test.mjs",
+    "acceptance": "node tests/all-about-arts/acceptance.mjs",
+    "aaa": "node skills/all-about-arts/scripts/aaa.mjs"
+  }
+}
