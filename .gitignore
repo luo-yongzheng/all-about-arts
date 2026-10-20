@@ -226,3 +226,4 @@ node_modules/
 .aaa/
 artifacts/
 .superpowers/
+.DS_Store

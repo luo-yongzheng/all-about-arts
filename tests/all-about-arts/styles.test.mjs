@@ -12,3 +12,29 @@ export {fixture};
 test('Lemo adapter reads the actual upstream DUR global',async()=>{const {adaptLemo}=await import(new URL('runtime/adapters/index.mjs',base));const host={DUR:7.5,READY:true,render(t){this.time=t;}};const f=adaptLemo(host,{});await f.render(4);assert.equal(host.time,4);assert.equal(f.describe().duration,7.5);});
 test('numeric item strings are normalized before chart arithmetic',async()=>{const {normalizeConfig}=await runtime();const c=normalizeConfig({...fixture,content:{items:[{label:'Count',value:'12.5'}]}});assert.equal(c.content.items[0].value,12.5);});
 test('declared text parameters address scene fields that change rendered titles',async()=>{const {parametersFor,normalizeConfig}=await runtime();assert.equal(typeof parametersFor,'function');const p=parametersFor(normalizeConfig(fixture));assert.ok(p.some(v=>v.key==='scenes.0.title'&&v.value==='Observe closely'));assert.ok(p.some(v=>v.key==='scenes.1.body'&&v.value==='Choose a useful next step.'));});
+test('frameContext resets stroke state on clear and keeps CJK punctuation and numeric units intact when wrapping',async()=>{
+  const {frameContext}=await import(new URL('runtime/common.mjs',base));
+  const state={lineWidth:9,lineCap:'round',lineJoin:'round',miterLimit:3,dash:[4,2],font:''};
+  const canvas={width:1080,height:1920,getContext(){return {
+    set lineWidth(v){state.lineWidth=v;},get lineWidth(){return state.lineWidth;},
+    set lineCap(v){state.lineCap=v;},get lineCap(){return state.lineCap;},
+    set lineJoin(v){state.lineJoin=v;},get lineJoin(){return state.lineJoin;},
+    set miterLimit(v){state.miterLimit=v;},get miterLimit(){return state.miterLimit;},
+    set font(v){state.font=v;},get font(){return state.font;},
+    setTransform(){},clearRect(){},fillRect(){},save(){},restore(){},fillText(){},
+    setLineDash(d){state.dash=d;},
+    measureText(s){const m=/(\d+)px/.exec(state.font);const px=m?+m[1]:24;return {width:[...s].reduce((w,ch)=>w+(ch.charCodeAt(0)>255?px:px*0.58),0)};}
+  };}};
+  const f=frameContext(canvas,{width:1080,height:1920,transparent:false});
+  f.scene={id:'s1'};
+  f.clear('#000');
+  assert.equal(state.lineWidth,1);
+  assert.equal(state.lineCap,'butt');
+  assert.equal(state.lineJoin,'miter');
+  assert.deepEqual(state.dash,[]);
+  f.text('cjk','从1985年65平方公里到2018年331.22 km²，三十四道建筑年轮。',0,0,340,200,{size:28,min:18});
+  for(const entry of f.textEntries){
+    assert.equal(/^[，。、；：！？）》”】]/.test(entry.text),false,`orphaned leading punctuation in line: ${entry.text}`);
+  }
+  assert.ok(f.textEntries.some(e=>e.text.includes('331.22 km²')),'numeric value and unit should stay together');
+});

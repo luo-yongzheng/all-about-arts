@@ -82,7 +82,7 @@ Imported `words` and `segments` are source-local; `voice.start` moves them onto 
 - `interpolated`: words spread within caller-supplied `{text,start,end}` segments, or external word cues without an explicit recognition label.
 - `recognized`: the caller explicitly labels external aligned/recognized words. This package does not run ASR or verify an external aligner's accuracy.
 
-The mix directory includes `subtitles.srt` and `words.json`. SRT contains standard subtitle text/timestamps; JSON carries the precision labels and explanation. Deliver both. CJK script text is tokenized with the Node runtime's word segmenter, so runtime/code versions belong in delivery reproducibility records.
+The mix directory includes `subtitles.srt` and `words.json`. SRT contains standard subtitle text/timestamps; JSON carries the precision labels and explanation. Deliver both. CJK script text is tokenized with the Node runtime's word segmenter, so runtime/code versions belong in delivery reproducibility records. When a user requests a silent film (`audio.music.enabled: false`, `audio.voice: null`) with subtitles and standalone subtitle files, author timed subtitle cues on the shared seconds clock, render burned-in captions in a dedicated subtitle band via `f.text()`, save standalone `.srt` / `.vtt` / `.json` files in `subtitles/`, and copy the `.srt` to `out/subtitles.srt` prior to `export --no-rebuild` so `export` includes `subtitles.srt` at the root of the delivery bundle.
 
 ## Cache and provenance
 

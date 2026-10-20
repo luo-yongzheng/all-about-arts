@@ -2,7 +2,7 @@
 
 Start with the desired change in the viewer: what should they understand, notice or feel? Identify factual sources for explanations and data. Preserve user-provided footage and branding when requested.
 
-Write a short treatment before looking at demo storyboards: premise, point of view, progression, two or three visual motifs and a reason for each major shot. For data, name the comparison, units, source and uncertainty. For products, show a useful detail or action, not only an attractive rotation. For an art film, mood and a sustained composition may carry the piece without narration.
+Write a short treatment before looking at demo storyboards: premise, point of view, progression, two or three visual motifs and a reason for each major shot. For data, name the comparison, units, source and uncertainty. Keep all bars or series within a single chart in a consistent unit (e.g., all in `km²` or all in `m`), and separate underlying data provenance (`FACTS.md` / `CREDITS.md`) from on-screen display: unless the user asks for visible source citations on screen, keep headers, chart kickers and subtitles focused on the story and metrics rather than dataset watermarks. For products, show a useful detail or action, not only an attractive rotation. For an art film, mood and a sustained composition may carry the piece without narration.
 
 If no style is specified, offer two or three relevant choices, or select an appropriate default when the user asked for autonomous production. Explain the actual technique: pixel resolution and quantized movement, height-lit paint, layered paper, refractive geometry, drawn strokes or typographic grids. “Cinematic” alone is not a direction.
 
