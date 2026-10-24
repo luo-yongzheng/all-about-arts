@@ -9,7 +9,15 @@ export async function main(args=process.argv.slice(2)){
  const {flags:f,pos}=parseArgs(args),[command,arg,action]=pos,project=arg?path.resolve(arg):process.cwd();let result;
  if(!command||command==='help'||f.help){console.log(help);return;}
  if(command==='doctor')result=await (await import('../lib/doctor.mjs')).doctor();
- else if(command==='styles'){let catalog=await readJSON(path.join(PACKAGE_ROOT,'styles/catalog.json'));let items=Array.isArray(catalog)?catalog:catalog.styles;const query=(arg??'').toLowerCase();if(query)items=items.filter(s=>JSON.stringify(s).toLowerCase().includes(query));result={status:'success',styles:items};}
+ else if(command==='styles'){
+  const catalog=await readJSON(path.join(PACKAGE_ROOT,'styles/catalog.json')),styles=Array.isArray(catalog)?catalog:catalog.styles;
+  const terms=pos.slice(1).join(' ').toLowerCase().split(/\s+/).filter(Boolean);
+  const items=styles.filter(s=>{
+   const description=[s.id,s.slug,s.name,s.en,s.cn,s.category,s.category_cn,...(s.uses??[])].filter(Boolean).join(' ').toLowerCase();
+   return terms.every(term=>description.includes(term));
+  });
+  result={status:'success',total:styles.length,matched:items.length,statusDefinitions:catalog.statusDefinitions??{},nativeStatusDefinitions:catalog.nativeStatusDefinitions??{},styles:items};
+ }
  else if(command==='init'){if(!arg)throw Error('init requires a new directory');result=await initProject(project,{style:f.style,title:f.title,duration:f.duration,portrait:f.portrait,size:f.size,fps:f.fps,config:f.config?await readJSON(path.resolve(f.config)):undefined});}
  else if(command==='assets'){const m=await import('../lib/assets.mjs');if(!action||action==='check')result=await m.checkAssets(project);else if(action==='import')result=await m.importAsset(project,{file:f.file,id:f.id,source:f.source,license:f.license,purpose:f.purpose});else if(action==='request')result=await m.generationRequest(project,{prompt:f.prompt,kind:f.kind});else if(action==='receipt')result=await m.recordGenerated(project,{requestId:f.request,file:f.file,provider:f.provider,license:f.license});else throw Error('Unknown assets action');}
  else if(command==='voice'){const m=await import('../lib/voice.mjs');const script=f['script-file']?await fs.readFile(f['script-file'],'utf8'):f.script;const opts={...f,file:f.file,script,provider:f.provider,allowOnline:f['allow-online']===undefined?undefined:!!f['allow-online'],start:f.start===undefined?0:+f.start,volume:f.volume===undefined?1:+f.volume,words:f.words?await readJSON(f.words):undefined,segments:f.segments?await readJSON(f.segments):undefined};result=action==='import'?await m.importVoice(project,opts):action==='generate'?await m.generateVoice(project,opts):(()=>{throw Error('voice requires import or generate');})();}

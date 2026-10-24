@@ -1,11 +1,19 @@
 ---
 name: all-about-arts
-description: Create and revise code-driven art films, explainers, data stories and product videos with distinctive visual styles, sound, subtitles and editable delivery. Use for a new film or changes to an all-about-arts project, including Chinese requests for 艺术短片、科普解说、数据叙事、产品影片. Not for unrelated programming or still-image-only tasks.
+description: Recommend visual styles and create or revise code-driven art films, explainers, data stories and product videos with sound, subtitles and editable delivery. Use for film style selection, a new film or changes to an all-about-arts project, including Chinese requests for 风格推荐、艺术短片、科普解说、数据叙事、产品影片. Not for unrelated programming or still-image-only tasks.
 ---
 
 # all-about-arts
 
-Make an original film about the user's topic. This package includes the complete pinned Lemo library: 59 style specifications, their demo source, posters, directing and production guides, audio tools and custom-style workflow. Huashu contributes the existing editing and revision tools. Use the bundled files; never depend on the downloaded checkout or automatically fetch `latest`.
+Choose a visual direction or make an original film about the user's topic. This package includes the pinned Lemo production library: 59 style specifications, their demo source, posters, directing and production guides, audio tools and custom-style workflow. Huashu contributes the existing editing and revision tools. Use the bundled files; never depend on the downloaded checkout or automatically fetch `latest`.
+
+## Browse or recommend styles
+
+For a style menu, comparison or recommendation, run `node <skill>/scripts/aaa.mjs styles --json` and read the relevant `native.style` guides. All **59 styles** are eligible for recommendation and native authoring. `status: reference` means there is no legacy preset; it does not make a style unavailable. Neither `integrated` status nor visual certification is a prerequisite for recommending a style.
+
+Search accepts a slug, English/Chinese name, category or English use-case words; all query words are matched. For a topic such as 科普、文旅 or 医学, read the full catalog and match the brief to its uses and style grammar; a zero-result keyword search is not evidence that a suitable style is absent. Recommend subject-appropriate options with their exact names/slugs, why they fit, and the native authoring route. The [98 cinema references](vendor/lemo-opuscar/styleboard/opuscar98_styles.json) can also inform recommendations as custom visual directions, not additional ready-made engines.
+
+Recommendation-only requests do not need dependency checks, project creation, asset downloads, rendering or visual-quality validation. Continue into production below only when a film is requested.
 
 ## Start and route
 
@@ -43,4 +51,4 @@ Make an original film about the user's topic. This package includes the complete
 - Legacy: run `render <project> --json`, inspect `out/check.json`, then `export <project>` for video, cover, applicable subtitles, report and editable toolkit. Export rebuilds stale outputs and preserves earlier deliveries. Neither route is artistically certified by an agent's own score.
 - For legacy projects follow [evolution.md](references/evolution.md) and `learn` to record and reuse verified evidence. For native projects keep findings and frame evidence in REVIEW.md. User preferences and project files stay out of the public skill. Shared improvements require actual source changes and relevant verification; recording a lesson alone does not upgrade the engine.
 
-For commands, installation and recovery use [tools.md](references/tools.md); for the full imported capability map use [lemo-capabilities.md](references/lemo-capabilities.md). Upstream setup scripts are preserved as reference: do not run their clone/update step in this installed skill. Runtime uses the pinned local bundle. Publishing or spending on external services requires authorization from the task.
+For commands, installation and recovery use [tools.md](references/tools.md); for the full imported capability map use [lemo-capabilities.md](references/lemo-capabilities.md). Unused upstream plugin setup scripts are excluded; follow this package's installation instructions. Runtime uses the pinned local bundle. Publishing or spending on external services requires authorization from the task.

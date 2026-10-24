@@ -1,5 +1,7 @@
 # Style references
 
+All 59 styles can be recommended and used for native authoring through `lemo init <project> --style <slug>`. The catalog's top-level `reference` / `integrated` status describes legacy preset availability only. Do not filter recommendations to the eight integrated presets or wait for visual certification. `styles --json` returns all entries with status definitions; it also searches English/Chinese names, categories and English use cases. For topic recommendations, consult the full catalog if a keyword has no match.
+
 The 59 STYLE.md documents match the bundled Lemo-Opuscar snapshot at commit 3961ddb3d24d8876e0e2754f7790d66908acee51. For production read the canonical files in [vendor/lemo-opuscar/styles](../../vendor/lemo-opuscar/styles/README.md): their relative links resolve to the complete demo source, guides and assets. These copies support existing references. The style grammar is not a finished film for a new brief.
 
 The [catalog](../../styles/catalog.json) records eight reusable engine adaptations and their limitations. Their wrappers and examples are starting compositions: several two-topic examples reuse a subject or layout while changing the text and items. They do not establish universal content transfer or fully certified storytelling. Each new story still needs creative acceptance. No style is automatically certified.

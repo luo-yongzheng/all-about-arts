@@ -1,6 +1,6 @@
 interface:
   display_name: "all-about-arts"
-  short_description: "Create distinctive films with sound and editable delivery"
-  default_prompt: "Use $all-about-arts to create a film about my topic, with a clear visual direction and editable delivery."
+  short_description: "Recommend visual styles and create distinctive films"
+  default_prompt: "Use $all-about-arts to recommend visual styles for my topic, then create an editable film when I ask."
 policy:
   allow_implicit_invocation: true
