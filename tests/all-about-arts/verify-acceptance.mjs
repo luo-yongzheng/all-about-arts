@@ -1,8 +1,8 @@
 // Bind the retained matrix evidence to current source and actual output bytes.
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {fingerprint,readConfig} from '../../skills/all-about-arts/lib/project.mjs';
-import {readJSON,writeJSON,sha256} from '../../skills/all-about-arts/lib/util.mjs';
+import {fingerprint,readConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {readJSON,writeJSON,sha256} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 const root=path.resolve('artifacts/all-about-arts');
 const matrix=await readJSON(path.join(root,'acceptance/results.json'));
 const records=[];

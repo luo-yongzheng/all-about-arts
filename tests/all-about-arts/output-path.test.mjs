@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {defaultConfig,PACKAGE_ROOT} from '../../skills/all-about-arts/lib/project.mjs';
-import {writeJSON} from '../../skills/all-about-arts/lib/util.mjs';
-import {still,renderProject} from '../../skills/all-about-arts/lib/render.mjs';
-import {install} from '../../skills/all-about-arts/scripts/install.mjs';
+import {defaultConfig,PACKAGE_ROOT} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {writeJSON} from '../../.agents/skills/all-about-arts/lib/util.mjs';
+import {still,renderProject} from '../../.agents/skills/all-about-arts/lib/render.mjs';
+import {install} from '../../.agents/skills/all-about-arts/scripts/install.mjs';
 
 async function fixture(t){
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'aaa output aliases '));

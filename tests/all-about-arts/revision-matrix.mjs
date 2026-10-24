@@ -7,12 +7,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {fingerprint,readConfig,validateConfig,INTEGRATED} from '../../skills/all-about-arts/lib/project.mjs';
-import {snapshot,undo} from '../../skills/all-about-arts/lib/history.mjs';
-import {buildAudio} from '../../skills/all-about-arts/lib/audio.mjs';
-import {renderProject,still} from '../../skills/all-about-arts/lib/render.mjs';
-import {currentReport,inspectVideo} from '../../skills/all-about-arts/lib/check.mjs';
-import {readJSON,writeJSON,sha256,walk,withLock} from '../../skills/all-about-arts/lib/util.mjs';
+import {fingerprint,readConfig,validateConfig,INTEGRATED} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {snapshot,undo} from '../../.agents/skills/all-about-arts/lib/history.mjs';
+import {buildAudio} from '../../.agents/skills/all-about-arts/lib/audio.mjs';
+import {renderProject,still} from '../../.agents/skills/all-about-arts/lib/render.mjs';
+import {currentReport,inspectVideo} from '../../.agents/skills/all-about-arts/lib/check.mjs';
+import {readJSON,writeJSON,sha256,walk,withLock} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 
 const repository=fileURLToPath(new URL('../../',import.meta.url));
 const revisionCopy={

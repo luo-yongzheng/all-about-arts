@@ -4,12 +4,12 @@ import {existsSync,readFileSync} from 'node:fs';
 import {createServer} from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {resolve,extname} from 'node:path';
-const root=resolve(fileURLToPath(new URL('../../skills/all-about-arts/',import.meta.url)));
+const root=resolve(fileURLToPath(new URL('../../.agents/skills/all-about-arts/',import.meta.url)));
 const ids=['pixel-rpg','dataviz','swiss-motion','impasto','ink-wash','glass-product','whiteboard','paper-lantern'];
 test('eight actual engines render content, remain seek-deterministic, and register visible bounds in two orientations', {timeout:180000},async()=>{
  assert.ok(existsSync(resolve(root,'runtime/film.mjs')),'portable runtime must exist');
- const {chromium}=await import('../../skills/all-about-arts/node_modules/playwright-core/index.mjs');
- const {browserExecutable}=await import('../../skills/all-about-arts/lib/browser.mjs');
+ const {chromium}=await import('../../.agents/skills/all-about-arts/node_modules/playwright-core/index.mjs');
+ const {browserExecutable}=await import('../../.agents/skills/all-about-arts/lib/browser.mjs');
  const server=createServer((req,res)=>{let path=resolve(root,'.'+decodeURIComponent(req.url.split('?')[0])); if(!path.startsWith(root+'/')) {res.end('<canvas id="film"></canvas>');return;}try{if(path.endsWith('/test-logo.svg')){res.setHeader('Content-Type','image/svg+xml');res.end('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20"><rect width="40" height="20" fill="#e34132"/></svg>');return;}res.setHeader('Content-Type',extname(path)==='.json'?'application/json':extname(path)==='.js'||extname(path)==='.mjs'?'text/javascript':'text/html');res.end(readFileSync(path));}catch{res.statusCode=404;res.end('missing');}});
  await new Promise(ok=>server.listen(0,'127.0.0.1',ok));const port=server.address().port;
  const browser=await chromium.launch({executablePath:await browserExecutable(),headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});

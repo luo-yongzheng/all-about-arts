@@ -12,7 +12,7 @@ const repository=fileURLToPath(new URL('../../',import.meta.url));
 const output=path.join(repository,'artifacts/all-about-arts/standalone',`independent-${Date.now()}`);
 const temp=await fs.mkdtemp(path.join(os.tmpdir(),'aaa independent 独立 '));
 const independent=await fs.realpath(temp);
-const skill=path.join(independent,'skills/all-about-arts');
+const skill=path.join(independent,'.agents/skills/all-about-arts');
 const report={status:'failure',startedAt:new Date().toISOString(),scope:'Physical package copy outside the repository; three host entry paths, eight short silent renders, revision and evidence reuse. Not host-model or creative certification.',independentRoot:independent,output,results:[]};
 const env={...process.env,NODE_PATH:'',NODE_OPTIONS:''};
 const json=async(file,value)=>{await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(value,null,2)+'\n');};
@@ -30,11 +30,16 @@ async function countFiles(directory){
 
 try{
  assert.ok(!independent.startsWith(await fs.realpath(repository)+path.sep));
- await fs.cp(path.join(repository,'skills/all-about-arts'),skill,{recursive:true,dereference:true});
+ const original=path.join(repository,'.agents/skills/all-about-arts');
+ await fs.cp(original,skill,{recursive:true,dereference:true,filter:src=>path.relative(original,src)!=='vendor/lemo-opuscar/node_modules'});
  report.copiedFiles=await countFiles(skill);
  const installer=path.join(skill,'scripts/install.mjs');
  report.installation=await invoke(installer,['--host','both','--root',independent]);
  report.antigravity=await invoke(installer,['--host','antigravity','--root',independent]);
+ assert.equal(report.installation.installations.find(host=>host.host==='codex').method,'existing-package');
+ assert.equal(report.antigravity.installations[0].method,'existing-package');
+ assert.equal((await fs.lstat(skill)).isSymbolicLink(),false);
+ await assert.rejects(fs.lstat(path.join(independent,'skills/all-about-arts')),{code:'ENOENT'});
  const hosts=[...report.installation.installations,...report.antigravity.installations];
  report.hosts=[];
  for(const host of hosts){
@@ -42,7 +47,7 @@ try{
   const cli=path.join(host.path,'scripts/aaa.mjs');
   const doctor=await call(cli,['doctor']);
   const styles=(await call(cli,['styles'])).styles;
-  assert.equal(styles.length,51);assert.equal(styles.filter(s=>s.status==='integrated').length,8);
+  assert.equal(styles.length,59);assert.equal(styles.filter(s=>s.status==='integrated').length,8);
   report.hosts.push({host:host.host,entry:host.path,doctor,styles:styles.length});
  }
  const cli=path.join(skill,'scripts/aaa.mjs');

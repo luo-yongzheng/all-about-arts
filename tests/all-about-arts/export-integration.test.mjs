@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {defaultConfig,initProject,PACKAGE_ROOT} from '../../skills/all-about-arts/lib/project.mjs';
-import {checkProject} from '../../skills/all-about-arts/lib/check.mjs';
-import {renderProject} from '../../skills/all-about-arts/lib/render.mjs';
-import {exportProject} from '../../skills/all-about-arts/lib/export.mjs';
-import {readJSON,writeJSON,run,sha256} from '../../skills/all-about-arts/lib/util.mjs';
+import {defaultConfig,initProject,PACKAGE_ROOT} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {checkProject} from '../../.agents/skills/all-about-arts/lib/check.mjs';
+import {renderProject} from '../../.agents/skills/all-about-arts/lib/render.mjs';
+import {exportProject} from '../../.agents/skills/all-about-arts/lib/export.mjs';
+import {readJSON,writeJSON,run,sha256} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 
 async function fixture(t) {
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'aaa delivery 中文 '));
@@ -30,6 +30,9 @@ test('a source-only check remains not-checked and ignores stale rendered output'
 
 test('render then check exports a package that renders after relocation without the original project',async t=>{
   const {root,project}=await fixture(t);
+  // Reproduce an installation where native rendering has created its runtime dependency mount.
+  const nativeMount=path.join(PACKAGE_ROOT,'vendor/lemo-opuscar/node_modules');
+  try{await fs.symlink('../../node_modules',nativeMount,'dir');}catch(e){if(e.code!=='EEXIST')throw e;}
   const rendered=await renderProject(project);
   const report=await checkProject(project);
   assert.equal(report.status,'success');
@@ -49,6 +52,11 @@ test('render then check exports a package that renders after relocation without 
   assert.equal(rerendered.frames,4);
   assert.equal(rerendered.width,640);
   assert.ok((await fs.stat(path.join(relocated,'source/out/film.mp4'))).size>100);
+  // The delivered toolkit also retains the newly bundled native route.
+  await run(process.execPath,['toolkit/scripts/aaa.mjs','lemo','init','native-film','--style','whiteboard','--size','320x180','--duration','1','--json'],{cwd:relocated});
+  const native=await run(process.execPath,['toolkit/scripts/aaa.mjs','lemo','still','native-film','0','--json'],{cwd:relocated});
+  assert.equal(JSON.parse(native.stdout.toString()).status,'success');
+  assert.ok((await fs.stat(path.join(relocated,'native-film/stills/t_0.jpg'))).size>100);
 });
 
 test('export refreshes incomplete evidence without rebuilding a current video and rejects later tampering',async t=>{

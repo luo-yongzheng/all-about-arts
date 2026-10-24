@@ -1,10 +1,10 @@
 # Implementation ledger
 
-Scope: implement the user-approved all-about-arts plan in this repository. Following the user's 2026-10-20 simplification request, upstream checkouts, source-lock maintenance and original-renderer baseline tests are retired. The package is maintained independently. Work is on `codex/all-about-arts`.
+Historical scope: implement the user-approved all-about-arts plan in this repository. The 2026-10-20 simplification retired upstream checkouts and baseline tooling. The later user-requested [full Lemo migration](lemo-migration.md) supersedes that source-packaging decision: a pinned source bundle now supports native production while the package remains independent of external checkouts. The implementation notes below describe the earlier eight-renderer integration.
 
 ## Shared interfaces
 
-The distributable is `skills/all-about-arts/` (ES modules, Node >=22). Public CLI: `node scripts/aaa.mjs COMMAND [project] [--key value] [--json]`. Dependencies are version-locked. All generated user projects are outside this package.
+The distributable is `.agents/skills/all-about-arts/` (ES modules, Node >=22). Public CLI: `node scripts/aaa.mjs COMMAND [project] [--key value] [--json]`. Dependencies are version-locked. All generated user projects are outside this package.
 
 Project configuration (`aaa.json`, schemaVersion 1):
 ```json

@@ -220,10 +220,13 @@ __marimo__/
 .streamlit/secrets.toml
 
 # all-about-arts source package and generated work
-!skills/all-about-arts/lib/
-!skills/all-about-arts/lib/**
+!.agents/skills/all-about-arts/lib/
+!.agents/skills/all-about-arts/lib/**
 node_modules/
+# Native Lemo uses a runtime-only symlink to the package dependencies.
+.agents/skills/all-about-arts/vendor/lemo-opuscar/node_modules
 .aaa/
 artifacts/
 .superpowers/
 .DS_Store
+.agents/skills/all-about-arts/vendor/**/*.jpg

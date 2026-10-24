@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
-import {startServer} from '../../skills/all-about-arts/lib/server.mjs';
-import {defaultConfig} from '../../skills/all-about-arts/lib/project.mjs';import {writeJSON} from '../../skills/all-about-arts/lib/util.mjs';
+import {startServer} from '../../.agents/skills/all-about-arts/lib/server.mjs';
+import {defaultConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs';import {writeJSON} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 test('project server isolates roots, refuses traversal and cross-origin mutation',async t=>{
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-server-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));await fs.writeFile(path.join(root,'index.html'),'<h1>film</h1>');await fs.writeFile(path.join(root,'.env'),'secret');
  const s=await startServer({project:root});t.after(()=>s.close());assert.match(await (await fetch(s.url+'/film/')).text(),/film/);

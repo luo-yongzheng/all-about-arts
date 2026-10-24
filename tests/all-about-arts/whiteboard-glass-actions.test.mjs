@@ -6,10 +6,10 @@ import {createHash} from 'node:crypto';
 import {createServer} from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {resolve,extname} from 'node:path';
-import {browserExecutable} from '../../skills/all-about-arts/lib/browser.mjs';
-import {chromium} from '../../skills/all-about-arts/node_modules/playwright-core/index.mjs';
+import {browserExecutable} from '../../.agents/skills/all-about-arts/lib/browser.mjs';
+import {chromium} from '../../.agents/skills/all-about-arts/node_modules/playwright-core/index.mjs';
 
-const root=fileURLToPath(new URL('../../skills/all-about-arts/',import.meta.url));
+const root=fileURLToPath(new URL('../../.agents/skills/all-about-arts/',import.meta.url));
 const output=fileURLToPath(new URL('../../artifacts/all-about-arts/subject-transfer/whiteboard-glass/',import.meta.url));
 const cases=[['whiteboard','1-learning','learning'],['whiteboard','2-travel','travel'],['glass-product','1-bottle','bottle'],['glass-product','2-orb','orb']];
 const hash=file=>createHash('sha256').update(readFileSync(file)).digest('hex');

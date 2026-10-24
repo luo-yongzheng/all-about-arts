@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';
-import {initProject,defaultConfig} from '../../skills/all-about-arts/lib/project.mjs';import {checkProject} from '../../skills/all-about-arts/lib/check.mjs';
+import {initProject,defaultConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs';import {checkProject} from '../../.agents/skills/all-about-arts/lib/check.mjs';
 test('an adapter cannot certify unregistered canvas text by returning an empty array',async t=>{
  const p=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-adapter-check-'));t.after(()=>fs.rm(p,{recursive:true,force:true}));const c=defaultConfig({duration:1});c.width=320;c.height=180;c.fps=4;await initProject(p,{config:c});
  const source="import {adaptLemo} from './.aaa/runtime/adapters/index.mjs';window.READY=true;window.DUR=1;window.render=()=>{};window.AAA=adaptLemo(window,window.__AAA_CONFIG);";await fs.writeFile(path.join(p,'film.mjs'),source);

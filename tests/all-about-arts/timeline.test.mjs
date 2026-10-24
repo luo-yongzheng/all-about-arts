@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { resolveTimeline, wordsToSrt } from '../../skills/all-about-arts/lib/timeline.mjs';
+import { resolveTimeline, wordsToSrt } from '../../.agents/skills/all-about-arts/lib/timeline.mjs';
 
 test('scene and sound anchors share external word timing and repeated-word selection',()=>{const words=[{text:'Hello',start:0.2,end:0.5,precision:'recognized'},{text:'again',start:0.6,end:1,precision:'recognized'},{text:'Hello',start:1.1,end:1.5,precision:'recognized'}];const out=resolveTimeline({duration:2,scenes:[{id:'scene',start:{word:'Hello',occurrence:2},end:2}],audio:{sfx:[{name:'ding',time:{word:2,edge:'end',offset:0.1}}]}},words);assert.equal(out.scenes[0].start,1.1);assert.equal(out.sfx[0].time,1.6);assert.equal(out.precision,'recognized');assert.throws(()=>resolveTimeline({duration:2,scenes:[{start:{word:'missing'},end:2}]},words),/word|anchor/i);});
 

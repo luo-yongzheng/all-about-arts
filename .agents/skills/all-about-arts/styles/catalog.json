@@ -1,0 +1,1783 @@
+{
+  "schemaVersion": 1,
+  "source": "lemo-opuscar",
+  "sourceCommit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "statusDefinitions": {
+    "reference": "No legacy preset; complete native style source and tools are bundled.",
+    "integrated": "Legacy reusable preset available in addition to full native source; not an artistic quality certification.",
+    "certified": "Recorded acceptance evidence for exact source fingerprint."
+  },
+  "styles": [
+    {
+      "id": "archive-lighttable",
+      "slug": "archive-lighttable",
+      "name": "Archive Light Table",
+      "en": "Archive Light Table",
+      "cn": "档案灯台",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Brand history",
+        "Archive stories",
+        "Museums"
+      ],
+      "status": "reference",
+      "reference": "references/styles/archive-lighttable/STYLE.md",
+      "sourceSha256": "2f18ac9a42822b7a9941866c42b0642e5417dea5431d61f141f6e11b29c1ec14",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/archive-lighttable/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/archive-lighttable/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/archive-lighttable/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/archive-lighttable/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/archive-lighttable/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style archive-lighttable",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "art-deco",
+      "slug": "art-deco",
+      "name": "Art Deco",
+      "en": "Art Deco",
+      "cn": "装饰艺术",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Luxury & hospitality",
+        "Galas",
+        "Invitations"
+      ],
+      "status": "reference",
+      "reference": "references/styles/art-deco/STYLE.md",
+      "sourceSha256": "d73b30c0fa6d153487549d32d8c6c599733cf5e7576badec862a12da6d284761",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/art-deco/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/art-deco/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/art-deco/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/art-deco/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/art-deco/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style art-deco",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "ascii-crt",
+      "slug": "ascii-crt",
+      "name": "ASCII / CRT Terminal",
+      "en": "ASCII / CRT Terminal",
+      "cn": "ASCII / CRT 终端",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Developer tools",
+        "Sci-fi",
+        "Tech brands"
+      ],
+      "status": "reference",
+      "reference": "references/styles/ascii-crt/STYLE.md",
+      "sourceSha256": "cbe0b8957c785a165f85ccb3b8eba61c30c0462b32983db6a16c76046a2bb333",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/ascii-crt/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/ascii-crt/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/ascii-crt/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/ascii-crt/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/ascii-crt/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style ascii-crt",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "backrooms",
+      "slug": "backrooms",
+      "name": "Liminal Found Footage",
+      "en": "Liminal Found Footage",
+      "cn": "后室 / 新怪谈",
+      "category": "Cinema & Eras",
+      "category_cn": "电影与时代",
+      "uses": [
+        "Horror",
+        "Mystery & ARG",
+        "Game teasers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/backrooms/STYLE.md",
+      "sourceSha256": "2a3697a1ce37d0fbae3281220ae6154eeb9789233f1fae472d55ac169ba26fb4",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/backrooms/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/backrooms/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/backrooms/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/backrooms/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/backrooms/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style backrooms",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "blueprint",
+      "slug": "blueprint",
+      "name": "Blueprint",
+      "en": "Blueprint",
+      "cn": "蓝图 / 工程制图",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Engineering",
+        "Hardware launches",
+        "Tech explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/blueprint/STYLE.md",
+      "sourceSha256": "de01fc7fcb38b17b58eb017c9cdbcb36b9242b029435a33587614c93088e1717",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/blueprint/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/blueprint/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/blueprint/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/blueprint/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/blueprint/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style blueprint",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "brick-toy",
+      "slug": "brick-toy",
+      "name": "Brick Toy",
+      "en": "Brick Toy",
+      "cn": "积木玩具",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Toys & kids",
+        "Product builds",
+        "Space"
+      ],
+      "status": "reference",
+      "reference": "references/styles/brick-toy/STYLE.md",
+      "sourceSha256": "29b23e846951856b722a698a03c9458cfc17b4fc71d044f45d773acf2a742768",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/brick-toy/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/brick-toy/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/brick-toy/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/brick-toy/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/brick-toy/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style brick-toy",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "briefing-board",
+      "slug": "briefing-board",
+      "name": "Engineering Briefing Board",
+      "en": "Engineering Briefing Board",
+      "cn": "工程简报板",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Engineering",
+        "Option comparisons",
+        "Briefings"
+      ],
+      "status": "reference",
+      "reference": "references/styles/briefing-board/STYLE.md",
+      "sourceSha256": "44669da808da4ed37e2a4a0f6e5d2b23008775a3c4870add04641d714e9f323d",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/briefing-board/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/briefing-board/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/briefing-board/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/briefing-board/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/briefing-board/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style briefing-board",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "caption-news",
+      "slug": "caption-news",
+      "name": "Caption News",
+      "en": "Caption News",
+      "cn": "字幕新闻",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "Social news",
+        "Report explainers",
+        "Data shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/caption-news/STYLE.md",
+      "sourceSha256": "ba4c0bb5dd13e49c2c2b520af5e42a28112b36354dc445d0f6ade3727b458fd2",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/caption-news/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/caption-news/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/caption-news/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/caption-news/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/caption-news/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style caption-news",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "cel-anime-80s",
+      "slug": "cel-anime-80s",
+      "name": "80s Cel Anime",
+      "en": "80s Cel Anime",
+      "cn": "80 年代赛璐璐动画",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Music videos",
+        "Game trailers",
+        "Nostalgia"
+      ],
+      "status": "reference",
+      "reference": "references/styles/cel-anime-80s/STYLE.md",
+      "sourceSha256": "1e16f5c6f90ebf09556ec94d37434400d309c978e00ee89e9d38dec476664eaf",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/cel-anime-80s/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/cel-anime-80s/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/cel-anime-80s/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/cel-anime-80s/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/cel-anime-80s/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style cel-anime-80s",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "city-symphony",
+      "slug": "city-symphony",
+      "name": "Time-lapse Symphony",
+      "en": "Time-lapse Symphony",
+      "cn": "延时交响",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "City films",
+        "Music montages",
+        "Openers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/city-symphony/STYLE.md",
+      "sourceSha256": "8b78d2b08cadb045ac1649cade1e5274fba935b1177c64c176e7567c6e8b31e1",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/city-symphony/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/city-symphony/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/city-symphony/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/city-symphony/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/city-symphony/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style city-symphony",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "countdown",
+      "slug": "countdown",
+      "name": "Live Countdown Split-screen",
+      "en": "Live Countdown Split-screen",
+      "cn": "实时倒计时分屏",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "Launches",
+        "Countdowns",
+        "Live events"
+      ],
+      "status": "reference",
+      "reference": "references/styles/countdown/STYLE.md",
+      "sourceSha256": "867cca6e0c9bb0d6fb914cc4e9a2e295623ecd345fda9bd00bc362ff233f220f",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/countdown/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/countdown/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/countdown/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/countdown/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/countdown/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style countdown",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "crayon-book",
+      "slug": "crayon-book",
+      "name": "Crayon Picture Book",
+      "en": "Crayon Picture Book",
+      "cn": "蜡笔儿童绘本",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Picture books",
+        "Bedtime stories",
+        "Kids' learning"
+      ],
+      "status": "reference",
+      "reference": "references/styles/crayon-book/STYLE.md",
+      "sourceSha256": "ba558478fe519fa6777fe28fa7d1980117297c7beb6fe2e366ef6f00688aa175",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/crayon-book/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/crayon-book/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/crayon-book/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/crayon-book/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/crayon-book/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style crayon-book",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "dark-keynote",
+      "slug": "dark-keynote",
+      "name": "Dark Tech Keynote",
+      "en": "Dark Tech Keynote",
+      "cn": "暗色科技发布",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Product launches",
+        "SaaS",
+        "Keynotes"
+      ],
+      "status": "reference",
+      "reference": "references/styles/dark-keynote/STYLE.md",
+      "sourceSha256": "b0791b5e95f56bf46c621e6064d426ebbee810c7515fb87e951b73668a2a0d24",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/dark-keynote/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/dark-keynote/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/dark-keynote/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/dark-keynote/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/dark-keynote/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style dark-keynote",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "data-physical",
+      "slug": "data-physical",
+      "name": "Data Physicalization",
+      "en": "Data Physicalization",
+      "cn": "数据实物化",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Annual reports",
+        "Investor decks",
+        "Energy data"
+      ],
+      "status": "reference",
+      "reference": "references/styles/data-physical/STYLE.md",
+      "sourceSha256": "2d2e6685b0dcf8a1e2ba2ff904ab02d51aede1f5dbb246fd2f6e81c8d146f208",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/data-physical/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/data-physical/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/data-physical/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/data-physical/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/data-physical/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style data-physical",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "dataviz",
+      "slug": "dataviz",
+      "name": "Data Storytelling",
+      "en": "Data Storytelling",
+      "cn": "数据叙事",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Data journalism",
+        "Reports",
+        "Climate & science"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/dataviz/STYLE.md",
+      "sourceSha256": "e94013d5a7c548c8844598a671ff0b49bc78770696cbca0d8d00846336f3c67f",
+      "certification": null,
+      "renderer": "canvas-pencil-chart",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/dataviz/examples/1-energy.json",
+        "styles/dataviz/examples/2-museum.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/dataviz/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/dataviz/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/dataviz/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/dataviz/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/dataviz/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style dataviz",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "engraving",
+      "slug": "engraving",
+      "name": "Copperplate Engraving",
+      "en": "Copperplate Engraving",
+      "cn": "铜版画",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Museum labels",
+        "Science explainers",
+        "Brand heritage"
+      ],
+      "status": "reference",
+      "reference": "references/styles/engraving/STYLE.md",
+      "sourceSha256": "0c6816b8b47163d158ae0ea668feecf53dcbef9d1310e27b9e797d9b9e7aac0d",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/engraving/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/engraving/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/engraving/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/engraving/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/engraving/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style engraving",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "game-show",
+      "slug": "game-show",
+      "name": "Game Show Flat",
+      "en": "Game Show Flat",
+      "cn": "综艺节奏扁平",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Tech timelines",
+        "Year in review",
+        "Variety shows"
+      ],
+      "status": "reference",
+      "reference": "references/styles/game-show/STYLE.md",
+      "sourceSha256": "cadee8f0ff8cfc206b49d852e5a0b15d7da432ad497fa8b19ac568ce386ff8e3",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/game-show/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/game-show/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/game-show/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/game-show/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/game-show/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style game-show",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "glass-product",
+      "slug": "glass-product",
+      "name": "Glass Product Render",
+      "en": "Glass Product Render",
+      "cn": "玻璃质感产品",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Product launches",
+        "Consumer tech",
+        "Beauty"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/glass-product/STYLE.md",
+      "sourceSha256": "630fa80cde0930154ba64f15bce5c8ee0c8dcf48d921253f8c7e3194712c8fb5",
+      "certification": null,
+      "renderer": "three-physical-transmission",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/glass-product/examples/1-bottle.json",
+        "styles/glass-product/examples/2-orb.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "Legacy preset only: WebGL required; procedural bottle and orb subjects. Complete upstream engines are available through native production.",
+        "Legacy preset only: User image is an inset; no automatic 3D reconstruction. Complete upstream engines are available through native production."
+      ],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/glass-product/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/glass-product/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/glass-product/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/glass-product/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/glass-product/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style glass-product",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "halftone-dossier",
+      "slug": "halftone-dossier",
+      "name": "Halftone Dossier",
+      "en": "Halftone Dossier",
+      "cn": "复古半调案卷",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Humour",
+        "Pet content",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/halftone-dossier/STYLE.md",
+      "sourceSha256": "71b4b8f089836d95f6bd8fc3719ae184cbf2be4a04ecd935c6d55d89a5bb558d",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/halftone-dossier/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/halftone-dossier/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/halftone-dossier/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/halftone-dossier/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/halftone-dossier/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style halftone-dossier",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "hd-2d",
+      "slug": "hd-2d",
+      "name": "HD-2D",
+      "en": "HD-2D",
+      "cn": "HD-2D",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Fantasy",
+        "Story films"
+      ],
+      "status": "reference",
+      "reference": "references/styles/hd-2d/STYLE.md",
+      "sourceSha256": "bdc5ef4f60d8ba9ff6e5151391a6a62d8da4685d393c242699fd5c6188f0551a",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/hd-2d/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/hd-2d/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/hd-2d/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/hd-2d/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/hd-2d/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style hd-2d",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "hologram-hud",
+      "slug": "hologram-hud",
+      "name": "Sci-fi Hologram HUD",
+      "en": "Sci-fi Hologram HUD",
+      "cn": "科幻全息界面",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Spec walkthroughs",
+        "Launch videos",
+        "Trade shows"
+      ],
+      "status": "reference",
+      "reference": "references/styles/hologram-hud/STYLE.md",
+      "sourceSha256": "81e2c6b0ede2cc211a8dd676417a1ce5efda278514f273c5249165e38ff34573",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/hologram-hud/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/hologram-hud/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/hologram-hud/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/hologram-hud/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/hologram-hud/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style hologram-hud",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "impasto",
+      "slug": "impasto",
+      "name": "Impasto Oil Painting",
+      "en": "Impasto Oil Painting",
+      "cn": "油画厚涂",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Music videos",
+        "Art & culture",
+        "Emotional ads"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/impasto/STYLE.md",
+      "sourceSha256": "38a0dcb2808c2ff03ef721c1319b9145438b4074ed37ab7a09dcf20b7268e062",
+      "certification": null,
+      "renderer": "webgl2-paint-height-light",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/impasto/examples/1-garden.json",
+        "styles/impasto/examples/2-city.json"
+      ],
+      "transparent": false,
+      "alpha": false,
+      "limitations": [
+        "Legacy preset only: WebGL2 and EXT_color_buffer_float required. Complete upstream engines are available through native production.",
+        "Legacy preset only: Opaque paint ground; transparent mode is rejected. Complete upstream engines are available through native production.",
+        "Legacy preset only: Procedural subjects currently garden and city. Complete upstream engines are available through native production."
+      ],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/impasto/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/impasto/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/impasto/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/impasto/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/impasto/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style impasto",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "ink-wash",
+      "slug": "ink-wash",
+      "name": "Chinese Ink Wash",
+      "en": "Chinese Ink Wash",
+      "cn": "中国水墨",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Wuxia",
+        "Cultural brands",
+        "Poetry"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/ink-wash/STYLE.md",
+      "sourceSha256": "5d71598f0b9cf4034c6461956b0d8bd63bd33750b4045376044f0d956b01d645",
+      "certification": null,
+      "renderer": "canvas-wet-dry-ink",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/ink-wash/examples/1-mountains.json",
+        "styles/ink-wash/examples/2-river.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/ink-wash/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/ink-wash/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/ink-wash/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/ink-wash/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/ink-wash/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style ink-wash",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "iso-infographic",
+      "slug": "iso-infographic",
+      "name": "Isometric Infographic",
+      "en": "Isometric Infographic",
+      "cn": "等距信息图",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Process explainers",
+        "Supply chains",
+        "Annual reports"
+      ],
+      "status": "reference",
+      "reference": "references/styles/iso-infographic/STYLE.md",
+      "sourceSha256": "a3bf89913255043ff2c8616bff9be9f9536efe1eb7a3b98c755cb4189bd7dff1",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/iso-infographic/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/iso-infographic/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/iso-infographic/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/iso-infographic/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/iso-infographic/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style iso-infographic",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "kino-montage",
+      "slug": "kino-montage",
+      "name": "Constructivist Montage",
+      "en": "Constructivist Montage",
+      "cn": "构成主义蒙太奇",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "Industry histories",
+        "Milestones",
+        "Collective effort"
+      ],
+      "status": "reference",
+      "reference": "references/styles/kino-montage/STYLE.md",
+      "sourceSha256": "8c63deefda22d4677d286ddfffb243ce6385dfa7ab56fbc493705fe13908f204",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/kino-montage/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/kino-montage/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/kino-montage/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/kino-montage/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/kino-montage/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style kino-montage",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "lidar-survey",
+      "slug": "lidar-survey",
+      "name": "LiDAR Survey",
+      "en": "LiDAR Survey",
+      "cn": "点云测绘",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Heritage",
+        "Environment",
+        "Site surveys"
+      ],
+      "status": "reference",
+      "reference": "references/styles/lidar-survey/STYLE.md",
+      "sourceSha256": "d1b60fda2793932286372e7cf68d62af5723bba14c37e9a437639ea57b1a310d",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/lidar-survey/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/lidar-survey/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/lidar-survey/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/lidar-survey/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/lidar-survey/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style lidar-survey",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "living-screencast",
+      "slug": "living-screencast",
+      "name": "Living Screencast",
+      "en": "Living Screencast",
+      "cn": "活体实机录屏",
+      "category": "Information & Keynote",
+      "category_cn": "信息与发布",
+      "uses": [
+        "Product tutorials",
+        "Feature launches",
+        "Onboarding"
+      ],
+      "status": "reference",
+      "reference": "references/styles/living-screencast/STYLE.md",
+      "sourceSha256": "02e8e5521fe1f553b0e58dacc2a556aea361dd5823e2ca0996963839d3c7d5c7",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/living-screencast/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/living-screencast/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/living-screencast/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/living-screencast/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/living-screencast/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style living-screencast",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "lowpoly-island",
+      "slug": "lowpoly-island",
+      "name": "Low-poly Isometric Island",
+      "en": "Low-poly Isometric Island",
+      "cn": "低多边形等距",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Game trailers",
+        "World building",
+        "Calm content"
+      ],
+      "status": "reference",
+      "reference": "references/styles/lowpoly-island/STYLE.md",
+      "sourceSha256": "1ae7bcd6aa3d521f563d8905f8109842fd7252ff8b70c1bd18265105a8a450f9",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/lowpoly-island/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/lowpoly-island/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/lowpoly-island/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/lowpoly-island/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/lowpoly-island/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style lowpoly-island",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "microgame",
+      "slug": "microgame",
+      "name": "Microgame Frenzy",
+      "en": "Microgame Frenzy",
+      "cn": "微游戏快闪",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Onboarding",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/microgame/STYLE.md",
+      "sourceSha256": "ad13d34bd06a65bef81b04f531c4f256bcc0bff4f229f976d52e07d5beef9dd5",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/microgame/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/microgame/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/microgame/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/microgame/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/microgame/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style microgame",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "microscope",
+      "slug": "microscope",
+      "name": "Microscope Story",
+      "en": "Microscope Story",
+      "cn": "显微叙事",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Biomedicine",
+        "Materials science",
+        "Skincare science"
+      ],
+      "status": "reference",
+      "reference": "references/styles/microscope/STYLE.md",
+      "sourceSha256": "63040631bdc28a3c7f8cf05e2e8523969becd0267741e00dd3e171c22be16e92",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/microscope/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/microscope/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/microscope/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/microscope/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/microscope/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style microscope",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "midcentury-toon",
+      "slug": "midcentury-toon",
+      "name": "Mid-century Cartoon",
+      "en": "Mid-century Cartoon",
+      "cn": "50s 扁平卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Set-up guides",
+        "Help centres",
+        "How-to"
+      ],
+      "status": "reference",
+      "reference": "references/styles/midcentury-toon/STYLE.md",
+      "sourceSha256": "e73614b6f9e2f2e8ee279f4909da8429235b96f6d13a12345b6e57d5823c30b8",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/midcentury-toon/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/midcentury-toon/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/midcentury-toon/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/midcentury-toon/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/midcentury-toon/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style midcentury-toon",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "news-package",
+      "slug": "news-package",
+      "name": "Broadcast News Package",
+      "en": "Broadcast News Package",
+      "cn": "电视新闻包装",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "News round-ups",
+        "Bulletins",
+        "Market updates"
+      ],
+      "status": "reference",
+      "reference": "references/styles/news-package/STYLE.md",
+      "sourceSha256": "6f9d1b6a04878229260ea542fe71f2b77c560ed8e40df68b68e80ac4e21710ce",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/news-package/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/news-package/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/news-package/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/news-package/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/news-package/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style news-package",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "newsreel",
+      "slug": "newsreel",
+      "name": "1920s Newsreel",
+      "en": "1920s Newsreel",
+      "cn": "1920s 新闻影片",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "History stories",
+        "Fads & eras",
+        "Anniversaries"
+      ],
+      "status": "reference",
+      "reference": "references/styles/newsreel/STYLE.md",
+      "sourceSha256": "0f82c1423d2463dfc2700b23dff9ec183f596724a4820757e189c6fa5225e600",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/newsreel/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/newsreel/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/newsreel/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/newsreel/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/newsreel/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style newsreel",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "one-line",
+      "slug": "one-line",
+      "name": "One-line Drawing",
+      "en": "One-line Drawing",
+      "cn": "一笔画",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Brand stories",
+        "Life milestones",
+        "Minimal ads"
+      ],
+      "status": "reference",
+      "reference": "references/styles/one-line/STYLE.md",
+      "sourceSha256": "69d26cb06f48ab6b03c12a76c2390d0945cdaddc38bc109b7d5e292b9af1399b",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/one-line/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/one-line/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/one-line/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/one-line/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/one-line/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style one-line",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "paper-lantern",
+      "slug": "paper-lantern",
+      "name": "Paper-cut Lightbox",
+      "en": "Paper-cut Lightbox",
+      "cn": "纸雕灯影",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Festivals",
+        "Gift brands",
+        "Cultural stories"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/paper-lantern/STYLE.md",
+      "sourceSha256": "6f3001ad45657262384b3012f441883ef5ac9c558b82d23e503d14e2f672ac91",
+      "certification": null,
+      "renderer": "canvas-layered-paper-lightbox",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/paper-lantern/examples/1-festival.json",
+        "styles/paper-lantern/examples/2-home.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "Legacy preset only: Canvas2D fiber, edge-lighting and layered shadow adaptation; upstream 3D paper shader remains reference only. Complete upstream engines are available through native production."
+      ],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/paper-lantern/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/paper-lantern/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/paper-lantern/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/paper-lantern/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/paper-lantern/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style paper-lantern",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "paper-popup",
+      "slug": "paper-popup",
+      "name": "Paper Pop-up Book",
+      "en": "Paper Pop-up Book",
+      "cn": "纸片立体书",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "Children's books",
+        "Game trailers",
+        "Story films"
+      ],
+      "status": "reference",
+      "reference": "references/styles/paper-popup/STYLE.md",
+      "sourceSha256": "8e5c0ca430fd96b75c4d9c2af92a87c84d4d1af8cda64280a189c51279e1ee9b",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/paper-popup/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/paper-popup/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/paper-popup/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/paper-popup/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/paper-popup/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style paper-popup",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "papercut-red",
+      "slug": "papercut-red",
+      "name": "Red Paper-cut",
+      "en": "Red Paper-cut",
+      "cn": "红色窗花剪纸",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Lunar New Year",
+        "Festive greetings",
+        "Folk tales"
+      ],
+      "status": "reference",
+      "reference": "references/styles/papercut-red/STYLE.md",
+      "sourceSha256": "65e317d83335e0cb34696b643e31ad9e46fb0bb93fd748c2e21d74358aea61ec",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/papercut-red/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/papercut-red/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/papercut-red/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/papercut-red/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/papercut-red/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style papercut-red",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "pictogram-motion",
+      "slug": "pictogram-motion",
+      "name": "Pictogram Motion",
+      "en": "Pictogram Motion",
+      "cn": "象形运动图形",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Sports events",
+        "Visual identity",
+        "Event openers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/pictogram-motion/STYLE.md",
+      "sourceSha256": "e982606f3d7d132d320abdc1a74c226b1e0642b664a0c41582bc76fec646da1a",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/pictogram-motion/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/pictogram-motion/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/pictogram-motion/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/pictogram-motion/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/pictogram-motion/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style pictogram-motion",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "pixel-rpg",
+      "slug": "pixel-rpg",
+      "name": "16-bit Pixel RPG",
+      "en": "16-bit Pixel RPG",
+      "cn": "16-bit 像素 RPG",
+      "category": "Games",
+      "category_cn": "游戏",
+      "uses": [
+        "Game trailers",
+        "Recaps",
+        "Nostalgia"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/pixel-rpg/STYLE.md",
+      "sourceSha256": "f79fac0d9aed03d2a69f17a50b37adca2da84156b3fa525537761c507bcaea8e",
+      "certification": null,
+      "renderer": "indexed-framebuffer",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/pixel-rpg/examples/1-library.json",
+        "styles/pixel-rpg/examples/2-garden.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [
+        "Legacy preset only: Latin uses the original bitmap font; Chinese and other glyphs are threshold-rasterized from installed system fonts into the indexed framebuffer. Complete upstream engines are available through native production.",
+        "Legacy preset only: Native portrait canvas 180×320; landscape 320×180. Complete upstream engines are available through native production."
+      ],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/pixel-rpg/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/pixel-rpg/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/pixel-rpg/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/pixel-rpg/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/pixel-rpg/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style pixel-rpg",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "risograph",
+      "slug": "risograph",
+      "name": "Risograph Print",
+      "en": "Risograph Print",
+      "cn": "Risograph 孔版印刷",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Indie brands",
+        "Zines",
+        "Lifestyle"
+      ],
+      "status": "reference",
+      "reference": "references/styles/risograph/STYLE.md",
+      "sourceSha256": "c3d85c91a81b0afde091d964482749482adc66c12730afe124708f7b18b331a6",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/risograph/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/risograph/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/risograph/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/risograph/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/risograph/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style risograph",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "rubber-hose",
+      "slug": "rubber-hose",
+      "name": "1930s Rubber Hose Cartoon",
+      "en": "1930s Rubber Hose Cartoon",
+      "cn": "1930s 橡皮管卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Food & drink",
+        "Retro ads",
+        "Kids"
+      ],
+      "status": "reference",
+      "reference": "references/styles/rubber-hose/STYLE.md",
+      "sourceSha256": "bf850f9cd22e68b2125fed00d1b9804e91479620b44420ba7ec50e570e472a94",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/rubber-hose/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/rubber-hose/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/rubber-hose/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/rubber-hose/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/rubber-hose/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style rubber-hose",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "satellite-briefing",
+      "slug": "satellite-briefing",
+      "name": "Satellite Briefing",
+      "en": "Satellite Briefing",
+      "cn": "卫星简报",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Climate",
+        "News explainers",
+        "Geography"
+      ],
+      "status": "reference",
+      "reference": "references/styles/satellite-briefing/STYLE.md",
+      "sourceSha256": "39fec0c7fda13600de04f1a9631ca636dc8850429033c1f65bb6d3283ec2988d",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/satellite-briefing/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/satellite-briefing/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/satellite-briefing/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/satellite-briefing/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/satellite-briefing/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style satellite-briefing",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "scifi-toon",
+      "slug": "scifi-toon",
+      "name": "Sci-Fi Sitcom Toon",
+      "en": "Sci-Fi Sitcom Toon",
+      "cn": "科幻情景喜剧卡通",
+      "category": "Cartoon & Anime",
+      "category_cn": "卡通与动画",
+      "uses": [
+        "Comedy",
+        "Tech brands",
+        "Social shorts"
+      ],
+      "status": "reference",
+      "reference": "references/styles/scifi-toon/STYLE.md",
+      "sourceSha256": "9a720a57ce50dc554e9237e698a979cdf7311527e6e6a0dad803278dfe8ad2ce",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/scifi-toon/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/scifi-toon/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/scifi-toon/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/scifi-toon/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/scifi-toon/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style scifi-toon",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "shadow-puppet",
+      "slug": "shadow-puppet",
+      "name": "Shadow Puppetry",
+      "en": "Shadow Puppetry",
+      "cn": "皮影戏",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Myths & folklore",
+        "Heritage",
+        "Festivals"
+      ],
+      "status": "reference",
+      "reference": "references/styles/shadow-puppet/STYLE.md",
+      "sourceSha256": "8be075a8262d5a3deea9b05684d8a9abdc1e54c0d90649bf14609ecb4106c3af",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/shadow-puppet/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/shadow-puppet/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/shadow-puppet/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/shadow-puppet/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/shadow-puppet/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style shadow-puppet",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "silent-film",
+      "slug": "silent-film",
+      "name": "1920s Silent Film",
+      "en": "1920s Silent Film",
+      "cn": "1920s 默片",
+      "category": "Cinema & Eras",
+      "category_cn": "电影与时代",
+      "uses": [
+        "Comedy",
+        "Retro brands",
+        "Silent storytelling"
+      ],
+      "status": "reference",
+      "reference": "references/styles/silent-film/STYLE.md",
+      "sourceSha256": "44633a4edd4ec6b84be809bd48b38503a75a71531112b3d28a52f27135012b20",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/silent-film/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/silent-film/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/silent-film/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/silent-film/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/silent-film/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style silent-film",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "silkscreen-poster",
+      "slug": "silkscreen-poster",
+      "name": "Silkscreen Travel Poster",
+      "en": "Silkscreen Travel Poster",
+      "cn": "丝印旅行海报",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Destination guides",
+        "Tourism",
+        "Event posters"
+      ],
+      "status": "reference",
+      "reference": "references/styles/silkscreen-poster/STYLE.md",
+      "sourceSha256": "a8b3792efb1476b78493f86a033221b27f60c1927463cc435f8816e4d9eda148",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/silkscreen-poster/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/silkscreen-poster/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/silkscreen-poster/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/silkscreen-poster/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/silkscreen-poster/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style silkscreen-poster",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "spy-titles",
+      "slug": "spy-titles",
+      "name": "60s Spy Title Sequence",
+      "en": "60s Spy Title Sequence",
+      "cn": "60s 间谍片头",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Title sequences",
+        "Event openers",
+        "Trailers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/spy-titles/STYLE.md",
+      "sourceSha256": "ea6e9e9073af43ef0bb860e368f60b16ec32a91668386115a142907d92cb1f75",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/spy-titles/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/spy-titles/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/spy-titles/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/spy-titles/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/spy-titles/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style spy-titles",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "stained-glass",
+      "slug": "stained-glass",
+      "name": "Stained Glass",
+      "en": "Stained Glass",
+      "cn": "彩色玻璃窗",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Legends",
+        "Heritage",
+        "Holiday stories"
+      ],
+      "status": "reference",
+      "reference": "references/styles/stained-glass/STYLE.md",
+      "sourceSha256": "0f6551bd109a4127404068aa1e75f18f16b58c80b486c23480b3d193e597b060",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/stained-glass/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/stained-glass/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/stained-glass/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/stained-glass/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/stained-glass/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style stained-glass",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "swiss-motion",
+      "slug": "swiss-motion",
+      "name": "Swiss Motion Graphics",
+      "en": "Swiss Motion Graphics",
+      "cn": "瑞士动态排版",
+      "category": "Graphic & Type",
+      "category_cn": "图形与排版",
+      "uses": [
+        "Brand identity",
+        "Events",
+        "Design education"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/swiss-motion/STYLE.md",
+      "sourceSha256": "14ddeb6dc495e691a220497069a2ee4827d820f9ee7a3173de5846489ef41f57",
+      "certification": null,
+      "renderer": "canvas-swiss-grid",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/swiss-motion/examples/1-urban.json",
+        "styles/swiss-motion/examples/2-reading.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/swiss-motion/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/swiss-motion/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/swiss-motion/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/swiss-motion/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/swiss-motion/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style swiss-motion",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "teardown",
+      "slug": "teardown",
+      "name": "Exploded Teardown",
+      "en": "Exploded Teardown",
+      "cn": "产品拆解",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Hardware launches",
+        "Product pages",
+        "Spec explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/teardown/STYLE.md",
+      "sourceSha256": "90df05a02a3d33add58e0dd99bef19ca20ea16b10390b3c2350d8483106922ee",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/teardown/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/teardown/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/teardown/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/teardown/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/teardown/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style teardown",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "telestrator",
+      "slug": "telestrator",
+      "name": "Sports Telestrator",
+      "en": "Sports Telestrator",
+      "cn": "体育战术板",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "Sports analysis",
+        "Match recaps",
+        "Coaching"
+      ],
+      "status": "reference",
+      "reference": "references/styles/telestrator/STYLE.md",
+      "sourceSha256": "7289027728dc5e1b6d095b7c7bc7806790bb579934c81682265c0c1b4897a3d0",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/telestrator/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/telestrator/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/telestrator/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/telestrator/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/telestrator/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style telestrator",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "tilt-shift",
+      "slug": "tilt-shift",
+      "name": "Tilt-Shift Miniature",
+      "en": "Tilt-Shift Miniature",
+      "cn": "移轴微缩",
+      "category": "Materials & 3D",
+      "category_cn": "材质与 3D",
+      "uses": [
+        "City promos",
+        "Real estate",
+        "Transport"
+      ],
+      "status": "reference",
+      "reference": "references/styles/tilt-shift/STYLE.md",
+      "sourceSha256": "131ae50c6bddd30922638cbd5f2fae5c047223360a3f6924b074b0db525a5c63",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/tilt-shift/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/tilt-shift/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/tilt-shift/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/tilt-shift/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/tilt-shift/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style tilt-shift",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "ukiyoe",
+      "slug": "ukiyoe",
+      "name": "Ukiyo-e",
+      "en": "Ukiyo-e",
+      "cn": "浮世绘",
+      "category": "East Asian Traditions",
+      "category_cn": "东方传统",
+      "uses": [
+        "Travel",
+        "Japanese culture",
+        "Poetry"
+      ],
+      "status": "reference",
+      "reference": "references/styles/ukiyoe/STYLE.md",
+      "sourceSha256": "218c48a204f9034d1c2fb7f11698b4834f1faee1ca68c9e336f3d6ab992ff2e4",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/ukiyoe/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/ukiyoe/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/ukiyoe/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/ukiyoe/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/ukiyoe/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style ukiyoe",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "urban-sketch",
+      "slug": "urban-sketch",
+      "name": "Urban Sketch · Pen & Wash",
+      "en": "Urban Sketch · Pen & Wash",
+      "cn": "钢笔淡彩",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "City & travel",
+        "Architecture",
+        "Lifestyle brands"
+      ],
+      "status": "reference",
+      "reference": "references/styles/urban-sketch/STYLE.md",
+      "sourceSha256": "2baf1a19f31b06e55d66d62e4c3449c7a2686c689190976f3e3d0cbdce2faa9a",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/urban-sketch/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/urban-sketch/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/urban-sketch/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/urban-sketch/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/urban-sketch/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style urban-sketch",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "visual-investigation",
+      "slug": "visual-investigation",
+      "name": "Visual Investigation",
+      "en": "Visual Investigation",
+      "cn": "视觉调查",
+      "category": "Edit & Documentary",
+      "category_cn": "剪辑与纪实",
+      "uses": [
+        "Reconstructions",
+        "Fact-checks",
+        "Incident reports"
+      ],
+      "status": "reference",
+      "reference": "references/styles/visual-investigation/STYLE.md",
+      "sourceSha256": "9b39ebaa00c3d77ae544d7453e99b79caf4dfaae1d37798b1f995a5578aac30b",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/visual-investigation/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/visual-investigation/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/visual-investigation/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/visual-investigation/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/visual-investigation/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style visual-investigation",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "watercolor",
+      "slug": "watercolor",
+      "name": "Watercolor Brush",
+      "en": "Watercolor Brush",
+      "cn": "水彩笔刷",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Nature documentary",
+        "Travel",
+        "Science explainers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/watercolor/STYLE.md",
+      "sourceSha256": "662d57568408a7c82ef8f64980ca85798b8bb239df3dc3a6715283d7f4555ef0",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/watercolor/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/watercolor/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/watercolor/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/watercolor/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/watercolor/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style watercolor",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "white-model",
+      "slug": "white-model",
+      "name": "Projection on White Model",
+      "en": "Projection on White Model",
+      "cn": "白模投影",
+      "category": "Evidence Films",
+      "category_cn": "实证影像",
+      "uses": [
+        "Urban planning",
+        "Exhibitions",
+        "City data"
+      ],
+      "status": "reference",
+      "reference": "references/styles/white-model/STYLE.md",
+      "sourceSha256": "02b6423a69ac5a30322997ec9523bd6b6f776b7c8cf14f249eeb996b9d21e2c2",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/white-model/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/white-model/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/white-model/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/white-model/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/white-model/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style white-model",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    },
+    {
+      "id": "whiteboard",
+      "slug": "whiteboard",
+      "name": "Whiteboard Explainer",
+      "en": "Whiteboard Explainer",
+      "cn": "白板讲解",
+      "category": "Hand-drawn & Painting",
+      "category_cn": "手绘与绘画",
+      "uses": [
+        "Explainers",
+        "Online courses",
+        "Science"
+      ],
+      "status": "integrated",
+      "reference": "references/styles/whiteboard/STYLE.md",
+      "sourceSha256": "19f66326257bcafb8aca18af3e209d1fee31d9e23902ce1708bbb606cbf4b718",
+      "certification": null,
+      "renderer": "canvas-marker-ribbon",
+      "orientations": [
+        "landscape",
+        "portrait"
+      ],
+      "examples": [
+        "styles/whiteboard/examples/1-learning.json",
+        "styles/whiteboard/examples/2-travel.json"
+      ],
+      "transparent": true,
+      "alpha": true,
+      "limitations": [],
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/whiteboard/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/whiteboard/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/whiteboard/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/whiteboard/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/whiteboard/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style whiteboard",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      },
+      "legacyPresetScope": "renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route."
+    },
+    {
+      "id": "woodcut",
+      "slug": "woodcut",
+      "name": "Woodcut Print",
+      "en": "Woodcut Print",
+      "cn": "木刻版画",
+      "category": "Print & Printmaking",
+      "category_cn": "印刷与版画",
+      "uses": [
+        "Folk tales",
+        "Craft brands",
+        "Book trailers"
+      ],
+      "status": "reference",
+      "reference": "references/styles/woodcut/STYLE.md",
+      "sourceSha256": "b96fda6eeac038137310cc0766d979c8d8a5f3ff6acd87bada5aa50d5136a6a0",
+      "certification": null,
+      "native": {
+        "status": "source-available",
+        "style": "vendor/lemo-opuscar/styles/woodcut/STYLE.md",
+        "demoGuide": "vendor/lemo-opuscar/styles/woodcut/DEMO.md",
+        "entry": "vendor/lemo-opuscar/styles/woodcut/demo/index.html",
+        "poster": "vendor/lemo-opuscar/styles/woodcut/poster.jpg",
+        "credits": "vendor/lemo-opuscar/styles/woodcut/demo/CREDITS",
+        "projectCommand": "lemo init <project> --style woodcut",
+        "needs": "Author original scenes; check style-specific dependencies and external media before rendering."
+      }
+    }
+  ],
+  "nativeStatusDefinitions": {
+    "source-available": "Style grammar, demonstration source, poster and credits are bundled. Not a claim that every demo has its external assets or was rendered."
+  }
+}

@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {validateConfig, defaultConfig, fingerprint, readConfig} from '../../skills/all-about-arts/lib/project.mjs';
-import {safePath, withLock, writeJSON} from '../../skills/all-about-arts/lib/util.mjs';
+import {validateConfig, defaultConfig, fingerprint, readConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {safePath, withLock, writeJSON} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 
 async function fixture(t) { const d=await fs.mkdtemp(path.join(os.tmpdir(),'aaa 中文 ')); t.after(()=>fs.rm(d,{recursive:true,force:true})); await writeJSON(path.join(d,'aaa.json'),defaultConfig()); return d; }
 test('rejects invalid times, nonintegral frame counts, duplicate scene IDs, unsafe assets',()=>{

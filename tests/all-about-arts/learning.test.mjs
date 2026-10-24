@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import * as learning from '../../skills/all-about-arts/lib/learn.mjs';
-import {PACKAGE_ROOT} from '../../skills/all-about-arts/lib/project.mjs';
-import {run} from '../../skills/all-about-arts/lib/util.mjs';
+import * as learning from '../../.agents/skills/all-about-arts/lib/learn.mjs';
+import {PACKAGE_ROOT} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {run} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 
 async function fixture(t){
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'aaa learning '));t.after(()=>fs.rm(root,{recursive:true,force:true}));

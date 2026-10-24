@@ -4,7 +4,7 @@ import { mkdtemp, readFile, writeFile, rm, mkdir, symlink } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
-import { listInbox, addNote, updateNote } from '../../skills/all-about-arts/lib/inbox.mjs';
+import { listInbox, addNote, updateNote } from '../../.agents/skills/all-about-arts/lib/inbox.mjs';
 
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'AAA 笔记 project '));
@@ -41,7 +41,7 @@ test('inbox rejects malformed notes and unsupported states without overwriting v
 
 test('parallel processes cannot lose notes or produce torn JSON', async (t) => {
   const root = await fixture(t);
-  const moduleURL = new URL('../../skills/all-about-arts/lib/inbox.mjs', import.meta.url).href;
+  const moduleURL = new URL('../../.agents/skills/all-about-arts/lib/inbox.mjs', import.meta.url).href;
   const script = `import { addNote } from ${JSON.stringify(moduleURL)}; for (let i = 0; i < 12; i++) await addNote(process.argv[1], {text: process.argv[2] + i, t: i, x: i, y: i, scene: null, objectId: null});`;
   const run = (prefix) => new Promise((resolve, reject) => {
     const child = spawn(process.execPath, ['--input-type=module', '-e', script, root, prefix]);

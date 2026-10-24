@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, rm, readdir, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { snapshot, undo, history } from '../../skills/all-about-arts/lib/history.mjs';
+import { snapshot, undo, history } from '../../.agents/skills/all-about-arts/lib/history.mjs';
 
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'AAA 历史 project '));

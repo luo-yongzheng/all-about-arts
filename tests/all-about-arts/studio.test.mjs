@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { pointToProject, pickRegion, sceneAt, changeParameter } from '../../skills/all-about-arts/studio/studio.js';
+import { pointToProject, pickRegion, sceneAt, changeParameter } from '../../.agents/skills/all-about-arts/studio/studio.js';
 
 test('note coordinates follow the film frame scale and smallest registered object', () => {
   const point = pointToProject(170, 120, { left: 10, top: 30, width: 320, height: 180 }, 1920, 1080);

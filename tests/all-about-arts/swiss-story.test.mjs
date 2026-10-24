@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';
-import {initProject,PACKAGE_ROOT,readConfig} from '../../skills/all-about-arts/lib/project.mjs';import {openFilm} from '../../skills/all-about-arts/lib/browser.mjs';import {readJSON,sha256} from '../../skills/all-about-arts/lib/util.mjs';
+import {initProject,PACKAGE_ROOT,readConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs';import {openFilm} from '../../.agents/skills/all-about-arts/lib/browser.mjs';import {readJSON,sha256} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 test('Swiss urban and reading briefs have distinct subjects and time-driven actions',async t=>{
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-swiss-story-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));let hashes=[];
  for(const [file,expected] of [['1-urban.json','urban-connection'],['2-reading.json','reading-day-3']]){

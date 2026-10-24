@@ -1,6 +1,6 @@
 import test from 'node:test'; import assert from 'node:assert/strict'; import fs from 'node:fs/promises'; import os from 'node:os'; import path from 'node:path';
-import {defaultConfig} from '../../skills/all-about-arts/lib/project.mjs'; import {writeJSON} from '../../skills/all-about-arts/lib/util.mjs';
-import {importAsset, checkAssets, generationRequest, recordGenerated} from '../../skills/all-about-arts/lib/assets.mjs';
+import {defaultConfig} from '../../.agents/skills/all-about-arts/lib/project.mjs'; import {writeJSON} from '../../.agents/skills/all-about-arts/lib/util.mjs';
+import {importAsset, checkAssets, generationRequest, recordGenerated} from '../../.agents/skills/all-about-arts/lib/assets.mjs';
 async function fixture(t){const d=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-assets-'));t.after(()=>fs.rm(d,{recursive:true,force:true}));await writeJSON(path.join(d,'aaa.json'),defaultConfig());return d;}
 test('imports a content-addressed user asset and detects later corruption',async t=>{const d=await fixture(t),source=path.join(d,'source.txt');await fs.writeFile(source,'original');const a=await importAsset(d,{file:source,id:'reference',license:'user-provided',source:'user'}); assert.equal((await checkAssets(d)).status,'success');await fs.writeFile(path.join(d,a.path),'changed');assert.equal((await checkAssets(d)).status,'failure');});
 test('missing required file is failure, unavailable optional file is not checked',async t=>{const d=await fixture(t);await writeJSON(path.join(d,'aaa.json'),{...defaultConfig(),assets:[{id:'font',path:'assets/missing.woff2',required:true,license:'OFL'}]});const r=await checkAssets(d);assert.equal(r.status,'failure');assert.match(JSON.stringify(r),/missing/);});

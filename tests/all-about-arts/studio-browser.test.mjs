@@ -6,10 +6,10 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { snapshot, undo, history } from '../../skills/all-about-arts/lib/history.mjs';
-import { addNote, listInbox, updateNote } from '../../skills/all-about-arts/lib/inbox.mjs';
+import { snapshot, undo, history } from '../../.agents/skills/all-about-arts/lib/history.mjs';
+import { addNote, listInbox, updateNote } from '../../.agents/skills/all-about-arts/lib/inbox.mjs';
 
-const studio = fileURLToPath(new URL('../../skills/all-about-arts/studio/', import.meta.url));
+const studio = fileURLToPath(new URL('../../.agents/skills/all-about-arts/studio/', import.meta.url));
 
 test('Studio edits, transports, anchors notes, restores history, exports and retains conflicting drafts', { timeout: 60000 }, async (t) => {
   const root = await mkdtemp(join(tmpdir(), 'AAA Studio 电影 '));
@@ -67,7 +67,7 @@ test('Studio edits, transports, anchors notes, restores history, exports and ret
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   t.after(() => new Promise((resolve) => server.close(resolve)));
-  const { chromium } = await import('../../skills/all-about-arts/node_modules/playwright-core/index.mjs');
+  const { chromium } = await import('../../.agents/skills/all-about-arts/node_modules/playwright-core/index.mjs');
   const browser = await chromium.launch({ executablePath: process.env.AAA_CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
   t.after(() => browser.close());
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
@@ -128,8 +128,8 @@ test('Studio edits, transports, anchors notes, restores history, exports and ret
 });
 
 test('Studio saves an actual runtime scene title and previews the production soundtrack mix', { timeout: 60000 }, async (t) => {
-  const { initProject, defaultConfig } = await import('../../skills/all-about-arts/lib/project.mjs');
-  const { startServer } = await import('../../skills/all-about-arts/lib/server.mjs');
+  const { initProject, defaultConfig } = await import('../../.agents/skills/all-about-arts/lib/project.mjs');
+  const { startServer } = await import('../../.agents/skills/all-about-arts/lib/server.mjs');
   const parent = await mkdtemp(join(tmpdir(), 'AAA real Studio 电影 '));
   t.after(() => rm(parent, { recursive: true, force: true }));
   const root = join(parent, 'film');
@@ -139,7 +139,7 @@ test('Studio saves an actual runtime scene title and previews the production sou
   await initProject(root, { config });
   const server = await startServer({ project: root, studio: true });
   t.after(() => server.close());
-  const { chromium } = await import('../../skills/all-about-arts/node_modules/playwright-core/index.mjs');
+  const { chromium } = await import('../../.agents/skills/all-about-arts/node_modules/playwright-core/index.mjs');
   const browser = await chromium.launch({ executablePath: process.env.AAA_CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
   t.after(() => browser.close());
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });

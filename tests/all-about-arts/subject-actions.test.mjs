@@ -5,9 +5,9 @@ import {readFileSync} from 'node:fs';
 import {createServer} from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {resolve,extname} from 'node:path';
-import {browserExecutable} from '../../skills/all-about-arts/lib/browser.mjs';
-import {chromium} from '../../skills/all-about-arts/node_modules/playwright-core/index.mjs';
-const root=fileURLToPath(new URL('../../skills/all-about-arts/',import.meta.url));
+import {browserExecutable} from '../../.agents/skills/all-about-arts/lib/browser.mjs';
+import {chromium} from '../../.agents/skills/all-about-arts/node_modules/playwright-core/index.mjs';
+const root=fileURLToPath(new URL('../../.agents/skills/all-about-arts/',import.meta.url));
 const output=fileURLToPath(new URL('./artifacts/subject-actions/',import.meta.url));
 const recipes=[['pixel-rpg','library','garden'],['ink-wash','mountains','river'],['paper-lantern','festival','home']];
 test('explicit subjects change the drawing and perform their three story actions in both layouts',{timeout:120000},async()=>{

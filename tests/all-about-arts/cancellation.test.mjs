@@ -4,9 +4,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import {spawn} from 'node:child_process';
-import {openFilm} from '../../skills/all-about-arts/lib/browser.mjs';
-import {defaultConfig,PACKAGE_ROOT} from '../../skills/all-about-arts/lib/project.mjs';
-import {writeJSON,exists} from '../../skills/all-about-arts/lib/util.mjs';
+import {openFilm} from '../../.agents/skills/all-about-arts/lib/browser.mjs';
+import {defaultConfig,PACKAGE_ROOT} from '../../.agents/skills/all-about-arts/lib/project.mjs';
+import {writeJSON,exists} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 async function fixture(t,hang){
  const p=await fs.mkdtemp(path.join(os.tmpdir(),'aaa-cancel-'));t.after(()=>fs.rm(p,{recursive:true,force:true}));
  const c=defaultConfig({duration:1});c.width=160;c.height=90;c.fps=10;await writeJSON(path.join(p,'aaa.json'),c);

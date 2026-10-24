@@ -4,8 +4,8 @@ import { mkdtemp, readFile, writeFile, mkdir, rm, symlink, readdir } from 'node:
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { buildAudio } from '../../skills/all-about-arts/lib/audio.mjs';
-import { importVoice, generateVoice } from '../../skills/all-about-arts/lib/voice.mjs';
+import { buildAudio } from '../../.agents/skills/all-about-arts/lib/audio.mjs';
+import { importVoice, generateVoice } from '../../.agents/skills/all-about-arts/lib/voice.mjs';
 
 const ff = (...args) => { const r = spawnSync('ffmpeg', ['-v','error','-y',...args], {encoding:'utf8'}); assert.equal(r.status,0,r.stderr); };
 async function project(t, overrides={}) { const root=await mkdtemp(join(tmpdir(),'aaa-audio-')); t.after(()=>rm(root,{recursive:true,force:true})); await mkdir(join(root,'assets')); const config={schemaVersion:1,seed:42,duration:2,fps:30,scenes:[{id:'one',start:0,end:2}],audio:{music:{enabled:true,volume:0.2},sfx:[{name:'ding',time:0.4}]},...overrides}; await writeFile(join(root,'aaa.json'),JSON.stringify(config)); return {root,config}; }

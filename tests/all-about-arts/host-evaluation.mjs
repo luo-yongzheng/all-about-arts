@@ -1,7 +1,7 @@
 // Explicit local evaluation runner. Uses installed hosts and their existing auth/settings.
 // No model override, permission bypass, login, credits purchase or remote publishing.
 import fs from 'node:fs/promises';import path from 'node:path';import {fileURLToPath} from 'node:url';import {spawn} from 'node:child_process';
-import {install} from '../../skills/all-about-arts/scripts/install.mjs';import {writeJSON,readJSON,exists} from '../../skills/all-about-arts/lib/util.mjs';
+import {install} from '../../.agents/skills/all-about-arts/scripts/install.mjs';import {writeJSON,readJSON,exists} from '../../.agents/skills/all-about-arts/lib/util.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..'),base=path.join(root,'artifacts/all-about-arts/host-evaluation');await fs.mkdir(base,{recursive:true});
 const requested=process.argv[2]??'both',hosts=requested==='both'?['codex','claude']:[requested];const records=[];
 for(const host of hosts){const dir=path.join(base,`${host}-${Date.now()}`);await fs.mkdir(dir,{recursive:true});await install({host,root:dir});
