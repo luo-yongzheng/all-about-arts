@@ -1,5 +1,5 @@
 // ============================================================
-// "AI 进化节拍" (AI Evolution Beat) — Rhythm Heaven (节奏天国) style, 140 BPM
+// "AI 进化节拍" (AI Evolution Beat) — rhythm-game style, 140 BPM
 // Every "hit" is registered through ev(); the renderer exports events.json, and the music script places SFX/voices from it
 // ============================================================
 const K = {
@@ -7,7 +7,7 @@ const K = {
   pink: '#FF8FB1', purple: '#6B4FBB', purpleD: '#46318F', teal: '#3FB8AF', tealD: '#2B8F88', blue: '#4D7CFE',
   navy: '#26264A', sky: '#8ED1FC', green: '#5BD68A', wood: '#C98A52', woodD: '#8E5530', gray: '#C3CAD9',
   skin: '#FFD1A8', gpt: '#19B388', claude: '#D97757', gem1: '#4E7CF6', gem2: '#9B6CF0', llama: '#F4E9D8',
-  whale: '#4D6BFE', dblue: '#2B59C3', chalk: '#2F5D50', lime: '#C6F16D',
+  seek: '#5A78E8', dblue: '#2B59C3', chalk: '#2F5D50', lime: '#C6F16D',
 };
 F.round = "'Fredoka', 'Noto Sans SC'";
 const OW = 8;
@@ -119,17 +119,10 @@ function bean(parent, o) {
   if (kind === 'llama') {
     for (const sx of [-1, 1]) el('path', { d: `M ${sx * 30} -160 C ${sx * 34} -230 ${sx * 60} -250 ${sx * 64} -210 C ${sx * 66} -180 ${sx * 56} -160 ${sx * 50} -150 Z`, fill: color, ...SO }, body);
   }
-  if (kind === 'whale') {
-    el('path', { d: 'M 70 -60 C 120 -70 140 -120 130 -150 C 110 -130 90 -120 76 -110 Z', fill: color, ...SO }, body);
-  }
   el('path', { d: 'M -80 -20 C -88 -112 -52 -172 0 -172 C 52 -172 88 -112 80 -20 C 72 -2 -72 -2 -80 -20 Z', fill: color, ...SO }, body);
   if (belly) el('ellipse', { cx: 0, cy: -48, rx: 44, ry: 32, fill: belly }, body);
   if (kind === 'llama') {
     for (const [x, y, r] of [[-22, -168, 20], [0, -176, 22], [22, -168, 20]]) el('circle', { cx: x, cy: y, r, fill: K.white, ...SO, 'stroke-width': 6 }, body);
-  } else if (kind === 'whale') {
-    const sp = el('g', {}, body);
-    el('path', { d: 'M 0 -172 C -6 -196 -30 -206 -40 -196 M 0 -172 C 6 -196 30 -206 40 -196 M 0 -172 L 0 -206', fill: 'none', stroke: K.sky, 'stroke-width': 10, 'stroke-linecap': 'round' }, sp);
-    el('path', { d: 'M 0 -172 C -6 -196 -30 -206 -40 -196 M 0 -172 C 6 -196 30 -206 40 -196 M 0 -172 L 0 -206', fill: 'none', stroke: K.ol, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .5 }, sp);
   } else if (antenna) {
     el('line', { x1: 0, y1: -172, x2: 0, y2: -214, stroke: K.ol, 'stroke-width': 7 }, body);
     el('circle', { cx: 0, cy: -220, r: 15, fill: antenna, ...SO, 'stroke-width': 6 }, body);
@@ -180,7 +173,7 @@ const CAST = {
   claude: (p) => bean(p, { color: K.claude, belly: '#F6D3BE', antenna: K.cream, name: 'Claude' }),
   gemini: (p) => twins(p),
   llama: (p) => bean(p, { color: K.llama, belly: K.white, kind: 'llama', name: 'Llama' }),
-  deepseek: (p) => bean(p, { color: K.whale, belly: '#BFD0FF', kind: 'whale', name: 'DeepSeek' }),
+  deepseek: (p) => bean(p, { color: K.seek, belly: '#C9D6FF', name: 'DeepSeek' }),
 };
 function smallBot(parent, col) { return bean(parent, { color: col, antenna: K.yellow }); }
 
@@ -421,7 +414,7 @@ function buildAll() {
       ev(t0, sp ? 'bigslam' : 'stone'); punch(t0, sp ? 0.05 : 0.01);
       s.fx.push(burst(fxG, x, y - 10, t0, sp ? K.yellow : K.white, sp ? 1.6 : 0.5));
     }
-    ev(at(9, 2), 'v:checkmate'); ev(at(13, 0), 'v:move37'); ev(at(10, 0), 'poof');
+    ev(at(9, 2), 'v:gameover'); ev(at(13, 0), 'v:move37'); ev(at(10, 0), 'poof');
     ev(at(13, 2), 'v:whoa');
     const b1 = banner(g, '1997', '深蓝', '击败国际象棋世界冠军', K.dblue);
     const b2 = banner(g, '2016', 'AlphaGo', '4 : 1 战胜李世石', K.purple);
@@ -718,8 +711,8 @@ function buildAll() {
     el('rect', { x: 460, y: 60, width: 1000, height: 230, rx: 16, fill: K.woodD, ...SO }, board);
     el('rect', { x: 480, y: 80, width: 960, height: 190, rx: 10, fill: K.chalk }, board);
     txt(board, '9.11 和 9.9，哪个大？', { x: 960, y: 200, 'font-size': 76, 'font-family': F.cute, fill: K.white, 'text-anchor': 'middle' });
-    const X = [560, 960, 1360], ks = ['gpt', 'claude', 'gemini'];
-    const cast = ks.map((k, i) => { const w = el('g', {}, g); return { w, c: CAST[k](w), x: X[i] }; });
+    const X = [560, 960, 1360], cols = [K.pink, K.lime, K.orange];   // generic bots: no record says which models answered 9.11
+    const cast = X.map((x, i) => { const w = el('g', {}, g); return { w, c: smallBot(w, cols[i]), x }; });
     const desks = el('g', {}, g);
     X.forEach(x => { el('rect', { x: x - 170, y: 820, width: 340, height: 60, rx: 10, fill: K.wood, ...SO }, desks); el('rect', { x: x - 150, y: 880, width: 300, height: 200, fill: K.woodD, ...SO }, desks); });
     const bubbles = X.map(x => {
@@ -802,7 +795,7 @@ function buildAll() {
     ev(at(40, 0), 'land'); ev(at(42, 2), 'v:whoa'); ev(at(43, 0), 'slam'); punch(at(43, 0), 0.04);
     ev(at(42, 0), 'v:cheaper');
     const ratio = el('g', {}, g); gtext(ratio, '≈ 1/27', 0, 0, 170, { family: F.round, weight: 700, fill: K.yellow, sw: 24 });
-    const b1 = banner(g, '2025.1', 'DeepSeek-R1', '开源，价格打到约 1/27', K.whale);
+    const b1 = banner(g, '2025.1', 'DeepSeek-R1', '开源，输出价约为 o1 的 1/27', K.seek);
     s.fx.push(judge(g, 'Perfect!', 1560, 330, at(43, 2), K.yellow, 0.8));
     return (t) => {
       const squash = slams.filter(t0 => t >= t0).length;
@@ -988,7 +981,7 @@ function buildAll() {
     lines.forEach((l, i) => { for (let c = 0; c < [...l].length; c++) if (c % 2 === 0) ev(at(53 + i) + c * B / 4, 'type'); });
     const sup = el('g', {}, g);
     el('path', { d: starPath(12, 230, 170), fill: K.yellow, ...SO, 'stroke-width': 10 }, sup);
-    gtext(sup, 'Superb', 0, 40, 130, { family: F.round, weight: 700, fill: K.red, sw: 20 });
+    gtext(sup, 'Encore!', 0, 36, 100, { family: F.round, weight: 700, fill: K.red, sw: 20 });
     ev(at(56), 'fanfare'); ev(at(56), 'v:superb'); punch(at(56), 0.05);
     s.fx.push(burst(g, 1500, 520, at(56), K.yellow, 2.2));
     const load = el('g', {}, g);

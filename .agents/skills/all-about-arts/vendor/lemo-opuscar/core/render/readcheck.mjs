@@ -6,23 +6,26 @@
 // Rule (same as DIRECTOR.md §7): from the moment a piece of text first fully enters the frame, the time it stays fully in frame continuously, and still in TEXTS, must be ≥
 //   (number of hanzi/kana/hangul ÷ cjk-cps + number of other non-whitespace characters ÷ latin-cps) + pad seconds, and no less than min. Defaults 4.5 chars/s (CJK), 15 chars/s (alphanumeric), pad 1.5, min 1.5.
 //   Text that never fully enters the frame (cropped at the edge, a ticker running out of frame) is reported as "never fully visible".
+//   Text the viewer isn't meant to read in full (a shop sign in a fly-through, a label the camera sweeps past, the fine-print licence credits
+//   on an end card) can carry pass: true: it is listed as passing and not timed. Anything the film needs the viewer to read must not be marked.
 // Exit code: 0 all pass; 1 some fail; 2 the check couldn't run (the page has no window.TEXTS, or the whole film never returned any text) — this does not count as a pass.
 import { openDemo, closeServer, requireDemo, takeSize } from './page.mjs';
 const args = process.argv.slice(2), { w: VW, h: VH } = takeSize(args), opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const dir = args[0]; requireDemo(dir);
 const Q = opt('--q', ''), STEP = +opt('--step', 0.04), LATIN = +opt('--latin-cps', 15), CJK = +opt('--cjk-cps', 4.5), PAD = +opt('--pad', 1.5), MIN = +opt('--min', 1.5);
 if (![STEP, LATIN, CJK, PAD, MIN].every(Number.isFinite) || STEP <= 0 || LATIN <= 0 || CJK <= 0) { console.error('bad option value (step and the cps values must be > 0)'); process.exit(2); }
-const { browser, page } = await openDemo(dir, { w: VW, h: VH, q: Q });
+const { browser, page } = await openDemo(dir, { w: VW, h: VH, q: Q, gl: false });   // reads text boxes, draws nothing
 const res = await page.evaluate(({ STEP }) => {
   if (typeof window.TEXTS !== 'function') return { noTexts: true };
   if (!(window.DUR > 0)) return { noDur: true };
-  const W = innerWidth, H = innerHeight, seen = {}, partial = {};
+  const W = innerWidth, H = innerHeight, seen = {}, partial = {}, passing = {};
   for (let t = 0; t <= window.DUR; t += STEP) {
     window.render(t);
     const vis = new Set();
     for (const b of window.TEXTS(t) || []) {
       b.id = String(b.id);   // numeric ids are fine too
       const key = b.id + '\u0000' + b.text;   // text changed under the same id = a new piece
+      if (b.pass) { passing[key] ??= { id: b.id, text: b.text, t0: t }; continue; }   // only passed, not read: listed, not timed
       if (!(b.x0 >= 0 && b.y0 >= 0 && b.x1 <= W && b.y1 <= H)) { partial[key] ??= { id: b.id, text: b.text, t0: t }; continue; }
       vis.add(key);
       const s = seen[key] ??= { id: b.id, text: b.text, t0: t, run: 0, done: false };
@@ -31,11 +34,11 @@ const res = await page.evaluate(({ STEP }) => {
     for (const k in seen) if (!vis.has(k)) seen[k].done = true;   // only the first continuous on-screen stretch counts
   }
   for (const k in partial) if (seen[k]) delete partial[k];
-  return { seen: Object.values(seen), partial: Object.values(partial) };
+  return { seen: Object.values(seen), partial: Object.values(partial), passing: Object.values(passing) };
 }, { STEP });
 await browser.close(); closeServer();
 
-if (res.noTexts || res.noDur || (!res.seen.length && !res.partial.length)) {
+if (res.noTexts || res.noDur || (!res.seen.length && !res.partial.length && !res.passing.length)) {
   console.error('readcheck: NOT CHECKED — ' + (res.noTexts ? 'the page has no window.TEXTS(t) (see the header of core/render/readcheck.mjs for the contract).'
     : res.noDur ? 'window.DUR is not a positive number.' : 'window.TEXTS(t) never returned any text over the whole film.') + ' This is not a pass.');
   process.exit(2);
@@ -48,4 +51,5 @@ for (const s of res.seen) {
   console.log(`${ok ? 'OK ' : 'BAD'} ${s.id.padEnd(18)} at ${s.t0.toFixed(2)}s  ${String([...s.text].filter(c => !/\s/.test(c)).length).padStart(3)} chars  need ${n.toFixed(2)}s  got ${s.run.toFixed(2)}s  ${JSON.stringify(s.text.slice(0, 24))}`);
 }
 for (const s of res.partial) { bad++; console.log(`BAD ${s.id.padEnd(18)} at ${s.t0.toFixed(2)}s  never fully visible (its box is outside the frame)  ${JSON.stringify(s.text.slice(0, 24))}`); }
+for (const s of res.passing) console.log(`--  ${s.id.padEnd(18)} at ${s.t0.toFixed(2)}s  passing (pass: true), not timed  ${JSON.stringify(s.text.slice(0, 24))}`);
 process.exit(bad ? 1 : 0);

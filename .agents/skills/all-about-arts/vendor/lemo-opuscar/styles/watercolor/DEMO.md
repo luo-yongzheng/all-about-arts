@@ -26,7 +26,7 @@ How the demo used the medium:
 | **One event per zone** | Each zone gets one small demonstrative event: rain running down mulga branches to the roots, a fire front and epicormic regrowth, a tilt-up measuring a 100 m tree, a layer diagram of the rainforest. |
 | **Pull-out to the map** | After the walk, wash the landscape away and paint the map; draw "our walk" on it. The map can then move in **time** (50 Ma → today), which turns a spatial walk into a historical one. |
 
-**Story shape (proven in the demo):** cold paper → horizon brushed in → vermilion sun "stamped" like a seal → title → landscape revealed with a brush-edge wipe → 5 zones (≈ 10–18 s each) with a rising gauge → mist washes everything back to paper → coastline painted → map filled → "our walk" arrow → rewind to 50 million years ago (all green) → drift and dry back to today (dry heart, green edge) → end title over the faded map + credits.
+**Story shape (as in the demo):** cold paper → horizon brushed in → vermilion sun "stamped" like a seal → title → landscape revealed with a brush-edge wipe → 5 zones (≈ 10–18 s each) with a rising gauge → mist washes everything back to paper → coastline painted → map filled → "our walk" arrow → rewind to 50 million years ago (all green) → drift and dry back to today (dry heart, green edge) → end title over the faded map + credits.
 
 Adapting a topic: pick the gradient; list 4–6 zones with a real value at each boundary; give each zone a palette, a hero specimen, a small animal and one event; end on a map or diagram that re-frames the walk (in space, then in time).
 
@@ -90,7 +90,7 @@ Plant colour sets live in `plants.js` `COL` (straw, mulga, salt, gum, gold, ash,
 - **Title**: "Follow the Rain" italic Cormorant 124 px wiped in, then the spaced caps subtitle and the Chinese line.
 - **End card**: title block over the faded map + credits in IBM Plex Mono 15 px (music with licence, voice, coastline source, "rainfall bands are schematic"), and under them the sign-off **"LemoLab × Claude Opus 5.5"** in italic Cormorant Garamond 30 px, `INK` 85 %, centred at y 1010, fading in with the credits (105–106.2 s) — a serif italic line so it reads as the film's signature, not another asset credit. Keep it clear of the map (Tasmania sits at y ≈ 845–915). This sign-off belongs to this library's demo only: a user's film carries no LemoLab credit and no copy of this end card.
 
-## Pitfalls we hit (demo record)
+## Pitfalls
 
 - **Strip canvases too short flatten the hills**: the far/mid washes are pre-painted into long offscreen strips. If a strip's `yTop` is too low, the tall ridges and the rainforest canopy wall get cut into flat tops, and the 980 px tilt-up exposes the cut. The far strip spans y 150–1500 and starts at world x −6000; the mid strip spans 200–1500.
 - **Semi-transparent strip bottoms show a hard edge**: a wash that stops at the bottom of its canvas leaves a visible horizontal seam when a translucent layer is drawn over it. Extend every strip below the frame (to 1500 px) and fade the main ground to paper with a vertical gradient instead of stopping it.
@@ -113,7 +113,7 @@ styles/watercolor/demo/
                   groundFern, rfTree, fanPalm, vine, farTree, uluru, cloud, shrub)
   scene.js        VO table, layers, zones, camera, world build, wash strips, landscape drawing, animals, fire, rain, notes
   main.js         canvas, map (deep time), mist, HUD, subtitles, title/end card, render(t), async init → READY
-  aus.js          coastline rings (from extract_aus.mjs + vendor/)   paper.jpg (paper.py)   fonts/ + fonts.css (fetch_fonts.mjs)
+  aus.js          coastline rings (from extract_aus.mjs)   paper.jpg (paper.py)   fonts/ + fonts.css (fetch_fonts.mjs)
   tts/lines.json  voice script   tts/gen.py  Kokoro   asr.py  whisper check   voices/  v01–v13.wav + dur.json
   music/          prep.sh (source files) · analyze.py · lag.py · jump.py · edit.py → score.wav
   mix.py          SFX + voice + music → mix.wav      render.mjs  stills / video / part     mux.sh  → ../watercolor.mp4
@@ -147,7 +147,7 @@ sh $D/mux.sh                                   # or: sh $D/mux.sh path/to/test.m
 ```
 
 Partial re-render (used for the end-card sign-off): `node $D/render.mjs part 99.4 113.6 $D/out/seg_7.mp4` re-creates the last 8-worker segment exactly (frames 5964–6815), then `sh $D/mux.sh`.
-One-time asset scripts (already run): `node $D/extract_aus.mjs` (coastline), `cd $D && ../../../.venv/bin/python paper.py` (paper), `node $D/fetch_fonts.mjs` (fonts, needs network).
+One-time asset scripts (already run): `node $D/extract_aus.mjs` (coastline; reads world-atlas from the npm CDN, needs network), `cd $D && ../../../.venv/bin/python paper.py` (paper), `node $D/fetch_fonts.mjs` (fonts, needs network).
 
 ## Engine reference
 

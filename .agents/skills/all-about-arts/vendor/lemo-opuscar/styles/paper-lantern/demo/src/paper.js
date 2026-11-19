@@ -97,18 +97,25 @@ export function paperMat(map, U, o = {}) {
   if (o.envMap) { m.envMap = o.envMap; m.envMapIntensity = o.envI ?? 1; }
   if (o.bumpMap) { m.bumpMap = o.bumpMap; m.bumpScale = o.bump ?? 4; }
   if (o.color) m.color.set(o.color);
-  const own = { uTrans: { value: o.trans ?? .25 }, uGlowLit: { value: 1 }, tCloud: { value: CLOUD() }, uCloudS: { value: o.cloudS ?? 9 }, uClip: { value: new THREE.Vector4(0, 0, 100, 0) } };
+  const own = { uTrans: { value: o.trans ?? .25 }, uGlowLit: { value: 1 }, tCloud: { value: CLOUD() }, uCloudS: { value: o.cloudS ?? 9 }, uClip: { value: new THREE.Vector4(0, 0, 100, 0) }, uGY: { value: new THREE.Vector4(0, .01, 1, 0) }, uGR: { value: new THREE.Vector4(0, 0, 0, 0) }, uBeamK: { value: o.beamK ?? 1 } };
   m.userData.u = own;
   m.onBeforeCompile = s => {
     Object.assign(s.uniforms, U, own);
     s.vertexShader = 'varying vec3 vWP;\n' + s.vertexShader.replace('#include <fog_vertex>', '#include <fog_vertex>\n vWP = (modelMatrix * vec4(transformed, 1.)).xyz;');
-    s.fragmentShader = 'varying vec3 vWP; uniform vec3 uLight, uLightCol; uniform float uLightR, uLit, uTrans, uGlowLit, uCloudS; uniform sampler2D tCloud; uniform vec4 uClip;\n' +
+    s.fragmentShader = 'varying vec3 vWP; uniform vec3 uLight, uLightCol, uBeamO, uBeamD, uBeamCol; uniform float uLightR, uLit, uTrans, uGlowLit, uCloudS, uFloor, uBeamK; uniform sampler2D tCloud; uniform vec4 uClip, uGY, uGR;\n' +
       s.fragmentShader.replace('#include <alphatest_fragment>', `#include <alphatest_fragment>
         { float cd = length(vWP.xy - uClip.xy) - uClip.z; if (uClip.w < .5 ? cd > 0. : cd < 0.) discard; }`).replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
         totalEmissiveRadiance *= uGlowLit;
-        { float d = length(vWP.xy - uLight.xy); float fall = mix(.22, 1., exp(-d*d/(uLightR*uLightR)));
+        if (uGR.w > .5) { float rr = length(vWP.xy - uGR.xy); totalEmissiveRadiance *= smoothstep(uGR.z, uGR.z - .006, rr); }
+        if (uGY.w > .5) { float dy = vWP.y - uGY.x; float band = exp(-dy*dy/(uGY.y*uGY.y)); totalEmissiveRadiance *= max(band, dy < 0. ? uGY.z : 0.); }
+        { float d = length(vWP.xy - uLight.xy); float fall = mix(uFloor, 1., exp(-d*d/(uLightR*uLightR)));
           float g = texture2D(tCloud, vMapUv * uCloudS).r;
-          totalEmissiveRadiance += diffuseColor.rgb * uLightCol * (uTrans * uLit * fall * (.35 + 1.3 * g)); }`);
+          totalEmissiveRadiance += diffuseColor.rgb * uLightCol * (uTrans * uLit * fall * (.35 + 1.3 * g));
+          if (uBeamO.z > 0.) {   // optional beam: a soft wedge of light lighting the paper it passes through (unused when uBeamO.z = 0)
+            vec2 bd = vWP.xy - uBeamO.xy; float r = length(bd); float a = atan(bd.y, bd.x) - uBeamD.x; a = mod(a + 3.14159265, 6.2831853) - 3.14159265;
+            float w = uBeamD.y * (1. + r * 3.);
+            float m = exp(-a*a/(w*w)) * smoothstep(.0, .015, r) * exp(-r / uBeamD.z);
+            totalEmissiveRadiance += diffuseColor.rgb * uBeamCol * (m * uBeamO.z * uBeamK * (.25 + uTrans) * (.5 + .9 * g)); } }`);
   };
   m.customProgramCacheKey = () => 'paperT' + (o.emissiveMap ? 'g' : '') + (o.envMap ? 'e' : '') + (o.bumpMap ? 'b' : '');
   return m;

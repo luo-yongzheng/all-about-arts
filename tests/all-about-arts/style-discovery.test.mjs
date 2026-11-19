@@ -16,11 +16,11 @@ function cli(args,cwd=os.tmpdir()){
 
 test('agent style listing exposes every native route and explains legacy availability',()=>{
   const result=cli(['styles']);
-  assert.equal(result.total,59);assert.equal(result.matched,59);
+  assert.equal(result.total,99);assert.equal(result.matched,99);
   assert.deepEqual(result.statusDefinitions,catalog.statusDefinitions);
   assert.deepEqual(result.nativeStatusDefinitions,catalog.nativeStatusDefinitions);
   assert.deepEqual(result.styles.map(s=>s.id),catalog.styles.map(s=>s.id));
-  assert.equal(result.styles.filter(s=>s.status==='reference').length,51);
+  assert.equal(result.styles.filter(s=>s.status==='reference').length,91);
   for(const style of result.styles)assert.equal(style.native.status,'source-available');
 });
 
@@ -37,9 +37,10 @@ test('style searches use all query words and descriptive fields rather than impl
   assert.equal(cli(['styles','whiteboard','Explainers']).matched,1);
   assert.equal(cli(['styles','whiteboard','does-not-exist']).matched,0);
   assert.equal(cli(['styles','source-available']).matched,0);
+  assert.ok(cli(['styles','Game','Show','Flat']).styles.some(s=>s.id==='game-show'),'former names (aka) are searchable');
 });
 
-test('all 59 listed project commands create native authoring scaffolds without rendering',async t=>{
+test('all 99 listed project commands create native authoring scaffolds without rendering',async t=>{
   const dir=await fs.mkdtemp(path.join(os.tmpdir(),'aaa all styles '));
   t.after(()=>fs.rm(dir,{recursive:true,force:true}));
   for(const style of catalog.styles){

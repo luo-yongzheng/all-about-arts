@@ -1,12 +1,17 @@
-"""Whisper line-by-line check: python core/tts/asr_check.py lines.json voices_dir [--lang en|zh|auto] [--model base|small|…] [--threshold 0.92]
+"""Whisper line-by-line check: python core/tts/asr_check.py lines.json voices_dir [--lang en|zh|ja|ko|auto] [--model base|small|…] [--threshold 0.92]
 Compares each line's text with its transcription (0.6 s of silence is padded on both sides first; short lines are misheard without it) and
 writes per-word timestamps to voices_dir/words.json (for lip sync and line breaks).
-A line in lines.json may carry an "asr" field that overrides the expected text (proper names, onomatopoeia, how numbers are read, e.g. "三十八" rather than "38").
---lang  auto (default) decides by whether the text contains CJK characters. en requires an exact word-by-word match after dropping punctuation
+A line in lines.json may carry an "asr" field that overrides the expected text (proper names, onomatopoeia, a word Whisper always hears as another).
+--lang  auto (default) decides by the script: CJK characters mean zh, ja when kana make up a tenth of them or more, ko when hangul does; otherwise en
+        (so 列夫・托尔斯泰 or a stray の in a Chinese script stays zh). en requires an exact word-by-word match after dropping punctuation
         and case (whole numbers 0–999 are turned into words on both sides, so "forty" and "40" match; larger numbers, years, ordinals like 3rd and
         numbers with punctuation (3.5, 1:30, 1,000, 40%) are not, so write the expected transcription in the "asr" field). zh (also ja / ko) compares
-        characters: after dropping punctuation, folding full-width to half-width and turning Chinese numerals into digits, a difflib similarity
-        ≥ --threshold (default 0.92) passes.
+        by character, each number counting as one character with its value: 十九 and 19, 两千零二十六 and 2026, 一万九千 and 1.9万, 三点五 and 3.5,
+        百分之三十 and 30%, 二〇二六 and 2026 are the same. After dropping punctuation and folding full-width to half-width, a difflib similarity
+        ≥ --threshold (default 0.92) passes, except that a number heard as a different number fails the line (三只 heard as 五只, 一百 as 1000);
+        a number left out fails too (一, often a plain word, excepted); a number heard as a word that isn't one (千里 as 尖里) only lowers the
+        similarity. 三点五十分 matches 3点50分 and 3:50, not 3点5分. Whisper often drops punctuation, so in its text 点 and a comma between digits
+        are also read as a word and a pause (三点，两个人 / 三点两个人; 一百，两百 / 100,200).
 Model: --model (or the WHISPER_MODEL environment variable; a model name, or a local folder for offline use); default en → base.en, zh → small (base mishears too many Chinese lines), other languages → base (multilingual).
       If the default mishears a line that sounds right to you, check again with a larger model (base → small, about 480 MB; small → medium), more accurate and several times slower.
       The first run downloads from Hugging Face (base / base.en ≈ 145 MB, small ≈ 480 MB); behind a firewall set HF_ENDPOINT=https://hf-mirror.com,
@@ -16,8 +21,18 @@ Exit codes: 0 all lines pass; 1 some lines differ; 2 the check could not run (mo
 import sys, json, re, os, argparse, difflib, unicodedata
 
 CJK = re.compile('[㐀-鿿豈-﫿぀-ヿ가-힯]')
+# kana for telling Japanese apart: hiragana and katakana letters, small and half-width katakana; not ・ ー ゠ or the iteration marks,
+# which Chinese text uses too (列夫・托尔斯泰)
+KANA = re.compile('[\u3041-\u3096\u30a1-\u30fa\u31f0-\u31ff\uff66-\uff9d]')
+HANGUL = re.compile('[\u1100-\u11ff\u3131-\u318e\uac00-\ud7a3]')
 CHAR_LANGS = {'zh', 'ja', 'ko'}           # these languages are compared by character, the rest by word
-_DIGITS = str.maketrans('零〇一二三四五六七八九', '00123456789')
+_ZH_DIGIT = dict(zip('零〇一二三四五六七八九两兩', '0012345678922'))   # 萬 億 兩: Whisper sometimes writes traditional characters
+_ZH_UNIT = {'十': 10, '百': 100, '千': 1000, '万': 10 ** 4, '萬': 10 ** 4, '亿': 10 ** 8, '億': 10 ** 8}
+_ZH_D = r'\d零〇一二三四五六七八九两兩'
+_ZH_SEP = r'\d{1,3}(?:,\d{3})+(?!\d)|'   # 1,000 as one number
+_ZH_NUM = {dec: re.compile(rf'(?P<pct>百分之)?(?P<int>(?:{sep}[{_ZH_D}十百千])(?:{sep}[{_ZH_D}十百千万亿萬億])*)'   # 万 亿 on their own (过万, 万一) aren't numbers
+                           rf'(?:{pt}(?P<frac>[{_ZH_D}十]+)(?P<mul>[万亿萬億]*))?(?:\s*(?P<pc>%))?')   # 三点五, 一点九万, 三点五十 / 3:50
+           for dec, pt, sep in ((True, r'(?:[.点]|(?<=\d):)', _ZH_SEP), (False, r'\.', ''))}   # or 点 a word, a comma or colon a pause (三点两个人, 100,200, 3:2)
 
 
 _ONES = 'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen'.split()
@@ -57,24 +72,89 @@ def norm_en(s):
     return out
 
 
-def norm_zh(s):
-    s = unicodedata.normalize('NFKC', s).lower().translate(_DIGITS)   # NFKC: full-width → half-width, compatibility forms normalised
-    return ''.join(c for c in s if unicodedata.category(c)[0] in 'LN')   # keep only letters/hanzi/digits; strip all punctuation and whitespace
+def zh_int(run):
+    """A whole number in digits and numerals → int: 十九 → 19, 两千零二十六 → 2026, 一万五 → 15000, 三亿五 → 350000000, 3万 → 30000, 1,000 → 1000.
+    Without 十百千万亿 the digits are read one by one and returned as a string: 二〇二六 → '2026'."""
+    run = run.replace(',', '')
+    if not any(c in _ZH_UNIT for c in run): return ''.join(_ZH_DIGIT.get(c, c) for c in run)
+    toks = re.findall(r'\d+|.', run); total = section = 0; num = None
+    for t in toks:
+        u = _ZH_UNIT.get(t)
+        if u == 10 ** 8: total, section, num = (total + section + (num or 0)) * u, 0, None
+        elif u == 10 ** 4: total, section, num = total + (section + (num or 0)) * u, 0, None
+        elif u: section, num = section + (1 if num is None else num) * u, None   # 十九: a 十 with nothing before it is one ten
+        elif t not in '零〇': num = int(t) if t.isdigit() else int(_ZH_DIGIT[t])
+    if num is not None and len(toks) > 1 and _ZH_UNIT.get(toks[-2], 10) > 10: num *= _ZH_UNIT[toks[-2]] // 10   # 三百五 = 350, 一万五 = 15000 (一百零五 keeps its 5)
+    return total + section + (num or 0)
+
+
+def zh_tokens(s, point_is_decimal=True, digit_by_digit=False):
+    """Chinese text → list of characters and numbers, a number as ('n', value, its characters, a lone 一). The value keeps what was said: '19000'
+    for 一万九千 and 1.9万 alike, '3.5', '30%', '2026'; after the point every digit counts, so 三点五十 (3:50) is '3.50' and 三点五 is '3.5'.
+    NFKC folds full-width to half-width; punctuation and whitespace go, but still keep the numbers on either side apart. Bare numerals with 两
+    are single digits (两三个 / 2、3个), and with digit_by_digit=True any bare numerals are (三二一 / 3、2、1; 三五天 / 3、5天).
+    With point_is_decimal=False (for Whisper's text, which often drops punctuation), 点 stays a character, a comma or colon always separates
+    (三点两个人, 100,200, 3:2) and digits split by spaces join (138 0013 8000)."""
+    from decimal import Decimal
+    s = unicodedata.normalize('NFKC', s.replace('，', '、')).lower()   # a full-width comma isn't a thousands separator: 一百，两百 / 100，200
+    s = re.sub(r'(?<=\d)\s+(?=[万亿萬億%])' if point_is_decimal else r'(?<=\d)\s+(?=[\d万亿萬億%])', '', s)   # 8160 亿, 30 %
+    out, pos = [], 0
+    keep = lambda t: [c for c in t if unicodedata.category(c)[0] in 'LN']
+    digits = lambda t: ''.join(_ZH_DIGIT.get(c, c) for c in t)
+    for m in _ZH_NUM[point_is_decimal].finditer(s):
+        out += keep(s[pos:m.start()]); pos = m.end(); run, frac = m['int'], m['frac']; pct = '%' if m['pct'] or m['pc'] else ''
+        if len(run) > 1 and not (frac or pct or re.search(r'[\d十百千万亿萬億]', run)) and (digit_by_digit or re.search('[两兩]', run)):
+            out += [('n', _ZH_DIGIT[c], c, False) for c in run]; continue
+        fd = frac and (str(zh_int(frac)) if '十' in frac else digits(frac))
+        if m['mul']:
+            v = Decimal(zh_int(run)) + (Decimal('0.' + fd) if fd else 0)
+            for c in m['mul']: v *= _ZH_UNIT[c]
+            val = format(v.normalize(), 'f')
+        else: val = (str(zh_int(run)).lstrip('0') or '0') + ('.' + fd if fd else '')
+        out.append(('n', val + pct, ''.join(keep(m[0])), m[0] == '一'))
+    return out + keep(s[pos:])
+
+
+def zh_check(a, b, threshold):
+    """Two token lists → (passed or not, why). Aligned with each number as one character: wherever the alignment replaces a stretch that has
+    numbers on both sides, those numbers must be equal, and a number left out or added fails too (一, often a plain word, excepted).
+    Then the similarity, on characters: a number found on both sides counts as the script's characters on both, any other number as the
+    characters it was written with (千万 heard as 钱万 is one character off, as before)."""
+    keys = {}
+    enc = lambda t: ''.join(c if isinstance(c, str) else keys.setdefault(c[1], chr(0xE000 + len(keys))) for c in t)
+    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, enc(a), enc(b)).get_opcodes():
+        na, nb = [c for c in a[i1:i2] if not isinstance(c, str)], [c for c in b[j1:j2] if not isinstance(c, str)]
+        if (op == 'replace' and na and nb and [c[1] for c in na] != [c[1] for c in nb]) or (op in ('delete', 'insert') and not all(c[3] for c in na + nb)):
+            na, nb = [c[1] for c in na], [c[1] for c in nb]
+            return False, f"numbers {' '.join(na) or '-'} ≠ {' '.join(nb) or '-'}"
+    both = {c[1] for c in a if not isinstance(c, str)} & {c[1] for c in b if not isinstance(c, str)}
+    src = {c[1]: c[2] for c in a if not isinstance(c, str)}
+    flat = lambda t: ''.join(c if isinstance(c, str) else src[c[1]] if c[1] in both else c[2] for c in t)
+    x, y = flat(a), flat(b); r = difflib.SequenceMatcher(None, x, y).ratio() if (x or y) else 1.0
+    return r >= threshold, '' if r >= threshold else f'similarity {r:.3f} < {threshold}'
 
 
 def detect_lang(texts):
-    cjk = sum(len(CJK.findall(t)) for t in texts); latin = sum(len(re.findall('[A-Za-z]', t)) for t in texts)
-    return 'zh' if cjk and cjk >= 0.3 * (cjk + latin) else 'en'
+    """auto: CJK script decides, then kana mean Japanese and hangul Korean (Whisper is told the language, so Japanese must not be sent as zh).
+    Kana or hangul have to be a real part of the text, a tenth of its CJK characters or more: Japanese and Korean lines are mostly kana or
+    hangul, while a Chinese script may write a name with ・ or use a single の."""
+    s = ''.join(texts)
+    cjk = len(CJK.findall(s)); latin = len(re.findall('[A-Za-z]', s))
+    if not (cjk and cjk >= 0.3 * (cjk + latin)): return 'en'
+    kana, hangul = len(KANA.findall(s)), len(HANGUL.findall(s))
+    if hangul >= 0.1 * cjk and hangul >= kana: return 'ko'
+    return 'ja' if kana >= 0.1 * cjk else 'zh'
 
 
 def compare(want, got, lang, threshold=0.92):
-    """Returns (passed or not, similarity 0..1)"""
+    """Returns (passed or not, why it failed: '' when it passed or the language is compared word by word)"""
     if lang in CHAR_LANGS:
-        a, b = norm_zh(want), norm_zh(got)
-        r = difflib.SequenceMatcher(None, a, b).ratio() if (a or b) else 1.0
-        return r >= threshold, r
+        # the script's punctuation says what 点 is (三点五 / 三点，五个人); Whisper often drops it, so its text is read both ways.
+        # Bare numerals on the script's side are tried whole and digit by digit (二〇二六 / 2026; 三二一 / 3、2、1)
+        tries = [zh_check(zh_tokens(want, True, dd), zh_tokens(got, dec, not dec), threshold) for dd in (False, True) for dec in (True, False)]
+        return next((t for t in tries if t[0]), tries[0])
     a, b = norm_en(want), norm_en(got)
-    return a == b, 1.0 if a == b else difflib.SequenceMatcher(None, a, b).ratio()
+    return a == b, ''
 
 
 def load_model(name):
@@ -99,14 +179,14 @@ def main():
     lines = json.load(open(a.lines, encoding='utf-8'))
     want = {L['id']: L.get('asr', L['text']) for L in lines}
     lang = detect_lang(list(want.values())) if a.lang == 'auto' else a.lang
-    name = a.model or os.environ.get('WHISPER_MODEL') or {'en': 'base.en', 'zh': 'small'}.get(lang, 'base')
+    name = a.model or os.environ.get('WHISPER_MODEL') or ('base.en' if lang == 'en' else 'small')   # base mishears Japanese and Korean too
     if lang != 'en' and os.path.basename(name.rstrip('/')).endswith('.en'):
         print(f"asr_check.py: model '{name}' is English-only but the lines are '{lang}'. Use a multilingual model (e.g. --model base or --model small).", file=sys.stderr); sys.exit(2)
     import numpy as np, soundfile as sf, soxr
     m = load_model(name)
     bad, words = 0, {}
     for L in lines:
-        y, sr = sf.read(os.path.join(a.voices_dir, L['id'] + '.wav'))
+        y, sr = sf.read(os.path.join(a.voices_dir, f"{L['id']}.wav"))
         if y.ndim > 1: y = y.mean(1)
         y = soxr.resample(y, sr, 16000, quality='HQ'); pad = np.zeros(int(.6 * 16000))   # same as librosa's default soxr_hq
         kw = dict(initial_prompt='以下是普通话的句子。') if lang == 'zh' else {}          # prompt in Simplified Chinese so the transcription doesn't come out in Traditional
@@ -114,8 +194,8 @@ def main():
         tail = (len(y) + len(pad)) / 16000 - .5   # Whisper sometimes repeats the line inside the trailing pad: drop such no-speech segments
         segs = [s for s in segs if not (s.no_speech_prob > .5 and s.start > tail)]; got = ' '.join(s.text.strip() for s in segs)
         words[L['id']] = [(w.word.strip(), round(w.start - .6, 3), round(w.end - .6, 3)) for s in segs for w in s.words]
-        ok, r = compare(want[L['id']], got, lang, a.threshold); bad += not ok
-        print(('OK  ' if ok else 'DIFF'), L['id'], '|', want[L['id']], '→', got, ('' if ok or lang == 'en' else f'   (similarity {r:.2f} < {a.threshold})'))
+        ok, why = compare(want[L['id']], got, lang, a.threshold); bad += not ok
+        print(('OK  ' if ok else 'DIFF'), L['id'], '|', want[L['id']], '→', got, f'   ({why})' if why else '')
     json.dump(words, open(os.path.join(a.voices_dir, 'words.json'), 'w', encoding='utf-8'), indent=0, ensure_ascii=False)
     print('mismatches:', bad, f'(lang={lang}, model={name})')
     sys.exit(1 if bad else 0)

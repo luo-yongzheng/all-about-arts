@@ -393,7 +393,8 @@ export function buildCity(scene) {
   // —— Build the meshes ——
   const matB = buildingMaterial();
   const matP = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9 });
-  const matM = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .7 });
+  // markings sit 1–3 cm above what they're painted on; polygonOffset lets them win the depth test at any distance instead of z-fighting (flicker)
+  const matM = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .7, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 });
   const add = (g, m, cast = true) => { const o = new THREE.Mesh(g.build(), m); o.castShadow = cast; o.receiveShadow = true; scene.add(o); return o; };
   add(bld, matB); add(plain, matP); add(grass, matP, false); add(mark, matM, false); add(sub, matP, false); add(fields, matP, false);
 
@@ -415,7 +416,7 @@ export function buildCity(scene) {
   ground.rotation.x = -Math.PI / 2; ground.position.y = -.05; ground.receiveShadow = true; scene.add(ground);
 
   // Pond water surface
-  const water = new THREE.Mesh(new THREE.CircleGeometry(1, 48), new THREE.MeshStandardMaterial({ color: '#3f86a3', roughness: .12, metalness: .1 }));
+  const water = new THREE.Mesh(new THREE.CircleGeometry(1, 48), new THREE.MeshStandardMaterial({ color: '#3f86a3', roughness: .12, metalness: .1, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 }));   // the park path crosses the pond at exactly the water's height: without the offset the two z-fought (the pond flickered)
   water.rotation.x = -Math.PI / 2; water.scale.set(POND.rx, POND.rz, 1); water.position.set(POND.x, CURB + .02, POND.z); water.receiveShadow = true; scene.add(water);
 
   // —— Trees (instanced: trunk + two canopy clumps) ——

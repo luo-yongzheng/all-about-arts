@@ -230,3 +230,4 @@ artifacts/
 .superpowers/
 .DS_Store
 .agents/skills/all-about-arts/vendor/**/*.jpg
+.agents/skills/all-about-arts/vendor/**/*.webp

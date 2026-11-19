@@ -12,13 +12,14 @@ const manifestFile=path.join(PACKAGE_ROOT,'provenance/lemo-snapshot.json');
 // In particular, nested SKILL.md files would register unrelated skills here.
 export function excludedSource(sourcePath){
   return ['.claude-plugin/','.github/','plugin/','tools/directory/'].some(prefix=>sourcePath.startsWith(prefix))||
-    ['CLAUDE.md','tools/directory.py','tools/publish.sh','tools/web_cuts.sh'].includes(sourcePath);
+    ['CLAUDE.md','tools/directory.py','tools/publish.sh','tools/web_cuts.sh','tools/films_repo.sh','tools/site_media.sh'].includes(sourcePath);
 }
 const exclusionReason='Unused upstream host packaging or publishing; all-about-arts has its own installation and entry point.';
 function snapshotManifest(source,files,excluded){
+  const renamed=files.filter(f=>f.path!==f.sourcePath).length;
   return {schemaVersion:2,source:{...source,totalFiles:files.length+excluded.length,totalBytes:[...files,...excluded].reduce((sum,f)=>sum+f.bytes,0)},
     scope:'Production source, guides, demos, visual references, assets and validation tools. Unused upstream host packaging and publishing are excluded.',
-    pathChanges:'Five .gitignore files are stored as .gitignore.upstream; retained file contents are byte-identical.',
+    pathChanges:`${renamed} .gitignore files are stored as .gitignore.upstream; retained file contents are byte-identical.`,
     totalBytes:files.reduce((sum,f)=>sum+f.bytes,0),files,excluded};
 }
 export async function verifySnapshot(){
@@ -92,10 +93,12 @@ export async function migrateLemo(source){
     await fs.mkdir(path.join(PACKAGE_ROOT,'references/styles',slug),{recursive:true});
     await fs.writeFile(path.join(PACKAGE_ROOT,'references/styles',slug,'STYLE.md'),styleData);
     const old=previous.styles.find(s=>s.id===slug)??{};
+    // Most demos are web pages; a few (e.g. firefly-pointillism) render from Python.
+    const htmlEntry=await exists(path.join(bundle,'styles',slug,'demo/index.html'));
     const legacy=old.renderer?{legacyPresetScope:'renderer, orientations, examples, transparent, alpha and limitations describe only the legacy preset; native describes the complete source route.',limitations:(old.limitations??[]).map(text=>text.startsWith('Legacy preset only: ')?text:`Legacy preset only: ${text} Complete upstream engines are available through native production.`)}:{};
-    styles.push({...old,...legacy,id:slug,slug,name:meta.en,en:meta.en,cn:meta.cn,category:meta.category_en,category_cn:meta.category_cn,uses:meta.uses,
+    styles.push({...old,...legacy,id:slug,slug,name:meta.en,en:meta.en,cn:meta.cn,category:meta.category_en,category_cn:meta.category_cn,uses:meta.uses,aka:meta.aka??[],...(meta.by?{contributedBy:meta.by}:{}),requires:meta.needs??[],
       status:INTEGRATED.includes(slug)?'integrated':'reference',reference:`references/styles/${slug}/STYLE.md`,sourceSha256:sha256(styleData),certification:null,
-      native:{status:'source-available',style:`${base}/STYLE.md`,demoGuide:`${base}/DEMO.md`,entry:`${base}/demo/index.html`,poster:`${base}/poster.jpg`,credits:`${base}/demo/CREDITS`,
+      native:{status:'source-available',engine:htmlEntry?'web':'python',style:`${base}/STYLE.md`,demoGuide:`${base}/DEMO.md`,entry:`${base}/demo/${htmlEntry?'index.html':'film.py'}`,poster:`${base}/poster.jpg`,credits:`${base}/demo/CREDITS`,
         projectCommand:`lemo init <project> --style ${slug}`,needs:'Author original scenes; check style-specific dependencies and external media before rendering.'}});
   }
   styles.sort((a,b)=>a.id.localeCompare(b.id));
@@ -104,9 +107,28 @@ export async function migrateLemo(source){
     nativeStatusDefinitions:{'source-available':'Style grammar, demonstration source, poster and credits are bundled. Not a claim that every demo has its external assets or was rendered.'},styles});
   return {...await verifySnapshot(),styles:styles.length};
 }
+// Replace a reviewed, unmodified snapshot with another clean local checkout.
+// The old bundle and generated files are restored if the new import fails.
+export async function replaceLemo(source){
+  const generated=[manifestFile,path.join(PACKAGE_ROOT,'styles/catalog.json')];
+  const saved=await Promise.all(generated.map(f=>fs.readFile(f)));
+  const previous=await verifySnapshot();
+  const aside=path.join(PACKAGE_ROOT,'vendor',`.lemo-previous-${process.pid}`);
+  await fs.rename(bundle,aside);
+  try{
+    const result=await migrateLemo(source);
+    await fs.rm(aside,{recursive:true,force:true});
+    return {...result,replaced:previous.commit};
+  }catch(e){
+    await fs.rm(bundle,{recursive:true,force:true});
+    await fs.rename(aside,bundle);
+    await Promise.all(generated.map((f,i)=>fs.writeFile(f,saved[i])));
+    throw e;
+  }
+}
 if(process.argv[1]&&await fs.realpath(process.argv[1]).catch(()=>null)===fileURLToPath(import.meta.url)){
   try{
-    const arg=process.argv[2];if(!arg)throw Error('Usage: node migrate-lemo.mjs <local-checkout> | --verify | --prune-unused');
-    console.log(JSON.stringify(arg==='--verify'?await verifySnapshot():arg==='--prune-unused'?await pruneUnusedPackaging():await migrateLemo(path.resolve(arg)),null,2));
+    const [arg,next]=process.argv.slice(2);if(!arg||(arg==='--replace'&&!next))throw Error('Usage: node migrate-lemo.mjs <local-checkout> | --replace <local-checkout> | --verify | --prune-unused');
+    console.log(JSON.stringify(arg==='--verify'?await verifySnapshot():arg==='--prune-unused'?await pruneUnusedPackaging():arg==='--replace'?await replaceLemo(path.resolve(next)):await migrateLemo(path.resolve(arg)),null,2));
   }catch(e){console.error(e.message);process.exitCode=1;}
 }

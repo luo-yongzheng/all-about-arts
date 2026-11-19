@@ -36,5 +36,5 @@ test('Antigravity reuses the workspace skill shared with Codex and can execute i
  const codex=await install({host:'codex',root:d}),before=await fs.readlink(codex.installations[0].path);
  const result=await install({host:'antigravity',root:d});assert.equal(result.installations.length,1);assert.equal(result.installations[0].host,'antigravity');
  const skill=path.join(d,'.agents/skills/all-about-arts');assert.equal(result.installations[0].path,await fs.realpath(path.dirname(skill)).then(parent=>path.join(parent,'all-about-arts')));assert.equal(await fs.readlink(skill),before,'existing shared skill is preserved');
- const cli=path.join(skill,'scripts/aaa.mjs');const styles=JSON.parse((await run(process.execPath,[cli,'styles','--json'],{cwd:d})).stdout.toString());assert.equal(styles.status,'success');assert.equal(styles.styles.length,59);
+ const cli=path.join(skill,'scripts/aaa.mjs');const styles=JSON.parse((await run(process.execPath,[cli,'styles','--json'],{cwd:d})).stdout.toString());assert.equal(styles.status,'success');assert.equal(styles.styles.length,99);
 });

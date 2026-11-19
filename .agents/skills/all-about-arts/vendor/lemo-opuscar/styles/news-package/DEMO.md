@@ -63,7 +63,7 @@ Times in seconds; cuts and wipes on the 120 BPM grid (beat 0 = 1.5 s).
 | 4 | 9.0–13.0 | split-flap price card | intro $2 / $10 (to 30 Nov) 9.2–9.4; then $4 / $20 (from 1 Dec) 9.9–10.1; ×2 10.3 | held 2.5 s complete |
 | 5 | 13.0–20.0 | line chart, % from the 23 Sep high (real closes 15 Sep – 15 Oct) | axes and the first days drawn under the band from 12.6, 12 days by 13.5, then the streak one day per step 14.15–15.65 with a counter; silence 16.0–16.5; the break 16.5 (shake, ring); readout 16.55; 熊市 BEAR MARKET stamp 17.35 | v3 13.1 |
 | 6 | 20.0–24.0 | two bars over the wafer plate (ILLUSTRATION) | Samsung −9.48 % 20.3, SK hynix −11.06 % 20.8, −9 % line 21.3, 都超过 9% badge 21.5 | v4 20.1; hard cut: strap and source change on the same frame |
-| 7 | 24.0–30.5 | Europe map, one take | EU members light from Brussels 23.75 (under the band); Belgium flashes and the Brussels ring 24.05; push 24.55–25.45; EU AI Office label 24.95; pan 25.35–26.05; requests fly to OpenAI 25.45 and Anthropic 26.2 | v5 24.1; letters held 4 s |
+| 7 | 24.0–30.5 | Europe map, one take: the 27 EU members as shapes, all other land one shape with no borders | EU members light from Brussels 23.75 (under the band); Belgium flashes and the Brussels ring 24.05; push 24.55–25.45; EU AI Office label 24.95; pan 25.35–26.05; requests fly to OpenAI 25.45 and Anthropic 26.2 | v5 24.1; letters held 4 s |
 | 8 | 30.5–35.5 | quote card (Commission speech) | quote mark 30.45, two lines 30.65 / 30.83, slow push, underline on "enforcing" 33.3, 已开始执法 ENFORCING stamp 33.9 | hard cut, profile strap on the same frame; v6 30.6; silence 2 from 33.9 |
 | 9 | 35.5–45.0 | spec card | title pushed up under the band 35.25, 开放权重 OPEN WEIGHTS stamp 36.0; bars 816B 36.9 and 42B 38.2, 约 5% badge 38.65; 1M token chip 39.0; two Mac Studios slide in 40.0 / 40.25 and fill their memory cells; bracket 41.2, ≈ 1 TB 41.4 | v7 35.6; bars held 6 s, Macs 3.5 s |
 | 10 | 45.0–47.5 | rundown, recap | ticks 45.8 / 46.2 / 46.6 / 47.0 | v8 45.1; the strap leaves under the band |
@@ -81,7 +81,7 @@ Times in seconds; cuts and wipes on the 120 BPM grid (beat 0 = 1.5 s).
 - **Story ④:** lifts to G major with a brass stab and a glockenspiel figure.
 - **Recap and end card:** a glockenspiel note per tick, then a timpani roll into an E-major tutti on the end card.
 - **Voice:** Doubao TTS 2.0, voice 解说小明 2.0 (`zh_male_jieshuoxiaoming_uranus_bigtts`), eight lines, `speech_rate` 0–15.
-  - It is the closest of the three male 2.0 voices tried (云舟 `m191`, 大壹 `dayi`, 解说小明) to a brisk broadcast read. It reads briskly, in a steady mid-low register.
+  - Use it rather than 云舟 `m191` or 大壹 `dayi`: of the three male 2.0 voices it is the closest to a brisk broadcast read. It reads briskly, in a steady mid-low register.
   - Spoken text in `vo/lines.json` writes numbers as Chinese words (`say`); the strap and subtitles keep the digits.
   - Speech-to-text hears 海力士 as 海利市 and 都柏林 as 督伯林 (same sounds); those lines carry the expected transcript in their `asr` field.
   - Music is ducked ≈ 7 dB and thinned in 1.2–5 kHz under speech.
@@ -114,13 +114,13 @@ demo/
   index.html, main.js     the page; SCENES and WIPES tables; EV for the mix; CUES for the .srt
   mix.py                  score (sampled), foley from events.json, voice, ducking
   vo/lines.json           narration: text (screen/subtitles), say (spoken), speech_rate, asr
-  data/                   KOSPI daily closes (CSV + raw API responses)
+  prompts/                the plate prompts (<name>.txt + common.txt), run by tools/gen_plates.sh
   assets/plates/          the two illustrative plates (AI-generated JPEGs, committed; the build stops if one is missing)
-  tools/prep.py           plate grade (duotone) → assets/plate_*.jpg + Natural Earth → Europe projection
+  tools/prep.py           plate grade (duotone) → assets/plate_*.jpg + Natural Earth → Europe projection (EU members as shapes, all other land merged, no borders)
   tools/tts_doubao.py     optional Doubao TTS client (reads DOUBAO_API_KEY from the environment; caches takes)
   tools/fonts.sh          OFL subsets for every character in main.js
   tools/subs.py           CUES → ../news-package.srt
-  tools/gen_plates.sh, gen_image.py   make new plates with the Codex CLI (optional; see STYLE.md §10)
+  tools/gen_plates.sh   make new plates with the Codex CLI through core/image/gen_image.py (optional; see STYLE.md §10)
   tools/footage.py        footage finder with licence logging (not needed here)
   FACTS.md, SOURCES.md, CREDITS
 ```
@@ -158,10 +158,10 @@ The voice is optional equipment: with no Doubao key, write the same lines for Ko
 
 ### Demo-specific choices and pitfalls
 
-- **Rebuilt from the first short cut.** This version was rebuilt from the user's first short Chinese cut. An intermediate cut added a virtual studio, numbered slat bumpers and a locator map; the user preferred the plain bulletin, and they were removed.
-- **Plates are committed.** The plates were generated once and are committed as JPEGs, so a clone builds the same film.
-- **Story ③ was cut back twice:**
-  - The Commission's own speeches contradicted "for the first time" and "no fines".
-  - The incident details behind the requests come from a single report about real companies, so they stay out of picture and voice.
+- **Keep it a plain bulletin.** No virtual studio, no numbered slat bumpers, no locator map.
+- **Commit the plates.** Generate them once and commit the JPEGs, so a clone builds the same film.
+- **Keep story ③ to what the sources support:**
+  - Don't say "for the first time" or "no fines": the Commission's own speeches contradict both.
+  - Keep the incident details behind the requests out of picture and voice: they come from a single report about real companies.
 - **"Bear market" depends on the peak.** From June's record close the Kospi had been more than 20 % down since July. The film uses the September high, as the report does, and says so on the axis.
 - **Story ④ says "open weights", not "open source".** The licence has limited commercial terms. "Most capable" is Meta's own claim and is not reported.

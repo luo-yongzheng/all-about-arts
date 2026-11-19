@@ -1,219 +1,280 @@
-// scenes.js · scenes built into the engine: lake / waterfall / ridge / forest / coast
-// Each scene returns its "layers" (planes) in printing order: { id, depth, parts:[{ ink, path, knock?, sub }] }
-//   ink = palette key (sky1 sky2 far mid near sun), sub = which pull within the same beat (0 main colour, 1 accent colour, half a beat later)
-//   depth: parallax factor (1 = paper surface; <1 farther; >1 nearer), used only in the "layered parallax" shot
-// Also returns trail: the trail polyline [{x,y,plane}], segmented by the layer it lies on; the dashed line is drawn by the poster layer
-// Coordinates: poster units, sheet 1000×1500, picture area x 26..974, y 26..1190 (the rest is paper margin and info band)
-import { mulberry, polyPath, circlePath, ringPath, rectPath, unionPath, ridgeLine, bandSteps, lerp } from './silk.js';
+// scenes.js · the cities of "The Long Way Home", as full-bleed 16:9 prints (1920×1080 u), ink layers in print order.
+// A scene = { parts: [{ pull, ink, path, knock?, lit? }] }. `pull` names the squeegee pass that prints the part (one pass may carry
+// several parts); `ink` is a palette key: sky1 sky2 far mid near sun glow. Landmarks are stylised silhouettes, not traced from photos.
+import { mulberry, polyPath, circlePath, ringPath, rectPath, unionPath, bandSteps, lerp } from './silk.js';
 
-export const PW = 1000, PH = 1500, ART = [26, 26, 948, 1164];
+export const AW = 1920, AH = 1080, BLEED = 60;
+const FULL = () => rectPath(-BLEED, -BLEED, AW + 2 * BLEED, AH + 2 * BLEED);
 
-// ---- shape building blocks ----
-function pine(p, x, base, h, w, tiers = 4) {       // a stylized pine: tiers of drooping branch layers + a short trunk, one outer outline
-  const tw = Math.max(3, w * .06), trunkTop = base - h * .1;
-  const R = [[x, base - h]];
-  for (let i = 0; i < tiers; i++) {
-    const t = (i + 1) / tiers;
-    const yb = base - h * .1 - (h * .9) * (1 - t) * .98;       // lower edge of this tier
-    const hw = w / 2 * (.28 + .72 * t);                          // half-width: wider further down
-    R.push([x + hw, yb + h * .012]);                             // drooping branch tip
-    if (i < tiers - 1) R.push([x + hw * .42, yb - h * .02]);    // pull back in to the start of the next tier
+function blob(p, x, y, rx, ry, a0 = 0, a1 = Math.PI * 2) { p.moveTo(x + rx * Math.cos(a0), y + ry * Math.sin(a0)); p.ellipse(x, y, rx, ry, 0, a0, a1); p.closePath(); }
+// a cypress crown: overlapping flat-bottomed clumps (one outline, no strokes)
+function cypress(p, x, base, h, w, seed) {
+  const r = mulberry(seed);
+  p.rect(x - w * .035, base - h * .45, w * .07, h * .45 + 30);                    // trunk
+  const n = 7;
+  for (let i = 0; i < n; i++) {
+    const t = i / (n - 1), cy = base - h * (.35 + .62 * t), cw = w * (.5 - .32 * t) * (.8 + .4 * r()), ch = h * (.13 + .04 * r());
+    const cx = x + (r() - .5) * w * .28;
+    blob(p, cx, cy, cw, ch);
+    if (r() < .7) blob(p, cx + cw * (r() < .5 ? -.7 : .7), cy + ch * .3, cw * .55, ch * .8);
   }
-  R.push([x + tw, trunkTop], [x + tw, base + 6]);
-  const L = R.slice(1).reverse().map(q => [2 * x - q[0], q[1]]);
-  const pts = R.concat(L);
-  pts.forEach((q, i) => i ? p.lineTo(q[0], q[1]) : p.moveTo(q[0], q[1])); p.closePath();
 }
-function forest(x0, x1, base, hmin, hmax, seed, dense = 1, bottom = 1500) {   // a row of pines + solid base
+// a conical eave roof seen from the front: concave slopes, eave tips flaring up
+function roof(cx, yBot, wBot, yTop, wTop, flare = 12) {
+  const pts = [];
+  const k = 8;
+  for (let i = 0; i <= k; i++) { const t = i / k, y = lerp(yBot - flare, yTop, t), w = lerp(wBot, wTop, 1 - Math.pow(1 - t, 1.7)); pts.push([cx - w, y]); }
+  const R = pts.slice().reverse().map(([x, y]) => [2 * cx - x, y]);
+  return polyPath([[cx - wBot + 22, yBot + 4], ...pts, ...R, [cx + wBot - 22, yBot + 4]]);
+}
+function roofLit(cx, yBot, wBot, yTop, wTop, flare = 12) {     // the left (sun-facing) half, a jagged-edged lit face
+  const pts = [[cx - wBot + 22, yBot + 4]], k = 8;
+  for (let i = 0; i <= k; i++) { const t = i / k, y = lerp(yBot - flare, yTop, t), w = lerp(wBot, wTop, 1 - Math.pow(1 - t, 1.7)); pts.push([cx - w, y]); }
+  pts.push([cx - wTop * .2, yTop + 2], [cx - wBot * .32, yBot - (yBot - yTop) * .35], [cx - wBot * .42, yBot + 4]);
+  return polyPath(pts);
+}
+
+// ================= BEIJING · Temple of Heaven, Hall of Prayer for Good Harvests (dawn) =================
+export function temple(seed = 3) {
+  const CX = 820, SUN = [1240, 452], SR = 86;
+  // sky
+  const sunKnock = unionPath([circlePath(SUN[0], SUN[1], SR + 9), ringPath(SUN[0], SUN[1], SR + 30, SR + 40), ringPath(SUN[0], SUN[1], SR + 64, SR + 71)]);
+  const sky2 = new Path2D(); sky2.rect(-BLEED, -BLEED, AW + 2 * BLEED, 170 + BLEED); sky2.addPath(bandSteps(-BLEED, AW + 2 * BLEED, 150, 470, 6, 14));
+  // hall + terraces (their silhouette is knocked out of the woods and the ground, so the marble stays bare paper)
+  const T1 = [CX - 480, 806, 960, 50], T2 = [CX - 396, 766, 792, 40], T3 = [CX - 312, 728, 624, 38];
+  const terr = unionPath([rectPath(...T1), rectPath(...T2), rectPath(...T3)]);
+  const R1 = [CX, 642, 300, 594, 178], R2 = [CX, 556, 252, 512, 142], R3 = [CX, 476, 212, 416, 34];
+  const roofs = unionPath([roof(...R1), roof(...R2), roof(...R3, 10)]);
+  const drums = unionPath([rectPath(CX - 202, 652, 404, 76), rectPath(CX - 166, 566, 332, 28), rectPath(CX - 130, 486, 260, 26)]);
+  const finial = unionPath([circlePath(CX, 384, 14), rectPath(CX - 5, 398, 10, 10), polyPath([[CX - 12, 408], [CX + 12, 408], [CX + 22, 416], [CX - 22, 416]])]);
+  const hallSil = unionPath([roofs, drums, finial]);
+  const sil = unionPath([terr, hallSil]);
+  // far: the old cypress woods and the round enclosure wall behind the hall
+  const far = new Path2D();
+  { const r = mulberry(seed + 4); far.rect(-BLEED, 690, AW + 2 * BLEED, 500);
+    for (let x = -BLEED; x < AW + BLEED; x += 46 + r() * 40) blob(far, x, 690 - r() * 34, 40 + r() * 46, 28 + r() * 26); }
+  const wall = rectPath(-BLEED, 744, AW + 2 * BLEED, 26);            // enclosure wall: a lighter band (glow) across the woods
+  // mid: the blue tiled roofs; under-eave shadows; the terrace shadows and stair treads
+  const eaves = unionPath([rectPath(CX - 262, 642, 524, 12), rectPath(CX - 216, 556, 432, 10), rectPath(CX - 178, 476, 356, 10)]);
+  const terrShade = unionPath([rectPath(T1[0], T1[1], T1[2], 9), rectPath(T2[0], T2[1], T2[2], 8), rectPath(T3[0], T3[1], T3[2], 8),
+    ...[0, 1, 2].map(i => { const t = [T1, T2, T3][i]; const post = new Path2D(); for (let x = t[0] + 14; x < t[0] + t[2] - 8; x += 26) post.rect(x, t[1] - 13, 6, 13); return post; })]);
+  const stair = new Path2D(); for (let y = 732; y < 852; y += 10) stair.rect(CX - 62, y, 124, 3.5);
+  // near: ground with the raised walkway knocked out (paper), the big cypresses, the doors in the drums, birds
+  const ground = polyPath([[-BLEED, 856], [AW + BLEED, 856], [AW + BLEED, AH + BLEED], [-BLEED, AH + BLEED]]);
+  const walk = polyPath([[CX - 120, 856], [CX + 120, 856], [CX + 360, AH + BLEED], [CX - 360, AH + BLEED]]);
+  const walkLines = new Path2D(); for (let i = 1; i < 7; i++) { const y = 856 + Math.pow(i / 7, 1.6) * 260; const w = lerp(120, 360, (y - 856) / (AH + BLEED - 856)); walkLines.rect(CX - w, y, 2 * w, 3 + i); }
+  const trees = new Path2D();
+  cypress(trees, 150, 1100, 660, 470, seed + 11); cypress(trees, 400, 1110, 470, 330, seed + 12); cypress(trees, -40, 1100, 800, 380, seed + 13);
+  cypress(trees, 1350, 1110, 470, 330, seed + 14); cypress(trees, 1560, 1110, 640, 460, seed + 15); cypress(trees, 1860, 1100, 820, 520, seed + 16);
+  const doors = new Path2D(); for (let i = -3; i <= 3; i++) doors.rect(CX + i * 52 - 9, 664, 18, 58);
+  for (let i = -2; i <= 2; i++) doors.rect(CX + i * 56 - 7, 570, 14, 20);
+  for (let i = -2; i <= 2; i++) doors.rect(CX + i * 44 - 6, 490, 12, 18);
+  const birds = new Path2D();
+  for (const [x, y, s] of [[560, 300, 1], [612, 270, .8], [520, 252, .65], [1010, 330, .7]]) birds.addPath(polyPath([[x - 24 * s, y - 6 * s], [x - 11 * s, y - 10 * s], [x, y], [x + 11 * s, y - 10 * s], [x + 24 * s, y - 6 * s], [x + 11 * s, y - 5 * s], [x, y + 5 * s], [x - 11 * s, y - 5 * s]]));
+  // lit faces: the sun side of each roof (glow), the cypress tops (mid)
+  const lit = unionPath([roofLit(...R1), roofLit(...R2), roofLit(...R3, 10)]);
+  const crownsLit = new Path2D(); { const r = mulberry(seed + 21); for (const [x, base, h, w] of [[150, 1100, 760, 560], [380, 1110, 520, 360], [1560, 1110, 640, 460], [1860, 1100, 820, 520]]) for (let i = 0; i < 4; i++) { const t = (i + 1) / 6, cy = base - h * (.35 + .62 * t) - h * .05, cw = w * (.5 - .32 * t) * .55; blob(crownsLit, x - cw * .4 + (r() - .5) * 20, cy, cw, h * .045, Math.PI, Math.PI * 2); } }
+  return {
+    sun: SUN, focus: [CX, 600], header: { x: 104, y: 214, size: 150 },
+    depth: { sun: .1, sky1: 0, sky2: 0, far: .3, mid: .6, near: .9, acc: .6, lit: .6 },
+    parts: [
+      { pull: 'sun', ink: 'sun', path: circlePath(SUN[0], SUN[1], SR) },
+      { pull: 'sky1', ink: 'sky1', path: FULL(), knock: sunKnock, cut: unionPath([terr, walk]) },
+      { pull: 'sky2', ink: 'sky2', path: sky2 },
+      { pull: 'far', ink: 'far', path: far, cut: unionPath([sil, walk]) },
+      { pull: 'mid', ink: 'mid', path: unionPath([roofs, eaves]) },
+      { pull: 'mid', ink: 'far', path: unionPath([terrShade, stair]), lit: 1 },
+      { pull: 'near', ink: 'mid', path: ground, cut: unionPath([walk, sil]) },
+      { pull: 'near', ink: 'near', path: unionPath([trees, doors, birds]) },
+      { pull: 'near', ink: 'far', path: walkLines, lit: 1 },
+      { pull: 'acc', ink: 'sun', path: unionPath([drums, finial]), knock: doors },
+      { pull: 'lit', ink: 'glow', path: lit, lit: 1 },
+    ],
+  };
+}
+
+// ---------------- shared helpers for the other cities ----------------
+function halfDome(p, cx, cy, rx, ry) { p.moveTo(cx - rx, cy); p.ellipse(cx, cy, rx, ry, 0, Math.PI, Math.PI * 2); p.closePath(); }
+function waterBars(x0, x1, y0, y1, n, seed, len = 220) {
   const p = new Path2D(), r = mulberry(seed);
-  p.rect(x0 - 40, base, x1 - x0 + 80, bottom - base);
-  let x = x0 - 20;
-  while (x < x1 + 30) { const h = lerp(hmin, hmax, r()), w = h * (.34 + r() * .12); pine(p, x, base + 4, h, w, 3 + (r() * 3 | 0)); x += w * (.42 + r() * .35) / dense; }
-  return p;
-}
-function range(x0, x1, yBase, peaks, seed, rough = 22) {   // mountain-range silhouette: peaks=[[x,y],...]
-  const pts = [[x0 - 30, yBase], [x0 - 30, peaks[0][1] + 60]];
-  let prev = [x0 - 30, peaks[0][1] + 60];
-  for (let i = 0; i < peaks.length; i++) { const seg = ridgeLine(prev, peaks[i], rough, 3, seed + i); pts.push(...seg.slice(1)); prev = peaks[i]; }
-  const end = [x1 + 30, peaks[peaks.length - 1][1] + 80]; pts.push(...ridgeLine(prev, end, rough, 3, seed + 99).slice(1));
-  pts.push([x1 + 30, yBase]);
-  return { path: polyPath(pts), pts };
-}
-// Lit faces: a jagged block running down one side of each peak from the summit (WPA-style two-tone mountains)
-function facets(peaks, side, depth, seed, jag = 18) {
-  const p = new Path2D(), r = mulberry(seed);
-  for (const [x, y] of peaks) {
-    const d = depth * (.8 + r() * .5), sx = side * d * .75;
-    const pts = [[x, y]];
-    const n = 5;
-    for (let i = 1; i <= n; i++) { const t = i / n; pts.push([x + sx * t + (r() - .5) * jag, y + d * t]); pts.push([x + sx * t * .45 + side * jag * .3, y + d * t + jag * .5]); }
-    pts.push([x + side * 4, y + d * 1.05]);
-    pts.forEach((q, i) => i ? p.lineTo(q[0], q[1]) : p.moveTo(q[0], q[1])); p.closePath();
+  for (let i = 0; i < n; i++) {
+    const k = i / n, y = y0 + (y1 - y0) * Math.pow(k, 1.5), th = 2.5 + 16 * Math.pow(k, 1.4);
+    let x = x0 + r() * 80;
+    while (x < x1) { const L = len * (.5 + r()), g = 30 + r() * 90 * (.4 + k); p.rect(x, y, L, th); x += L + g; }
   }
   return p;
 }
-function sunParts(x, y, r, rings = 1) {
-  const knock = new Path2D(); knock.addPath(circlePath(x, y, r + 5));
-  for (let i = 0; i < rings; i++) knock.addPath(ringPath(x, y, r + 22 + i * 30, r + 32 + i * 30));
-  return { knock, disc: circlePath(x, y, r) };
-}
-function skyPlane(sunKnock, bandTop, bandBot, extraTop = 0) {
-  const flood = rectPath(-60, -60 - extraTop, PW + 120, 1700 + extraTop);
-  const top = new Path2D(); top.rect(-60, -60 - extraTop, PW + 120, bandTop + 60 + extraTop); top.addPath(bandSteps(-60, PW + 120, bandTop, bandBot, 5, 10));
-  return { id: 'sky', depth: .15, parts: [{ ink: 'sky1', path: flood, knock: sunKnock, sub: 0 }, { ink: 'sky2', path: top, sub: 1 }] };
-}
-function wavesPath(x0, x1, y0, y1, n, seed, len = 60) {   // water reflections: short horizontal dashes
-  const p = new Path2D(), r = mulberry(seed);
-  for (let i = 0; i < n; i++) { const y = lerp(y0, y1, Math.pow(r(), 1.3)), l = len * (.4 + r()) * (.4 + (y - y0) / (y1 - y0)), x = lerp(x0, x1, r()), th = 2.5 + (y - y0) / (y1 - y0) * 5; p.rect(x, y, l, th); }
-  return p;
+const bird = (p, x, y, s) => p.addPath(polyPath([[x - 24 * s, y - 6 * s], [x - 11 * s, y - 10 * s], [x, y], [x + 11 * s, y - 10 * s], [x + 24 * s, y - 6 * s], [x + 11 * s, y - 5 * s], [x, y + 5 * s], [x - 11 * s, y - 5 * s]]));
+function sunParts(x, y, r) {
+  return { disc: circlePath(x, y, r), knock: unionPath([circlePath(x, y, r + 9), ringPath(x, y, r + 28, r + 37), ringPath(x, y, r + 58, r + 64)]) };
 }
 
-// ================= LAKE =================
-function lake(seed) {
-  const sun = sunParts(640, 575, 92, 2);
-  const peaks = [[120, 430], [300, 360], [470, 455], [610, 400], [800, 470], [930, 420]];
-  const R = range(0, PW, 760, peaks, seed + 3, 26);
-  const lakeTop = 660;
-  const shore = forest(-40, 1040, 668, 26, 58, seed + 5, 1.3, 700);
-  const lakeP = rectPath(-60, lakeTop, PW + 120, 900);
-  const glints = new Path2D();
-  for (let i = 0; i < 12; i++) { const y = 690 + i * 22 + i * i * 1.6, w = 170 - i * 9 + (i % 3) * 18; glints.rect(640 - w / 2 + ((i * 37) % 23) - 11, y, w, 4 + i * .7); }
-  const refl = wavesPath(40, 900, 700, 1000, 22, seed + 7, 70);
-  // near layer: big pine on the left + pine on the right + shore rocks in the foreground
-  const near = new Path2D();
-  pine(near, 110, 1250, 1080, 330, 7); pine(near, 250, 1260, 760, 250, 6); pine(near, -20, 1250, 900, 300, 6);
-  pine(near, 905, 1250, 820, 270, 6); pine(near, 1010, 1250, 1000, 300, 7);
-  near.addPath(polyPath([[-60, 1030], [140, 1000], [300, 1022], [420, 1060], [560, 1045], [720, 1070], [860, 1020], [1060, 1000], [1060, 1600], [-60, 1600]]));
-  near.addPath(polyPath([[560, 1045], [610, 990], [690, 975], [760, 1010], [790, 1060]]));   // big shore rock
-  const rockLit = polyPath([[610, 990], [690, 975], [705, 1000], [640, 1012]]);
-  const trail = [[500, 1200], [470, 1150], [520, 1110], [640, 1090], [780, 1100], [880, 1080], [990, 1060]].map(q => ({ x: q[0], y: q[1], plane: 'near' }));
+// ================= ISTANBUL · Hagia Sophia across the water (afternoon) =================
+export function istanbul(seed = 7) {
+  const CX = 860, W0 = AW, H0 = AH, SUN = sunParts(1270, 300, 66);
+  const sky2 = new Path2D(); sky2.rect(-BLEED, -BLEED, W0 + 2 * BLEED, 140 + BLEED); sky2.addPath(bandSteps(-BLEED, W0 + 2 * BLEED, 120, 400, 6, 10));
+  // far: the opposite shore, low hills with tiny domes, and the water bars below
+  const hills = polyPath([[-BLEED, 650], [-BLEED, 600], [180, 584], [420, 596], [640, 572], [900, 590], [1180, 566], [1460, 588], [1700, 574], [W0 + BLEED, 590], [W0 + BLEED, 650]]);
+  const farBits = new Path2D(); halfDome(farBits, 1250, 568, 26, 18); farBits.rect(1290, 520, 7, 50); halfDome(farBits, 1560, 578, 20, 14); farBits.rect(1520, 536, 6, 44);
+  const water = waterBars(-BLEED, W0 + BLEED, 760, 1100, 12, seed + 3);
+  // mid: the building mass (rose stone) and the four minaret shafts
+  const body = unionPath([rectPath(CX - 300, 556, 600, 150), rectPath(CX - 430, 616, 130, 90), rectPath(CX + 300, 616, 130, 90),
+    rectPath(CX - 266, 470, 70, 88), rectPath(CX + 196, 470, 70, 88), rectPath(CX - 172, 420, 344, 52)]);
+  const mins = new Path2D();
+  for (const [x, top] of [[CX - 520, 250], [CX - 450, 300], [CX + 450, 300], [CX + 520, 250]]) {
+    mins.rect(x - 11, top, 22, 706 - top); mins.rect(x - 17, top + 90, 34, 10); mins.rect(x - 17, top + 220, 34, 10);
+    mins.addPath(polyPath([[x - 13, top + 2], [x, top - 70], [x + 13, top + 2]]));
+  }
+  // near: domes, windows, the quay, a ferry, gulls
+  const domes = new Path2D(); halfDome(domes, CX, 424, 196, 128); halfDome(domes, CX - 212, 558, 112, 70); halfDome(domes, CX + 212, 558, 112, 70);
+  halfDome(domes, CX - 366, 618, 62, 40); halfDome(domes, CX + 366, 618, 62, 40);
+  const win = new Path2D();
+  for (let i = -6; i <= 6; i++) win.rect(CX + i * 24 - 6, 434, 12, 26);
+  for (let i = -5; i <= 5; i++) win.rect(CX + i * 46 - 9, 600, 18, 34);
+  for (let i = -5; i <= 5; i++) win.rect(CX + i * 46 - 8, 652, 16, 30);
+  const quay = rectPath(-BLEED, 704, W0 + 2 * BLEED, 52);
+  const ferry = new Path2D(); ferry.addPath(polyPath([[150, 892], [520, 892], [490, 940], [190, 940]])); ferry.rect(230, 852, 220, 42); ferry.rect(300, 818, 60, 36); ferry.rect(318, 790, 22, 30);
+  const ferryWin = new Path2D(); for (let i = 0; i < 7; i++) ferryWin.rect(244 + i * 29, 862, 16, 16);
+  const birds = new Path2D(); bird(birds, 1180, 360, .9); bird(birds, 1240, 320, .7); bird(birds, 1120, 300, .6); bird(birds, 640, 820, .8);
+  // lit faces (sun from the right): right halves of the domes, the right side of each minaret
+  const lit = new Path2D();
+  for (const [cx, cy, rx, ry] of [[CX, 424, 196, 128], [CX - 212, 558, 112, 70], [CX + 212, 558, 112, 70], [CX + 366, 618, 62, 40]]) { lit.moveTo(cx + rx * .15, cy); lit.ellipse(cx, cy, rx, ry, 0, -Math.PI * .42, 0); lit.lineTo(cx + rx * .15, cy); lit.closePath(); }
+  const finials = new Path2D(); for (const [x, top] of [[CX - 520, 250], [CX - 450, 300], [CX + 450, 300], [CX + 520, 250]]) finials.addPath(circlePath(x, top - 76, 6)); finials.addPath(circlePath(CX, 288, 8));
   return {
-    planes: [
-      skyPlane(sun.knock, 150, 360),
-      { id: 'sun', depth: .15, parts: [{ ink: 'sun', path: sun.disc, sub: 0 }] },
-      { id: 'far', depth: .35, parts: [{ ink: 'far', path: R.path, sub: 0 }, { ink: 'sky2', path: facets(peaks, 1, 110, seed + 11, 14), sub: 1 }] },
-      { id: 'mid', depth: .7, parts: [{ ink: 'sky2', path: lakeP, sub: 0 }, { ink: 'sun', path: glints, sub: 1 }, { ink: 'sky1', path: refl, sub: 1 }, { ink: 'mid', path: shore, sub: 0 }] },
-      { id: 'near', depth: 1.5, parts: [{ ink: 'near', path: near, sub: 0 }, { ink: 'mid', path: rockLit, sub: 1 }] },
-    ], trail, sun: [640, 575],
+    w: W0, h: H0, header: { x: 104, y: 214, size: 150 },
+    depth: { sky: 0, far: .25, mid: .55, near: .85, acc: .55, lit: .55 },
+    parts: [
+      { pull: 'sky', ink: 'sky1', path: rectPath(-BLEED, -BLEED, W0 + 2 * BLEED, H0 + 2 * BLEED), knock: SUN.knock },
+      { pull: 'sky', ink: 'sky2', path: sky2 },
+      { pull: 'far', ink: 'far', path: unionPath([hills, farBits]) },
+      { pull: 'far', ink: 'far', path: water, lit: 1 },
+      { pull: 'mid', ink: 'mid', path: unionPath([body, mins]) },
+      { pull: 'near', ink: 'near', path: unionPath([domes, win, quay, ferry, birds]), cut: ferryWin },
+      { pull: 'acc', ink: 'sun', path: unionPath([SUN.disc, finials]) },
+      { pull: 'lit', ink: 'glow', path: lit, lit: 1 },
+    ],
   };
 }
 
-// ================= WATERFALL =================
-function waterfall(seed) {
-  const sun = sunParts(810, 190, 52, 1);
-  const peaks = [[90, 330], [260, 280], [430, 350], [640, 300], [860, 360]];
-  const R = range(0, PW, 700, peaks, seed + 3, 20);
-  // cliffs: left and right blocks + back wall, water pouring out of a V notch in the middle; rock faces use three large facets (WPA-style faceted rock)
-  const cliff = polyPath([[-60, 430], [120, 398], [260, 412], [380, 440], [452, 478], [470, 520], [530, 520], [550, 476], [640, 452], [780, 424], [900, 440], [1060, 420], [1060, 1300], [-60, 1300]]);
-  const fall = polyPath([[470, 516], [530, 516], [538, 600], [552, 760], [578, 950], [422, 950], [448, 760], [462, 600]]);
-  const shadows = unionPath([
-    polyPath([[-60, 440], [120, 398], [70, 520], [130, 640], [60, 780], [140, 920], [80, 1000], [-60, 1000]]),
-    polyPath([[1060, 420], [900, 440], [950, 560], [880, 700], [960, 840], [900, 1000], [1060, 1000]]),
-    polyPath([[380, 441], [452, 478], [463, 600], [449, 760], [423, 950], [352, 950], [392, 770], [404, 600], [370, 520]]),
-    polyPath([[550, 476], [640, 453], [612, 540], [602, 700], [622, 850], [646, 950], [578, 950], [552, 760], [538, 600]])]);
-  const lit = new Path2D(); lit.addPath(polyPath([[120, 398], [260, 412], [380, 440], [452, 478], [456, 492], [380, 456], [260, 424], [124, 410]])); lit.addPath(polyPath([[550, 476], [640, 452], [780, 424], [900, 440], [900, 452], [780, 437], [640, 465], [552, 490]]));
-  const streaks = new Path2D(); for (let i = 0; i < 5; i++) { const x0 = 480 + i * 10, x1 = 452 + i * 24; streaks.addPath(polyPath([[x0, 560 + i * 20], [x0 + 3, 560 + i * 20], [x1 + 4, 940], [x1, 940]])); }
-  const topForest = unionPath([forest(-40, 230, 418, 40, 84, seed + 6, .8, 424), forest(700, 1040, 448, 40, 88, seed + 7, .8, 452)]);
-  const pool = new Path2D(); pool.ellipse(500, 985, 250, 48, 0, 0, Math.PI * 2);
-  const foam = new Path2D();
-  for (let i = 0; i < 2; i++) { const rx = 150 + i * 70, y = 978 + i * 18; foam.moveTo(500 - rx, y); foam.quadraticCurveTo(500, y + 10, 500 + rx, y); foam.quadraticCurveTo(500, y + 16, 500 - rx, y); foam.closePath(); }
-  foam.addPath(polyPath([[422, 950], [578, 950], [600, 968], [400, 968]]));
-  const slopeForest = unionPath([forest(-40, 300, 1010, 90, 170, seed + 8, .8, 1300), forest(700, 1040, 1000, 90, 180, seed + 9, .8, 1300)]);
-  const near = new Path2D();
-  pine(near, 40, 1260, 1000, 300, 7); pine(near, 180, 1270, 620, 210, 5);
-  pine(near, 920, 1260, 1060, 320, 8); pine(near, 1040, 1260, 820, 260, 6);
-  near.addPath(polyPath([[-60, 1080], [200, 1060], [330, 1110], [520, 1120], [700, 1100], [880, 1070], [1060, 1090], [1060, 1600], [-60, 1600]]));
-  const ferns = new Path2D(); for (let i = 0; i < 9; i++) { const x = 250 + i * 64, y = 1112 - (i % 3) * 6; ferns.addPath(polyPath([[x, y], [x + 22, y - 44 - (i % 2) * 18], [x + 32, y - 40], [x + 16, y]])); }
-  const trail = [[330, 1200], [360, 1150], [300, 1120], [360, 1090], [440, 1080]].map(q => ({ x: q[0], y: q[1], plane: 'near' }));
+// ================= PARIS · the Eiffel Tower (morning), a tall print for a crane move =================
+export function paris(seed = 9) {
+  const W0 = AW, H0 = 1620, CX = 960, BASE = 1560, SUN = sunParts(520, 600, 72);
+  const sky2 = new Path2D(); sky2.rect(-BLEED, -BLEED, W0 + 2 * BLEED, 240 + BLEED); sky2.addPath(bandSteps(-BLEED, W0 + 2 * BLEED, 220, 720, 7, 12));
+  // the tower: one outline, then its openings knocked out to whatever is behind
+  const prof = [[420, BASE], [330, 1430], [232, 1330], [226, 1292], [150, 1150], [104, 1022], [118, 1004], [70, 860], [42, 680], [26, 470], [30, 452], [18, 400], [12, 330], [3, 250], [2, 130]];
+  const tower = polyPath([...prof.map(([x, y]) => [CX - x, y]), ...prof.slice().reverse().map(([x, y]) => [CX + x, y])]);
+  const open = new Path2D();
+  open.moveTo(CX - 262, BASE + 2); open.ellipse(CX, BASE + 2, 262, 228, 0, Math.PI, Math.PI * 2); open.closePath();          // the big arch
+  open.addPath(polyPath([[CX - 150, 1286], [CX + 150, 1286], [CX + 56, 1030], [CX - 56, 1030]]));
+  open.addPath(polyPath([[CX - 34, 996], [CX + 34, 996], [CX + 12, 600], [CX - 12, 600]]));
+  for (let k = 0; k < 6; k++) {                                                                                           // lattice: diamonds down each leg
+    const y = 1060 + k * 40, w = lerp(108, 205, k / 5);
+    for (const s of [-1, 1]) { const x = CX + s * (w - 22); open.addPath(polyPath([[x, y - 14], [x + 9, y], [x, y + 14], [x - 9, y]])); }
+  }
+  // far: distant roofs and chimneys; mid: nearer mansard blocks left and right
+  const far = new Path2D(); { const r = mulberry(seed + 2); far.rect(-BLEED, 1400, W0 + 2 * BLEED, 300); for (let x = -BLEED; x < W0 + BLEED; x += 70 + r() * 70) { far.rect(x, 1370 - r() * 50, 50 + r() * 60, 80); far.rect(x + 10, 1340 - r() * 50, 10, 40); } }
+  const mid = new Path2D();
+  for (const [x0, x1, top] of [[-BLEED, 560, 1300], [1380, W0 + BLEED, 1320]]) {
+    mid.addPath(polyPath([[x0, top + 50], [x0 + 30, top], [x1 - 30, top], [x1, top + 50], [x1, H0 + BLEED], [x0, H0 + BLEED]]));
+    for (let x = x0 + 60; x < x1 - 40; x += 120) mid.rect(x, top - 34, 24, 36);
+  }
+  const midWin = new Path2D(); for (const [x0, x1, top] of [[-BLEED, 560, 1300], [1380, W0 + BLEED, 1320]]) for (let x = x0 + 40; x < x1 - 40; x += 70) { midWin.rect(x, top + 20, 24, 22); midWin.rect(x, top + 100, 24, 40); midWin.rect(x, top + 190, 24, 40); }
+  const awn = new Path2D(); for (const [x0, x1, top] of [[-BLEED, 560, 1300], [1380, W0 + BLEED, 1320]]) for (let x = x0 + 34; x < x1 - 40; x += 140) awn.addPath(polyPath([[x, top + 262], [x + 40, top + 262], [x + 46, top + 286], [x - 6, top + 286]]));
+  // near: the tower, park trees at its foot, lamp posts, birds
+  const trees = new Path2D(); { const r = mulberry(seed + 5); for (let x = 520; x < 1420; x += 60 + r() * 40) { const rr = 40 + r() * 30; trees.moveTo(x + rr, 1530); trees.ellipse(x, 1530, rr, rr * .8, 0, 0, Math.PI * 2); trees.closePath(); } trees.rect(500, 1540, 940, 200); }
+  const birds = new Path2D(); bird(birds, 1240, 520, .9); bird(birds, 1300, 480, .7); bird(birds, 1190, 456, .6);
+  // lit face: the left (sunward) edge of the tower
+  const litProf = prof.map(([x, y]) => [CX - x, y]), litIn = prof.map(([x, y]) => [CX - x * .62, y]).reverse();
+  const lit = polyPath([...litProf, ...litIn]);
   return {
-    planes: [
-      skyPlane(sun.knock, 110, 270),
-      { id: 'sun', depth: .15, parts: [{ ink: 'sun', path: sun.disc, sub: 0 }] },
-      { id: 'far', depth: .35, parts: [{ ink: 'sky2', path: R.path, sub: 0 }, { ink: 'sky1', path: facets(peaks, -1, 70, seed + 12, 10), sub: 1 }] },
-      { id: 'mid', depth: .7, parts: [{ ink: 'far', path: cliff, knock: fall, sub: 0 }, { ink: 'near', path: shadows, sub: 1 }, { ink: 'sky1', path: lit, sub: 1 }, { ink: 'sky1', path: streaks, sub: 1 }, { ink: 'sky2', path: pool, knock: foam, sub: 0 }, { ink: 'near', path: topForest, sub: 0 }, { ink: 'mid', path: slopeForest, sub: 0 }] },
-      { id: 'near', depth: 1.5, parts: [{ ink: 'near', path: near, sub: 0 }, { ink: 'mid', path: ferns, sub: 1 }] },
-    ], trail, dark: [920, 700],
+    w: W0, h: H0, header: { x: 104, y: 900, size: 150 },
+    depth: { sky: 0, far: .25, mid: .55, near: 1, acc: .4, lit: 1 },
+    parts: [
+      { pull: 'sky', ink: 'sky1', path: rectPath(-BLEED, -BLEED, W0 + 2 * BLEED, H0 + 2 * BLEED), knock: SUN.knock },
+      { pull: 'sky', ink: 'sky2', path: sky2 },
+      { pull: 'far', ink: 'far', path: far },
+      { pull: 'mid', ink: 'mid', path: mid },
+      { pull: 'mid', ink: 'glow', path: midWin, lit: 1 },
+      { pull: 'near', ink: 'near', path: tower, knock: open },
+      { pull: 'near', ink: 'near', path: unionPath([trees, birds]) },
+      { pull: 'acc', ink: 'sun', path: unionPath([SUN.disc, awn]) },
+      { pull: 'lit', ink: 'glow', path: lit, cut: open, lit: 1 },
+    ],
   };
 }
 
-// ================= RIDGE (deep, many layers, used for the signature shot) =================
-function ridge(seed) {
-  const sun = sunParts(735, 400, 105, 2);
-  const farPeaks = [[80, 400], [250, 350], [420, 420], [900, 390]];
-  const FR = range(0, PW, 800, farPeaks, seed + 2, 18);
-  const summit = [470, 250];
-  const main = polyPath([[-60, 620], [90, 540], [200, 470], [300, 380], [380, 330], summit, [520, 285], [560, 300], [610, 350], [680, 395], [760, 470], [860, 520], [1060, 600], [1060, 1600], [-60, 1600]]);
-  const mainLit = polyPath([summit, [520, 285], [560, 300], [610, 350], [680, 395], [760, 470], [860, 520], [1060, 600], [1060, 660], [820, 610], [700, 540], [600, 470], [540, 400], [490, 320]]);
-  const rim = polyPath([[380, 330], summit, [520, 285], [560, 300], [556, 309], [518, 296], [472, 262], [384, 339]]);
-  const spurA = polyPath([[-60, 700], [80, 640], [200, 600], [300, 590], [420, 630], [540, 690], [650, 760], [700, 800], [700, 1600], [-60, 1600]]);
-  const spurALit = polyPath([[200, 600], [300, 590], [420, 630], [540, 690], [650, 760], [560, 745], [440, 690], [330, 640]]);
-  const spurB = polyPath([[1060, 760], [930, 720], [820, 700], [700, 730], [600, 790], [500, 870], [460, 920], [460, 1600], [1060, 1600]]);
-  const spurBLit = polyPath([[820, 700], [700, 730], [600, 790], [500, 870], [560, 850], [660, 790], [760, 750]]);
-  const spurC = polyPath([[-60, 900], [60, 860], [180, 850], [300, 880], [420, 950], [520, 1010], [560, 1060], [560, 1600], [-60, 1600]]);
-  const spurCLit = polyPath([[60, 860], [180, 850], [300, 880], [420, 950], [340, 935], [200, 890]]);
-  const valley = forest(-60, 1060, 1060, 60, 130, seed + 8, 1.2, 1700);
-  const near = new Path2D(); pine(near, 60, 1300, 820, 260, 7); pine(near, -40, 1300, 1000, 300, 7); pine(near, 950, 1300, 760, 250, 6); pine(near, 1050, 1300, 980, 300, 7);
-  near.addPath(valley);
-  // trail: zigzags from the valley floor to the summit, segmented by layer
-  const T = [[500, 1200, 'near'], [470, 1130, 'near'], [520, 1060, 'near'], [440, 1020, 'spurC'], [360, 960, 'spurC'], [470, 930, 'spurB'], [560, 860, 'spurB'], [640, 800, 'spurB'], [560, 760, 'spurA'], [430, 700, 'spurA'], [330, 650, 'spurA'], [380, 610, 'main'], [440, 540, 'main'], [400, 470, 'main'], [455, 400, 'main'], [430, 330, 'main'], summit.concat('main')];
-  const trail = T.map(q => ({ x: q[0], y: q[1], plane: q[2] }));
+// ================= BUENOS AIRES · La Boca houses and the Obelisco (bright noon), a wide print for a truck =================
+export const BOCA_INKS = ['#D9483B', '#F2B63D', '#2F86B5', '#4E9C5E', '#E07B4A', '#8E5BA6'];
+export function boca(seed = 13) {
+  const W0 = 2600, H0 = AH, SUN = sunParts(2280, 230, 56), OB = 1300;
+  const sky2 = new Path2D(); sky2.rect(-BLEED, -BLEED, W0 + 2 * BLEED, 120 + BLEED); sky2.addPath(bandSteps(-BLEED, W0 + 2 * BLEED, 100, 380, 6, 10));
+  // the Obelisco is bare paper (knocked out of the sky inks), with its shade side in far ink
+  const obel = polyPath([[OB - 34, 640], [OB - 26, 190], [OB, 130], [OB + 26, 190], [OB + 34, 640]]);
+  const obShade = polyPath([[OB + 2, 640], [OB + 2, 140], [OB + 26, 190], [OB + 34, 640]]);
+  const city = new Path2D(); { const r = mulberry(seed + 2); city.rect(-BLEED, 600, W0 + 2 * BLEED, 500); for (let x = -BLEED; x < W0 + BLEED; x += 80 + r() * 90) city.rect(x, 520 + r() * 60, 60 + r() * 70, 120); }
+  // the houses: one silhouette, coloured by a split-fountain bead (segments along x)
+  const houses = new Path2D(), r = mulberry(seed + 4), H = [], segs = [];
+  let x = -BLEED, k = 0;
+  while (x < W0 + BLEED) {
+    const w = 170 + r() * 120, top = 470 + r() * 110; H.push([x, w, top]);
+    houses.addPath(polyPath([[x, top + 26], [x + w * .5, top - 6], [x + w, top + 26], [x + w, H0 + BLEED], [x, H0 + BLEED]]));
+    segs.push({ x0: x, x1: x + w, color: BOCA_INKS[(k * 3 + (k >> 1)) % BOCA_INKS.length] });
+    x += w; k++;
+  }
+  // near: roof caps, corrugation, windows and doors, balconies, laundry, the street, a lamp post
+  const det = new Path2D(), win = new Path2D();
+  for (const [hx, w, top] of H) {
+    det.addPath(polyPath([[hx - 8, top + 30], [hx + w * .5, top - 10], [hx + w + 8, top + 30], [hx + w + 8, top + 40], [hx + w * .5, top + 4], [hx - 8, top + 40]]));
+    for (let y = top + 70; y < 1000; y += 16) det.rect(hx + 6, y, w - 12, 3);
+    for (let c = 0; c < 2; c++) { win.rect(hx + w * (.2 + .42 * c), top + 120, w * .2, 70); win.rect(hx + w * (.2 + .42 * c), top + 300, w * .2, 110); }
+    det.rect(hx + 4, top + 210, w - 8, 10);                                   // balcony slab
+    for (let b = 0; b < 8; b++) det.rect(hx + 8 + b * (w - 16) / 7, top + 220, 4, 34);
+    det.rect(hx + w * .4, 1000 - 150, w * .2, 150);                           // door
+  }
+  det.rect(-BLEED, 1000, W0 + 2 * BLEED, 120);
+  det.rect(1880, 560, 12, 440); det.rect(1860, 556, 52, 14);
+  const laundry = new Path2D(); for (const [x0, y0] of [[420, 700], [1500, 690], [2200, 720]]) { laundry.rect(x0, y0, 260, 3); for (let i = 0; i < 5; i++) laundry.rect(x0 + 20 + i * 48, y0 + 3, 26, 34 + (i % 2) * 14); }
+  const birds = new Path2D(); bird(birds, 900, 300, .8); bird(birds, 960, 270, .6);
   return {
-    planes: [
-      skyPlane(sun.knock, 120, 300, 200),
-      { id: 'sun', depth: .1, parts: [{ ink: 'sun', path: sun.disc, sub: 0 }] },
-      { id: 'far', depth: .25, parts: [{ ink: 'far', path: FR.path, sub: 0 }] },
-      { id: 'main', depth: .5, parts: [{ ink: 'mid', path: main, sub: 0 }, { ink: 'far', path: mainLit, sub: 1 }, { ink: 'glow', path: rim, sub: 1 }] },
-      { id: 'spurA', depth: .8, side: -1, parts: [{ ink: 'far', path: spurA, sub: 0 }, { ink: 'glow', path: spurALit, sub: 1 }] },
-      { id: 'spurB', depth: 1.05, side: 1, parts: [{ ink: 'mid', path: spurB, sub: 0 }, { ink: 'far', path: spurBLit, sub: 1 }] },
-      { id: 'spurC', depth: 1.3, side: -1, parts: [{ ink: 'far', path: spurC, sub: 0 }, { ink: 'glow', path: spurCLit, sub: 1 }] },
-      { id: 'near', depth: 1.9, parts: [{ ink: 'near', path: near, sub: 0 }] },
-    ], trail, summit, sun: [735, 400],
+    w: W0, h: H0, header: { x: 820, y: 214, size: 124 },
+    depth: { sky: 0, far: .3, houses: .7, near: .9, acc: .5 },
+    fountain: segs,
+    parts: [
+      { pull: 'sky', ink: 'sky1', path: rectPath(-BLEED, -BLEED, W0 + 2 * BLEED, H0 + 2 * BLEED), knock: unionPath([SUN.knock, obel]) },
+      { pull: 'sky', ink: 'sky2', path: sky2, cut: obel },
+      { pull: 'far', ink: 'far', path: city, cut: obel },
+      { pull: 'far', ink: 'far', path: obShade },
+      { pull: 'houses', ink: 'fountain', path: houses },
+      { pull: 'near', ink: 'near', path: unionPath([det, birds]) },
+      { pull: 'near', ink: 'glow', path: win, lit: 1 },
+      { pull: 'acc', ink: 'sun', path: unionPath([SUN.disc, laundry]) },
+    ],
   };
 }
 
-// ================= FOREST =================
-function forestScene(seed) {
-  const sun = sunParts(300, 300, 70, 1);
-  const peaks = [[150, 420], [420, 380], [700, 430], [900, 400]];
-  const R = range(0, PW, 800, peaks, seed + 3, 18);
-  const back = forest(-40, 1040, 640, 80, 170, seed + 4, 1, 900);
-  const midF = forest(-40, 1040, 820, 150, 300, seed + 5, .9, 1300);
-  const near = new Path2D(); for (let i = 0; i < 6; i++) { const x = [-10, 150, 330, 690, 850, 1000][i], top = 190 + (i % 3) * 40; near.addPath(polyPath([[x - 20 - i % 2 * 8, top + 120], [x + 20 + i % 2 * 8, top + 120], [x + 30, 1300], [x - 30, 1300]])); pine(near, x, top + 260, 300, 150 + (i % 2) * 40, 4); }
-  near.addPath(polyPath([[-60, 1060], [300, 1040], [700, 1070], [1060, 1040], [1060, 1600], [-60, 1600]]));
-  const shafts = new Path2D(); for (let i = 0; i < 4; i++) { const x = 380 + i * 90; shafts.addPath(polyPath([[x, 700], [x + 30, 700], [x + 120, 1060], [x + 60, 1060]])); }
-  const trail = [[500, 1200], [540, 1130], [480, 1080], [520, 1050]].map(q => ({ x: q[0], y: q[1], plane: 'near' }));
+// ================= the night sea on the way home: a very wide print for a long truck =================
+export function sea(seed = 17) {
+  const W0 = 5200, H0 = AH, MOON = sunParts(3700, 300, 64), HOR = 640;
+  // stars are bare paper, knocked out of the night sky (one per grid cell, so they never overlap)
+  const stars = new Path2D(); { const r = mulberry(seed + 1); for (let gx = 0; gx < W0; gx += 90) for (let gy = 20; gy < 520; gy += 70) { if (r() < .45) continue; const x = gx + r() * 70, y = gy + r() * 50, s = 1.6 + r() * 2.6; if (Math.hypot(x - 3700, y - 300) < 140) continue; stars.moveTo(x + s, y); stars.arc(x, y, s, 0, Math.PI * 2); } }
+  const sky2 = new Path2D(); sky2.rect(-BLEED, -BLEED, W0 + 2 * BLEED, 160 + BLEED); sky2.addPath(bandSteps(-BLEED, W0 + 2 * BLEED, 140, 420, 6, 8));
+  const clouds = new Path2D(); { const r = mulberry(seed + 3); for (let i = 0; i < 16; i++) { const x = r() * W0, y = 380 + r() * 170, w = 260 + r() * 420, h = 14 + r() * 16; clouds.moveTo(x + h, y); clouds.arc(x + h, y + h, h, -Math.PI / 2, Math.PI / 2, true); clouds.lineTo(x + w - h, y + 2 * h); clouds.arc(x + w - h, y + h, h, Math.PI / 2, -Math.PI / 2, true); clouds.closePath(); } }
+  const isles = new Path2D(); for (const [x0, w, h] of [[600, 420, 40], [1900, 260, 26], [2900, 520, 52], [4400, 360, 34]]) isles.addPath(polyPath([[x0, HOR + 2], [x0 + w * .3, HOR - h], [x0 + w * .55, HOR - h * .7], [x0 + w * .8, HOR - h * .9], [x0 + w, HOR + 2]]));
+  const water = rectPath(-BLEED, HOR, W0 + 2 * BLEED, H0 - HOR + BLEED);
+  const glint = new Path2D(); for (let i = 0; i < 12; i++) { const y = HOR + 14 + i * 30 + i * i * 2, w = 150 - i * 7 + (i % 2) * 20; glint.rect(3700 - w / 2 + ((i * 37) % 23) - 11, y, w, 4 + i * .8); }
+  const waves = waterBars(-BLEED, W0 + BLEED, HOR + 30, 1100, 12, seed + 5, 260);
+  const crests = new Path2D(); for (let x = -BLEED; x < W0 + BLEED; x += 140) { crests.moveTo(x, 1100); crests.quadraticCurveTo(x + 40, 1000, x + 90, 1010); crests.quadraticCurveTo(x + 60, 1030, x + 140, 1100); crests.closePath(); }
   return {
-    planes: [
-      skyPlane(sun.knock, 110, 280),
-      { id: 'sun', depth: .15, parts: [{ ink: 'sun', path: sun.disc, sub: 0 }] },
-      { id: 'far', depth: .35, parts: [{ ink: 'far', path: R.path, sub: 0 }, { ink: 'far', path: back, sub: 1 }] },
-      { id: 'mid', depth: .7, parts: [{ ink: 'mid', path: midF, sub: 0 }, { ink: 'sky1', path: shafts, sub: 1 }] },
-      { id: 'near', depth: 1.5, parts: [{ ink: 'near', path: near, sub: 0 }] },
-    ], trail,
+    w: W0, h: H0, header: null,
+    depth: { sky: 0, far: .3, mid: .6, near: .9, acc: .3 },
+    parts: [
+      { pull: 'sky', ink: 'sky1', path: rectPath(-BLEED, -BLEED, W0 + 2 * BLEED, HOR + BLEED), knock: unionPath([MOON.knock, stars]) },
+      { pull: 'sky', ink: 'sky2', path: sky2, cut: stars },
+      { pull: 'far', ink: 'far', path: unionPath([clouds, isles]) },
+      { pull: 'mid', ink: 'mid', path: water, knock: glint },
+      { pull: 'mid', ink: 'glow', path: waves, lit: 1, cut: glint },
+      { pull: 'near', ink: 'near', path: crests },
+      { pull: 'acc', ink: 'sun', path: MOON.disc },
+    ],
   };
 }
-
-// ================= COAST =================
-function coast(seed) {
-  const sun = sunParts(700, 520, 80, 2);
-  const sea = rectPath(-60, 600, PW + 120, 1000);
-  const swell = wavesPath(0, 1000, 620, 960, 30, seed + 4, 90);
-  const stacks = polyPath([[160, 600], [190, 470], [240, 440], [270, 600]]); stacks.addPath(polyPath([[300, 600], [315, 520], [345, 530], [360, 600]]));
-  const cliffs = polyPath([[-60, 520], [120, 540], [240, 610], [340, 700], [420, 820], [480, 960], [520, 1300], [-60, 1300]]);
-  const cliffLit = polyPath([[120, 540], [240, 610], [340, 700], [420, 820], [380, 830], [300, 720], [200, 630]]);
-  const near = polyPath([[-60, 1040], [200, 1010], [500, 1040], [800, 1000], [1060, 1020], [1060, 1600], [-60, 1600]]);
-  const grass = new Path2D(); const r = mulberry(seed + 9); for (let i = 0; i < 40; i++) { const x = r() * 1000, y = 1000 + r() * 40; grass.addPath(polyPath([[x, y + 20], [x + 4 + r() * 10, y - 40 - r() * 60], [x + 8, y + 20]])); }
-  const trail = [[600, 1200], [640, 1120], [720, 1060], [820, 1020]].map(q => ({ x: q[0], y: q[1], plane: 'near' }));
-  return {
-    planes: [
-      skyPlane(sun.knock, 140, 330),
-      { id: 'sun', depth: .15, parts: [{ ink: 'sun', path: sun.disc, sub: 0 }] },
-      { id: 'far', depth: .35, parts: [{ ink: 'sky2', path: sea, sub: 0 }, { ink: 'sky1', path: swell, sub: 1 }, { ink: 'far', path: stacks, sub: 0 }] },
-      { id: 'mid', depth: .7, parts: [{ ink: 'mid', path: cliffs, sub: 0 }, { ink: 'far', path: cliffLit, sub: 1 }] },
-      { id: 'near', depth: 1.5, parts: [{ ink: 'near', path: near, sub: 0 }, { ink: 'near', path: grass, sub: 0 }] },
-    ], trail,
-  };
-}
-
-export const SCENES = { lake, waterfall, ridge, forest: forestScene, coast };
-export function buildScene(name, seed = 1) { const f = SCENES[name] || SCENES.lake; return f(seed); }

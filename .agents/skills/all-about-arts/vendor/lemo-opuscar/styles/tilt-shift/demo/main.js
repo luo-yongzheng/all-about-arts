@@ -79,6 +79,7 @@ function pathAt(s) {
 // —— Camera ——
 // Each shot: pos / look / up / fov; tilt-shift parameters: physical aperture aper + screen blur band band; span = shadow range; az = sun azimuth (lit per shot)
 const BAND = (y, w, amp, mix = .55, tilt = 0) => ({ y, w, amp, mix, tilt, pow: 1.2 });
+const CITY_TOP = 60;   // m: the tallest opaque thing in the city (crane / tower tops ≈ 53 m), for the near plane
 const UPN = V(0, 0, -1), UPY = V(0, 1, 0);
 const topDown = (look, h, yaw) => ({ pos: look.clone().add(V(0, h, .01)), look, up: V(Math.sin(yaw), 0, -Math.cos(yaw)) });
 // Big jam → swoop → ducks → rise: one continuous camera curve
@@ -146,7 +147,10 @@ function cam(t, st) {
     }
   }
   const o = QS.get('cam'); if (o) { const a = o.split(',').map(Number); pos = V(a[0], a[1], a[2]); look = V(a[3], a[4], a[5]); if (a[6]) fov = a[6]; }
-  const nearCam = pos.y < 12; camera.near = nearCam ? .08 : 1; camera.far = nearCam ? 4000 : 12000;   // cameras close to the ground need a small near plane (bonnet foreground)
+  // cameras close to the ground need a small near plane (bonnet foreground). High cameras push it out to half their height above the tallest roof:
+  // with near = 1 m, from 200–900 m up the depth buffer could no longer tell road markings, road, suburban road and ground apart (1–5 cm layers),
+  // so they z-fought and whole frames flickered. Nothing opaque stands above CITY_TOP; the clouds above it ignore the near plane (see clouds).
+  const nearCam = pos.y < 12; camera.near = nearCam ? .08 : Math.max(1, (pos.y - CITY_TOP) * .5); camera.far = nearCam ? 4000 : 12000;
   camera.position.copy(pos); camera.up.copy(up); camera.fov = fov; camera.updateProjectionMatrix(); camera.lookAt(look);
   camera.updateMatrixWorld();
   let focus = pos.distanceTo(look);
@@ -221,7 +225,9 @@ const clouds = (() => {
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
   const grp = new THREE.Group(), R2 = mulberry(21), list = [];
   for (let i = 0; i < 30; i++) {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, opacity: 0, fog: false, color: '#f4f6fa' }));
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, opacity: 0, fog: false, color: '#f4f6fa' }));
+    // clouds are above everything, so nothing can hide them (no depth test), and z = 0 keeps them from being cut by the pushed-out near plane as the camera skims through them
+    m.material.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n  gl_Position.z = 0.;'); };
     const s = 160 + R2() * 260; m.scale.set(s, 1, s * (.6 + R2() * .4));
     let px = (R2() - .5) * 1300, pz = 14 + (R2() - .5) * 1000; if (i > 1 && Math.hypot(px, pz - 20) < 220) px += Math.sign(px || 1) * 260;
     if (i < 2) { px = 40 - i * 90; pz = 30 + i * 40; }

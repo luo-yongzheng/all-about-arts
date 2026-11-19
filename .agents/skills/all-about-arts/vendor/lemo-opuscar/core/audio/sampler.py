@@ -6,22 +6,28 @@ Every note/hit returns mono float32 @ SR; render returns stereo (N,2). Usage: se
     y = S.hit('snare', 'roll', .6)                       # unpitched percussion
     mix = S.render([(0, 'piano', 'C4', 1, .7, -.2), (0, 'violins', 'E5', 4, .6, .3)], 6)
 """
-import os, re, json, math, glob, threading
+import os, re, sys, json, math, glob, threading, subprocess
+from shutil import which
 from collections import OrderedDict
-import numpy as np
-import soundfile as sf
-import soxr
-from scipy.signal import butter, sosfilt, fftconvolve
-from scipy.ndimage import uniform_filter1d
-
 try:
-    from .sfx import SR, add, limit
-except ImportError:  # when sampler is imported directly
-    from sfx import SR, add, limit
+    import numpy as np
+    import soundfile as sf
+    import soxr
+    from scipy.signal import butter, sosfilt, fftconvolve
+    from scipy.ndimage import uniform_filter1d
+    try:
+        from .sfx import SR, add, limit
+    except ImportError:  # when sampler is imported directly
+        from sfx import SR, add, limit
+except ModuleNotFoundError:
+    # `sampler.py --need` only fetches libraries: it also runs from a Python without the core-tier packages
+    if not (__name__ == '__main__' and sys.argv[1:2] == ['--need']): raise
+    np = None
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instruments')
+LIBRARY = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # the library root (fetch.sh runs there)
 INDEX = os.path.join(ROOT, 'index.json')
-_rng = np.random.default_rng(20260925)
+_rng = np.random.default_rng(20260925) if np else None
 _lock = threading.RLock()
 
 
@@ -58,119 +64,119 @@ V, C, F, K, SAL = 'vsco2ce/', 'vcsl/', 'freepats/', 'karoryfer/', 'salamander/'
 VI, VM = C + 'Idiophones/Struck Idiophones/', C + 'Membranophones/Struck Membranophones/'
 REG = {
     # Strings (弦乐)
-    'violins':        dict(src=V + 'Strings/Violin Section/susVib', kind='sus', rel=.35, fam='弦乐', desc='violin section, sustained (vibrato)'),
-    'violins_trem':   dict(src=V + 'Strings/Violin Section/Trem', kind='sus', rel=.3, fam='弦乐', desc='violin section, tremolo'),
-    'violins_pizz':   dict(src=V + 'Strings/Violin Section/Pizz', kind='dec', rel=.15, fam='弦乐', desc='violin section, pizzicato'),
-    'violins_spic':   dict(src=V + 'Strings/Violin Section/Spic', kind='dec', rel=.1, fam='弦乐', desc='violin section, spiccato (short)'),
-    'violin':         dict(src=V + 'Strings/Solo Violin/Arco Vib', kind='sus', rel=.3, fam='弦乐', desc='solo violin, sustained'),
-    'violin_pizz':    dict(src=V + 'Strings/Solo Violin/Pizz', kind='dec', rel=.15, fam='弦乐', desc='solo violin, pizzicato'),
-    'violas':         dict(src=V + 'Strings/Viola Section/susvib', kind='sus', rel=.35, fam='弦乐', desc='viola section, sustained'),
-    'violas_pizz':    dict(src=V + 'Strings/Viola Section/pizz', kind='dec', rel=.15, fam='弦乐', desc='viola section, pizzicato'),
-    'cellos':         dict(src=V + 'Strings/Cello Section/susvib', kind='sus', rel=.4, fam='弦乐', desc='cello section, sustained'),
-    'cellos_pizz':    dict(src=V + 'Strings/Cello Section/pizzT', kind='dec', rel=.2, fam='弦乐', desc='cello section, pizzicato'),
-    'cellos_spic':    dict(src=V + 'Strings/Cello Section/spic', kind='dec', rel=.12, fam='弦乐', desc='cello section, spiccato'),
-    'contrabass':     dict(src=V + 'Strings/Solo Contrabass/SusVib', kind='sus', rel=.4, fam='弦乐', desc='contrabass, sustained'),
-    'contrabass_pizz': dict(src=V + 'Strings/Solo Contrabass/Pizz', kind='dec', rel=.2, fam='弦乐', desc='contrabass, classical pizzicato'),
-    'harp':           dict(src=C + 'Chordophones/Composite Chordophones/Concert Harp', kind='dec', rel=1.2, fam='弦乐', desc='harp'),
+    'violins':        dict(src=V + 'Strings/Violin Section/susVib', kind='sus', rel=.35, fam='strings', desc='violin section, sustained (vibrato)'),
+    'violins_trem':   dict(src=V + 'Strings/Violin Section/Trem', kind='sus', rel=.3, fam='strings', desc='violin section, tremolo'),
+    'violins_pizz':   dict(src=V + 'Strings/Violin Section/Pizz', kind='dec', rel=.15, fam='strings', desc='violin section, pizzicato'),
+    'violins_spic':   dict(src=V + 'Strings/Violin Section/Spic', kind='dec', rel=.1, fam='strings', desc='violin section, spiccato (short)'),
+    'violin':         dict(src=V + 'Strings/Solo Violin/Arco Vib', kind='sus', rel=.3, fam='strings', desc='solo violin, sustained'),
+    'violin_pizz':    dict(src=V + 'Strings/Solo Violin/Pizz', kind='dec', rel=.15, fam='strings', desc='solo violin, pizzicato'),
+    'violas':         dict(src=V + 'Strings/Viola Section/susvib', kind='sus', rel=.35, fam='strings', desc='viola section, sustained'),
+    'violas_pizz':    dict(src=V + 'Strings/Viola Section/pizz', kind='dec', rel=.15, fam='strings', desc='viola section, pizzicato'),
+    'cellos':         dict(src=V + 'Strings/Cello Section/susvib', kind='sus', rel=.4, fam='strings', desc='cello section, sustained'),
+    'cellos_pizz':    dict(src=V + 'Strings/Cello Section/pizzT', kind='dec', rel=.2, fam='strings', desc='cello section, pizzicato'),
+    'cellos_spic':    dict(src=V + 'Strings/Cello Section/spic', kind='dec', rel=.12, fam='strings', desc='cello section, spiccato'),
+    'contrabass':     dict(src=V + 'Strings/Solo Contrabass/SusVib', kind='sus', rel=.4, fam='strings', desc='contrabass, sustained'),
+    'contrabass_pizz': dict(src=V + 'Strings/Solo Contrabass/Pizz', kind='dec', rel=.2, fam='strings', desc='contrabass, classical pizzicato'),
+    'harp':           dict(src=C + 'Chordophones/Composite Chordophones/Concert Harp', kind='dec', rel=1.2, fam='strings', desc='harp'),
     # Woodwinds (木管)
-    'flute':          dict(src=V + 'Woodwinds/Flute/susvib', kind='sus', rel=.25, fam='木管', desc='flute, sustained'),
-    'flute_stac':     dict(src=V + 'Woodwinds/Flute/stac', kind='dec', rel=.1, fam='木管', desc='flute, staccato'),
-    'piccolo':        dict(src=V + 'Woodwinds/Piccolo/Sus', kind='sus', rel=.2, fam='木管', desc='piccolo'),
-    'clarinet':       dict(src=V + 'Woodwinds/Clarinet/susLong', kind='sus', rel=.25, fam='木管', desc='clarinet, sustained'),
-    'clarinet_stac':  dict(src=V + 'Woodwinds/Clarinet/stac', kind='dec', rel=.1, fam='木管', desc='clarinet, staccato'),
-    'oboe':           dict(src=V + 'Woodwinds/Oboe/Vib', kind='sus', rel=.25, fam='木管', desc='oboe, sustained'),
-    'oboe_stac':      dict(src=V + 'Woodwinds/Oboe/Stacc', kind='dec', rel=.1, fam='木管', desc='oboe, staccato'),
-    'bassoon':        dict(src=V + 'Woodwinds/Bassoon/sus', kind='sus', rel=.25, fam='木管', desc='bassoon, sustained'),
-    'bassoon_stac':   dict(src=V + 'Woodwinds/Bassoon/stac', kind='dec', rel=.1, fam='木管', desc='bassoon, staccato'),
-    'recorder':       dict(src=C + 'Aerophones/Edge-blown Aerophones/Baroque Alto Recorder/Sustain', kind='sus', rel=.15, fam='木管', desc='alto recorder (baroque)'),
-    'ocarina':        dict(src=(C + 'Aerophones/Edge-blown Aerophones/Ocarina, Typical/Sustains', r'_Sus_'), kind='sus', rel=.15, fam='木管', desc='ocarina'),
-    'tenor_sax':      dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Vibrato', kind='sus', rel=.2, fam='木管', desc='tenor sax, vibrato'),
-    'tenor_sax_nv':   dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Non-Vibrato', kind='sus', rel=.2, fam='木管', desc='tenor sax, straight tone'),
-    'tenor_sax_stac': dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Staccato', kind='dec', rel=.08, fam='木管', desc='tenor sax, staccato'),
-    'alto_sax':       dict(src=K + 'weresax/Samples/alto', kind='sus', rel=.2, pp='lower', fam='木管', desc='alto sax (Weresax)'),
-    'harmonica':      dict(src=(C + 'Aerophones/Free Aerophones/Harmonica-Hohner-Super64/Sustains', r'_Normal'), kind='sus', rel=.15, fam='木管', desc='chromatic harmonica'),
+    'flute':          dict(src=V + 'Woodwinds/Flute/susvib', kind='sus', rel=.25, fam='woodwinds', desc='flute, sustained'),
+    'flute_stac':     dict(src=V + 'Woodwinds/Flute/stac', kind='dec', rel=.1, fam='woodwinds', desc='flute, staccato'),
+    'piccolo':        dict(src=V + 'Woodwinds/Piccolo/Sus', kind='sus', rel=.2, fam='woodwinds', desc='piccolo'),
+    'clarinet':       dict(src=V + 'Woodwinds/Clarinet/susLong', kind='sus', rel=.25, fam='woodwinds', desc='clarinet, sustained'),
+    'clarinet_stac':  dict(src=V + 'Woodwinds/Clarinet/stac', kind='dec', rel=.1, fam='woodwinds', desc='clarinet, staccato'),
+    'oboe':           dict(src=V + 'Woodwinds/Oboe/Vib', kind='sus', rel=.25, fam='woodwinds', desc='oboe, sustained'),
+    'oboe_stac':      dict(src=V + 'Woodwinds/Oboe/Stacc', kind='dec', rel=.1, fam='woodwinds', desc='oboe, staccato'),
+    'bassoon':        dict(src=V + 'Woodwinds/Bassoon/sus', kind='sus', rel=.25, fam='woodwinds', desc='bassoon, sustained'),
+    'bassoon_stac':   dict(src=V + 'Woodwinds/Bassoon/stac', kind='dec', rel=.1, fam='woodwinds', desc='bassoon, staccato'),
+    'recorder':       dict(src=C + 'Aerophones/Edge-blown Aerophones/Baroque Alto Recorder/Sustain', kind='sus', rel=.15, fam='woodwinds', desc='alto recorder (baroque)'),
+    'ocarina':        dict(src=(C + 'Aerophones/Edge-blown Aerophones/Ocarina, Typical/Sustains', r'_Sus_'), kind='sus', rel=.15, fam='woodwinds', desc='ocarina'),
+    'tenor_sax':      dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Vibrato', kind='sus', rel=.2, fam='woodwinds', desc='tenor sax, vibrato'),
+    'tenor_sax_nv':   dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Non-Vibrato', kind='sus', rel=.2, fam='woodwinds', desc='tenor sax, straight tone'),
+    'tenor_sax_stac': dict(src=C + 'Aerophones/Reed Aerophones/Tenor Saxophone/Staccato', kind='dec', rel=.08, fam='woodwinds', desc='tenor sax, staccato'),
+    'alto_sax':       dict(src=K + 'weresax/Samples/alto', kind='sus', rel=.2, pp='lower', fam='woodwinds', desc='alto sax (Weresax)'),
+    'harmonica':      dict(src=(C + 'Aerophones/Free Aerophones/Harmonica-Hohner-Super64/Sustains', r'_Normal'), kind='sus', rel=.15, fam='woodwinds', desc='chromatic harmonica'),
     # Brass (铜管)
-    'trumpet':        dict(src=V + 'Brass/Trumpet/sus', kind='sus', rel=.25, fam='铜管', desc='trumpet, sustained'),
-    'trumpet_stac':   dict(src=V + 'Brass/Trumpet/stac', kind='dec', rel=.1, fam='铜管', desc='trumpet, staccato'),
-    'trumpet_mute':   dict(src=V + 'Brass/Trumpet/straightM-sus', kind='sus', rel=.2, fam='铜管', desc='trumpet, straight mute'),
-    'horn':           dict(src=V + 'Brass/F Horn/sus', kind='sus', rel=.35, fam='铜管', desc='French horn, sustained'),
-    'horn_stac':      dict(src=V + 'Brass/F Horn/stac', kind='dec', rel=.12, fam='铜管', desc='French horn, staccato'),
-    'trombone':       dict(src=V + 'Brass/Tenor Trombone/sus', kind='sus', rel=.3, fam='铜管', desc='trombone, sustained'),
-    'trombone_stac':  dict(src=V + 'Brass/Tenor Trombone/stac', kind='dec', rel=.12, fam='铜管', desc='trombone, staccato'),
-    'tuba':           dict(src=V + 'Brass/Tuba/sus', kind='sus', rel=.3, fam='铜管', desc='tuba, sustained'),
-    'tuba_stac':      dict(src=V + 'Brass/Tuba/stac', kind='dec', rel=.12, fam='铜管', desc='tuba, staccato'),
+    'trumpet':        dict(src=V + 'Brass/Trumpet/sus', kind='sus', rel=.25, fam='brass', desc='trumpet, sustained'),
+    'trumpet_stac':   dict(src=V + 'Brass/Trumpet/stac', kind='dec', rel=.1, fam='brass', desc='trumpet, staccato'),
+    'trumpet_mute':   dict(src=V + 'Brass/Trumpet/straightM-sus', kind='sus', rel=.2, fam='brass', desc='trumpet, straight mute'),
+    'horn':           dict(src=V + 'Brass/F Horn/sus', kind='sus', rel=.35, fam='brass', desc='French horn, sustained'),
+    'horn_stac':      dict(src=V + 'Brass/F Horn/stac', kind='dec', rel=.12, fam='brass', desc='French horn, staccato'),
+    'trombone':       dict(src=V + 'Brass/Tenor Trombone/sus', kind='sus', rel=.3, fam='brass', desc='trombone, sustained'),
+    'trombone_stac':  dict(src=V + 'Brass/Tenor Trombone/stac', kind='dec', rel=.12, fam='brass', desc='trombone, staccato'),
+    'tuba':           dict(src=V + 'Brass/Tuba/sus', kind='sus', rel=.3, fam='brass', desc='tuba, sustained'),
+    'tuba_stac':      dict(src=V + 'Brass/Tuba/stac', kind='dec', rel=.12, fam='brass', desc='tuba, staccato'),
     # Pitched percussion (打击)
-    'timpani':        dict(src=V + 'Percussion/Timpani', kind='dec', rel=1.5, pp='detect', fam='打击', desc='timpani (5 drums; pitch = measured (1,1) main mode)',
+    'timpani':        dict(src=V + 'Percussion/Timpani', kind='dec', rel=1.5, pp='detect', fam='percussion', desc='timpani (5 drums; pitch = measured (1,1) main mode)',
                            roots={'drum1': 41.47, 'drum2': 46.81, 'drum3': 49.57, 'drum4': 52.5, 'drum5': 54.63},
                            var={f'drum{i}': f'Timpani{i}_' for i in range(1, 6)}),
-    'glockenspiel':   dict(src=VI + 'Glockenspiel', kind='dec', rel=1.5, fam='打击', desc='glockenspiel'),
-    'xylophone':      dict(src=VI + 'Xylophone/Medium Mallets', kind='dec', rel=.5, fam='打击', desc='xylophone'),
-    'marimba':        dict(src=VI + 'Marimba', kind='dec', rel=.8, fam='打击', desc='marimba'),
-    'vibraphone':     dict(src=VI + 'Vibraphone/Soft Mallets', kind='dec', rel=1.5, fam='打击', desc='vibraphone, soft mallets'),
-    'vibraphone_hard': dict(src=VI + 'Vibraphone/Hard Mallets', kind='dec', rel=1.5, fam='打击', desc='vibraphone, hard mallets'),
-    'vibraphone_bowed': dict(src=VI + 'Vibraphone/Bowed', kind='sus', rel=1.0, fam='打击', desc='vibraphone, bowed (airy sustain)'),
-    'tubular_bells':  dict(src=VI + 'Tubular Bells 1', kind='dec', rel=3.0, retune=False, fam='打击', desc='tubular bells'),
-    'hand_chimes':    dict(src=VI + 'Hand Chimes', kind='dec', rel=2.0, fam='打击', desc='hand chimes (soft bells)'),
-    'kalimba':        dict(src=F + 'kalimba', kind='dec', rel=1.2, pp='sfz', fam='打击', desc='kalimba (thumb piano)'),
-    'mbira':          dict(src=C + 'Idiophones/Plucked Idiophones/Kalimba, Tanzania', kind='dec', rel=1.2, fam='打击', desc='mbira / Tanzanian kalimba (grittier; tuned from measured pitch to equal temperament)'),
-    'hang':           dict(src=F + 'hang', kind='dec', rel=3.0, pp='sfz', fam='打击', desc='hang drum (D minor; sounds best on its own notes)'),
-    'glass':          dict(src=F + 'glass', kind='dec', rel=2.0, pp='sfz', fam='打击', desc='glass harp'),
+    'glockenspiel':   dict(src=VI + 'Glockenspiel', kind='dec', rel=1.5, fam='percussion', desc='glockenspiel'),
+    'xylophone':      dict(src=VI + 'Xylophone/Medium Mallets', kind='dec', rel=.5, fam='percussion', desc='xylophone'),
+    'marimba':        dict(src=VI + 'Marimba', kind='dec', rel=.8, fam='percussion', desc='marimba'),
+    'vibraphone':     dict(src=VI + 'Vibraphone/Soft Mallets', kind='dec', rel=1.5, fam='percussion', desc='vibraphone, soft mallets'),
+    'vibraphone_hard': dict(src=VI + 'Vibraphone/Hard Mallets', kind='dec', rel=1.5, fam='percussion', desc='vibraphone, hard mallets'),
+    'vibraphone_bowed': dict(src=VI + 'Vibraphone/Bowed', kind='sus', rel=1.0, fam='percussion', desc='vibraphone, bowed (airy sustain)'),
+    'tubular_bells':  dict(src=VI + 'Tubular Bells 1', kind='dec', rel=3.0, retune=False, fam='percussion', desc='tubular bells'),
+    'hand_chimes':    dict(src=VI + 'Hand Chimes', kind='dec', rel=2.0, fam='percussion', desc='hand chimes (soft bells)'),
+    'kalimba':        dict(src=F + 'kalimba', kind='dec', rel=1.2, pp='sfz', fam='percussion', desc='kalimba (thumb piano)'),
+    'mbira':          dict(src=C + 'Idiophones/Plucked Idiophones/Kalimba, Tanzania', kind='dec', rel=1.2, fam='percussion', desc='mbira / Tanzanian kalimba (grittier; tuned from measured pitch to equal temperament)'),
+    'hang':           dict(src=F + 'hang', kind='dec', rel=3.0, pp='sfz', fam='percussion', desc='hang drum (D minor; sounds best on its own notes)'),
+    'glass':          dict(src=F + 'glass', kind='dec', rel=2.0, pp='sfz', fam='percussion', desc='glass harp'),
     # Keyboards (键盘)
-    'piano':          dict(src=SAL + 'samples', kind='dec', rel=.4, pp='sal', fam='键盘', desc='Salamander grand piano (Yamaha C5, 5 velocity layers)', lic='salamander'),
-    'upright':        dict(src=V + 'Keys/Upright Nr1', kind='dec', rel=.35, retune=False, fam='键盘', desc='upright piano (warm, slightly worn)'),
-    'honky_tonk':     dict(src=F + 'piano_fb', kind='dec', rel=.4, pp='sfz', fam='键盘', desc='old player piano (saloon honky-tonk)'),
-    'harpsichord':    dict(src=C + 'Chordophones/Zithers/Harpsichord, Italian/Sustains', kind='dec', rel=.15, fam='键盘', desc='harpsichord (Italian)'),
-    'organ':          dict(src=(V + 'Keys/Organ/Loud', r'Man3'), kind='sus', rel=.2, pp='organ', oct=0, fam='键盘', desc='pipe organ, full manual (with 16\' stop, heavy)'),
-    'organ_soft':     dict(src=(V + 'Keys/Organ/Quiet', r'Man3'), kind='sus', rel=.2, pp='organ', oct=0, fam='键盘', desc='pipe organ, soft manual stops'),
-    'organ_pedal':    dict(src=(V + 'Keys/Organ', r'Pedal'), kind='sus', rel=.3, pp='detect', fam='键盘', desc='pipe organ, pedal bass (measured pitch)'),
-    'accordion':      dict(src=F + 'accordion', kind='sus', rel=.13, pp='sfz', fam='键盘', desc='button accordion'),
+    'piano':          dict(src=SAL + 'samples', kind='dec', rel=.4, pp='sal', fam='keyboards', desc='Salamander grand piano (Yamaha C5, 5 velocity layers)', lic='salamander'),
+    'upright':        dict(src=V + 'Keys/Upright Nr1', kind='dec', rel=.35, retune=False, fam='keyboards', desc='upright piano (warm, slightly worn)'),
+    'honky_tonk':     dict(src=F + 'piano_fb', kind='dec', rel=.4, pp='sfz', fam='keyboards', desc='old player piano (saloon honky-tonk)'),
+    'harpsichord':    dict(src=C + 'Chordophones/Zithers/Harpsichord, Italian/Sustains', kind='dec', rel=.15, fam='keyboards', desc='harpsichord (Italian)'),
+    'organ':          dict(src=(V + 'Keys/Organ/Loud', r'Man3'), kind='sus', rel=.2, pp='organ', oct=0, fam='keyboards', desc='pipe organ, full manual (with 16\' stop, heavy)'),
+    'organ_soft':     dict(src=(V + 'Keys/Organ/Quiet', r'Man3'), kind='sus', rel=.2, pp='organ', oct=0, fam='keyboards', desc='pipe organ, soft manual stops'),
+    'organ_pedal':    dict(src=(V + 'Keys/Organ', r'Pedal'), kind='sus', rel=.3, pp='detect', fam='keyboards', desc='pipe organ, pedal bass (measured pitch)'),
+    'accordion':      dict(src=F + 'accordion', kind='sus', rel=.13, pp='sfz', fam='keyboards', desc='button accordion'),
     # Plucked (拨弦) / Folk (民族)
-    'guitar_nylon':   dict(src=F + 'spanish_guitar', kind='dec', rel=.3, pp='sfz', fam='拨弦', desc='nylon-string classical guitar'),
-    'ukulele':        dict(src=F + 'ukulele', kind='dec', rel=.3, pp='sfz', fam='拨弦', desc='ukulele'),
-    'electric_guitar': dict(src=F + 'eguitar_clean', kind='dec', rel=.3, pp='sfz', fam='拨弦', desc='clean electric guitar'),
-    'electric_bass':  dict(src=F + 'finger_bass', kind='dec', rel=.12, pp='sfz', fam='拨弦', desc='electric bass, fingered'),
-    'jazz_bass':      dict(src=K + 'sneakybass/Samples/finger', kind='dec', rel=.15, pp='lower', oct=-12, fam='拨弦', desc='double bass, jazz pizzicato (Sneakybass)'),
-    'strumstick':     dict(src=C + 'Chordophones/Composite Chordophones/Strumstick/Finger', kind='dec', rel=.4, fam='拨弦', desc='Strumstick, dulcimer-like steel-string folk pluck'),
-    'dan_tranh':      dict(src=C + 'Chordophones/Zithers/Dan Tranh/Normal', kind='dec', rel=1.0, fam='拨弦', desc='Vietnamese zither đàn tranh (kin to the guzheng; works as one)'),
-    'dan_tranh_trem': dict(src=C + 'Chordophones/Zithers/Dan Tranh/Tremolo', kind='sus', rel=.5, fam='拨弦', desc='đàn tranh, tremolo'),
-    'erhu':           dict(src=K + 'erhu/Samples/sus', kind='sus', rel=.25, pp='lower', fam='民族', desc='erhu, sustained'),
-    'erhu_stac':      dict(src=K + 'erhu/Samples/stac', kind='dec', rel=.1, pp='lower', fam='民族', desc='erhu, short bow'),
-    'bagpipe':        dict(src=F + 'bagpipe', kind='sus', rel=.4, pp='sfz', fam='民族', desc='bagpipe (chanter; G2/G3 are the drones)'),
+    'guitar_nylon':   dict(src=F + 'spanish_guitar', kind='dec', rel=.3, pp='sfz', fam='plucked', desc='nylon-string classical guitar'),
+    'ukulele':        dict(src=F + 'ukulele', kind='dec', rel=.3, pp='sfz', fam='plucked', desc='ukulele'),
+    'electric_guitar': dict(src=F + 'eguitar_clean', kind='dec', rel=.3, pp='sfz', fam='plucked', desc='clean electric guitar'),
+    'electric_bass':  dict(src=F + 'finger_bass', kind='dec', rel=.12, pp='sfz', fam='plucked', desc='electric bass, fingered'),
+    'jazz_bass':      dict(src=K + 'sneakybass/Samples/finger', kind='dec', rel=.15, pp='lower', oct=-12, fam='plucked', desc='double bass, jazz pizzicato (Sneakybass)'),
+    'strumstick':     dict(src=C + 'Chordophones/Composite Chordophones/Strumstick/Finger', kind='dec', rel=.4, fam='plucked', desc='Strumstick, dulcimer-like steel-string folk pluck'),
+    'dan_tranh':      dict(src=C + 'Chordophones/Zithers/Dan Tranh/Normal', kind='dec', rel=1.0, fam='plucked', desc='Vietnamese zither đàn tranh (kin to the guzheng; works as one)'),
+    'dan_tranh_trem': dict(src=C + 'Chordophones/Zithers/Dan Tranh/Tremolo', kind='sus', rel=.5, fam='plucked', desc='đàn tranh, tremolo'),
+    'erhu':           dict(src=K + 'erhu/Samples/sus', kind='sus', rel=.25, pp='lower', fam='folk', desc='erhu, sustained'),
+    'erhu_stac':      dict(src=K + 'erhu/Samples/stac', kind='dec', rel=.1, pp='lower', fam='folk', desc='erhu, short bow'),
+    'bagpipe':        dict(src=F + 'bagpipe', kind='sus', rel=.4, pp='sfz', fam='folk', desc='bagpipe (chanter; G2/G3 are the drones)'),
     # Unpitched percussion (打击)
-    'bass_drum':      dict(src=(V + 'Percussion', r'^BDrumNewhit'), kind='hit', fam='打击', desc='concert bass drum (7 velocity layers)'),
-    'gran_cassa':     dict(src=VM + 'Bass Drum 2', kind='hit', fam='打击', desc='bass drum 2 (with rolls / crescendos)',
+    'bass_drum':      dict(src=(V + 'Percussion', r'^BDrumNewhit'), kind='hit', fam='percussion', desc='concert bass drum (7 velocity layers)'),
+    'gran_cassa':     dict(src=VM + 'Bass Drum 2', kind='hit', fam='percussion', desc='bass drum 2 (with rolls / crescendos)',
                            var={'hit': r'_hit_', 'roll': r'_roll_(pp|mp|mf|ff|f)\.', 'roll_fast': r'_roll_fast_\w+(?<!_rel)\.', 'cresc': r'_cresc_', 'rub': r'_rub'}),
-    'snare':          dict(src=(V + 'Percussion', r'^Snare2-'), kind='hit', fam='打击', desc='snare drum (orchestral)',
+    'snare':          dict(src=(V + 'Percussion', r'^Snare2-'), kind='hit', fam='percussion', desc='snare drum (orchestral)',
                            var={'on': r'HitSN', 'off': r'HitNS', 'roll': r'rollSN', 'roll_off': r'rollNS'}),
-    'snare2':         dict(src=VM + 'Snare Drum, Modern 1', kind='hit', fam='打击', desc='snare drum 2 (close-miked)',
+    'snare2':         dict(src=VM + 'Snare Drum, Modern 1', kind='hit', fam='percussion', desc='snare drum 2 (close-miked)',
                            var={'on': r'HitSN', 'off': r'HitNS', 'roll': r'rollSN', 'stick': r'_stick_', 'taps': r'_taps_'}),
-    'toms':           dict(src=(VM, r'Tom [12]/'), kind='hit', fam='打击', desc='toms (high/low × sticks/mallets)',
+    'toms':           dict(src=(VM, r'Tom [12]/'), kind='hit', fam='percussion', desc='toms (high/low × sticks/mallets)',
                            var={'high': r'TomH_HitS', 'low': r'TomL_HitS', 'high_mallet': r'TomH_HitM', 'low_mallet': r'TomL_HitM', 'roll': r'Roll'}),
-    'crash':          dict(src=(V + 'Percussion', r'^cymbal-crash1'), kind='hit', fam='打击', desc='crash cymbals (orchestral)'),
-    'clash':          dict(src=VI + 'Clash Cymbals 1', kind='hit', fam='打击', desc='crash cymbals 2', var={'crash': r'crash1_(pp|mp|mf|ff)\d', 'short': r'short'}),
-    'sus_cymbal':     dict(src=VI + 'Suspended Cymbal 1', kind='hit', fam='打击', desc='suspended cymbal (soft mallet/stick/bell/roll/crescendo/bowed)',
+    'crash':          dict(src=(V + 'Percussion', r'^cymbal-crash1'), kind='hit', fam='percussion', desc='crash cymbals (orchestral)'),
+    'clash':          dict(src=VI + 'Clash Cymbals 1', kind='hit', fam='percussion', desc='crash cymbals 2', var={'crash': r'crash1_(pp|mp|mf|ff)\d', 'short': r'short'}),
+    'sus_cymbal':     dict(src=VI + 'Suspended Cymbal 1', kind='hit', fam='percussion', desc='suspended cymbal (soft mallet/stick/bell/roll/crescendo/bowed)',
                            var={'hit': r'_hit_(pp|mp|f|fff)\d', 'stick': r'_hit_stick', 'bell': r'_hit_bell', 'roll': r'_roll_\w+_nloop',
                                 'cresc': r'_cresc_', 'bow': r'_bow_', 'scrape': r'_scrape'}),
-    'gong':           dict(src=(V + 'Percussion', r'^gongHit'), kind='hit', fam='打击', desc='tam-tam / gong'),
-    'gong2':          dict(src=VI + 'Gong 1', kind='hit', fam='打击', desc='gong 2 (incl. small gong, scrapes)', var={'big': r'^gong_(p|mf|f|fff)\.', 'small': r'gong_2_', 'scrape': r'scrape'}),
-    'triangle':       dict(src=VI + 'Triangles', kind='hit', fam='打击', desc='triangle',
+    'gong':           dict(src=(V + 'Percussion', r'^gongHit'), kind='hit', fam='percussion', desc='tam-tam / gong'),
+    'gong2':          dict(src=VI + 'Gong 1', kind='hit', fam='percussion', desc='gong 2 (incl. small gong, scrapes)', var={'big': r'^gong_(p|mf|f|fff)\.', 'small': r'gong_2_', 'scrape': r'scrape'}),
+    'triangle':       dict(src=VI + 'Triangles', kind='hit', fam='percussion', desc='triangle',
                            var={'open': r'_Hit_', 'muted': r'_HitM_', 'semi': r'(?i)_hitFM_', 'roll': r'_Roll'}),
-    'tambourine':     dict(src=(V + 'Percussion', r'^Tamb1'), kind='hit', fam='打击', desc='tambourine'),
-    'claves':         dict(src=(V + 'Percussion', r'^Claves1'), kind='hit', fam='打击', desc='claves'),
-    'cowbell':        dict(src=(V + 'Percussion', r'^Cowbell1'), kind='hit', fam='打击', desc='cowbell'),
-    'sleighbells':    dict(src=(V + 'Percussion', r'^Sleighbells'), kind='hit', fam='打击', desc='sleigh bells'),
-    'log_drum':       dict(src=(V + 'Percussion', r'^LogDrum'), kind='hit', fam='打击', desc='log drum / slit drum', var={'hi': 'LogDrumHi', 'lo': 'LogDrumLo'}),
-    'woodblock':      dict(src=VI + 'Woodblock', kind='hit', fam='打击', desc='woodblock', var={'a': r'wood_click_', 'b': r'wood_click2', 'c': r'wood_click3'}),
-    'frame_drum':     dict(src=VM + 'Frame Drum', kind='hit', fam='打击', desc='frame drum',
+    'tambourine':     dict(src=(V + 'Percussion', r'^Tamb1'), kind='hit', fam='percussion', desc='tambourine'),
+    'claves':         dict(src=(V + 'Percussion', r'^Claves1'), kind='hit', fam='percussion', desc='claves'),
+    'cowbell':        dict(src=(V + 'Percussion', r'^Cowbell1'), kind='hit', fam='percussion', desc='cowbell'),
+    'sleighbells':    dict(src=(V + 'Percussion', r'^Sleighbells'), kind='hit', fam='percussion', desc='sleigh bells'),
+    'log_drum':       dict(src=(V + 'Percussion', r'^LogDrum'), kind='hit', fam='percussion', desc='log drum / slit drum', var={'hi': 'LogDrumHi', 'lo': 'LogDrumLo'}),
+    'woodblock':      dict(src=VI + 'Woodblock', kind='hit', fam='percussion', desc='woodblock', var={'a': r'wood_click_', 'b': r'wood_click2', 'c': r'wood_click3'}),
+    'frame_drum':     dict(src=VM + 'Frame Drum', kind='hit', fam='percussion', desc='frame drum',
                            var={'large': r'HDrumL_Hit_', 'small': r'HDrumS_Hit_', 'large_muted': r'HDrumL_HitMuted', 'small_muted': r'HDrumS_HitMuted', 'hand': r'_Hand'}),
-    'hihat':          dict(src=VI + 'Hi-Hat Cymbal', kind='hit', fam='打击', desc='hi-hat', var={'closed': r'HitC_', 'open': r'HitO_', 'loose': r'HitLoose', 'pedal': r'_Close_'}),
-    'cajon':          dict(src=VI + 'Cajon', kind='hit', fam='打击', desc='cajón', var={'bass': 'hit1', 'slap': 'hit2', 'tone': 'hit3'}),
-    'conga':          dict(src=VM + 'Conga', kind='hit', fam='打击', desc='conga', var={'conga': r'^Conga_HitN', 'quinto': r'^Quinto_HitN', 'tumba': r'^Tumba_HitN', 'muted': r'HitFM'}),
-    'claps':          dict(src=VI + 'Claps', kind='hit', fam='打击', desc='claps', var={'group': r'^Clap_', 'solo': r'^SoloClap'}),
-    'shaker':         dict(src=VI + 'Shaker, Small', kind='hit', fam='打击', desc='shaker', var={'down': r'Double_Down', 'up': r'Double_Up', 'slap': r'Slap', 'roll': r'Roll'}),
-    'nepal_bells':    dict(src=VI + 'Hand Bells, Nepalese', kind='hit', fam='打击', desc='Nepalese hand bells'),
-    'world_perc':     dict(src=F + 'world_perc', kind='hit', pp='sfz', fam='打击', desc='world percussion (cajón/bongo/egg shaker/castanets/darbuka…; variants in info())'),
-    'drum_kit':       dict(src=F + 'muldjord_kit', kind='hit', pp='sfz', fam='打击', desc='pop drum kit MuldjordKit (CC BY 4.0)', lic='muldjord'),
+    'hihat':          dict(src=VI + 'Hi-Hat Cymbal', kind='hit', fam='percussion', desc='hi-hat', var={'closed': r'HitC_', 'open': r'HitO_', 'loose': r'HitLoose', 'pedal': r'_Close_'}),
+    'cajon':          dict(src=VI + 'Cajon', kind='hit', fam='percussion', desc='cajón', var={'bass': 'hit1', 'slap': 'hit2', 'tone': 'hit3'}),
+    'conga':          dict(src=VM + 'Conga', kind='hit', fam='percussion', desc='conga', var={'conga': r'^Conga_HitN', 'quinto': r'^Quinto_HitN', 'tumba': r'^Tumba_HitN', 'muted': r'HitFM'}),
+    'claps':          dict(src=VI + 'Claps', kind='hit', fam='percussion', desc='claps', var={'group': r'^Clap_', 'solo': r'^SoloClap'}),
+    'shaker':         dict(src=VI + 'Shaker, Small', kind='hit', fam='percussion', desc='shaker', var={'down': r'Double_Down', 'up': r'Double_Up', 'slap': r'Slap', 'roll': r'Roll'}),
+    'nepal_bells':    dict(src=VI + 'Hand Bells, Nepalese', kind='hit', fam='percussion', desc='Nepalese hand bells'),
+    'world_perc':     dict(src=F + 'world_perc', kind='hit', pp='sfz', fam='percussion', desc='world percussion (cajón/bongo/egg shaker/castanets/darbuka…; variants in info())'),
+    'drum_kit':       dict(src=F + 'muldjord_kit', kind='hit', pp='sfz', fam='percussion', desc='pop drum kit MuldjordKit (CC BY 4.0)', lic='muldjord'),
 }
 ALIASES = {'strings': 'violins', 'cello': 'cellos', 'viola': 'violas', 'double_bass': 'contrabass', 'upright_bass_pizz': 'jazz_bass',
            'french_horn': 'horn', 'glock': 'glockenspiel', 'vibes': 'vibraphone', 'chimes': 'tubular_bells', 'grand_piano': 'piano',
@@ -407,13 +413,152 @@ def _load_index():
     return _IDX
 
 
+# —— Sample libraries: which ones a score needs, and downloading the missing ones in one go ——
+def lib_of(nm):
+    """The sample library an instrument lives in (vsco2ce, vcsl, freepats, karoryfer, salamander)"""
+    nm = ALIASES.get(nm, nm)
+    if nm not in REG: raise KeyError(f'unknown instrument {nm!r}; available: {", ".join(sorted(REG))}')
+    src = REG[nm]['src']
+    return (src[0] if isinstance(src, tuple) else src).split('/')[0]
+
+
+def _pack_file(lib):
+    try: return json.load(open(os.path.join(LIBRARY, 'tools', 'assets.json'), encoding='utf-8'))['packs'][f'instruments-{lib}']['file']
+    except (OSError, ValueError, KeyError): return f'instruments-{lib}.tar'
+
+
+def _have(lib):
+    """Downloaded and unpacked. fetch.sh removes .release/<pack>.download only after unpacking, so while it is there
+    (a download or an unpacking still running, or cut off) the library counts as missing"""
+    return (os.path.isdir(os.path.join(ROOT, lib)) and os.path.exists(INDEX)
+            and not os.path.exists(os.path.join(LIBRARY, '.release', _pack_file(lib) + '.download')))
+
+
+def _fetch_cmd(libs): return ' && '.join(f'sh tools/fetch.sh instruments {l}' for l in libs)
+
+
+def _mb(libs):
+    """Download size of these packs in MB, from tools/assets.json (None when it can't be read)"""
+    try:
+        packs = json.load(open(os.path.join(LIBRARY, 'tools', 'assets.json'), encoding='utf-8'))['packs']
+        return round(sum(packs[f'instruments-{l}']['size'] for l in libs) / 1e6)
+    except (OSError, ValueError, KeyError):
+        return None
+
+
+def names_in(path):
+    """Instrument names written as quoted strings in a script (e.g. a film's mix.py): a quick guess at what it plays"""
+    try: text = open(path, encoding='utf-8', errors='ignore').read()
+    except OSError: return []
+    found = re.findall(r"""['"]([a-z][a-z0-9_]*)['"]""", text)
+    return list(OrderedDict.fromkeys(n for n in found if n in REG or n in ALIASES))
+
+
+def _script_names():
+    main = getattr(sys.modules.get('__main__'), '__file__', None)
+    return names_in(main) if main and main.endswith('.py') else []
+
+
+def _alive(pid):
+    """Is this process still running? (os.kill(pid, 0) would send CTRL_C_EVENT on Windows)"""
+    if os.name == 'nt':
+        try:
+            import ctypes
+            from ctypes import wintypes
+            k = ctypes.WinDLL('kernel32', use_last_error=True)
+            k.OpenProcess.restype = ctypes.c_void_p
+            k.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+            k.GetExitCodeProcess.restype = wintypes.BOOL
+            k.GetExitCodeProcess.argtypes = (ctypes.c_void_p, ctypes.POINTER(wintypes.DWORD))
+            k.CloseHandle.argtypes = (ctypes.c_void_p,)
+            h = k.OpenProcess(0x1000, False, pid)                 # PROCESS_QUERY_LIMITED_INFORMATION
+            if not h: return ctypes.get_last_error() == 5         # access denied: it exists
+            code = wintypes.DWORD()
+            ok = k.GetExitCodeProcess(h, ctypes.byref(code)); k.CloseHandle(h)
+            return not ok or code.value == 259                    # STILL_ACTIVE
+        except Exception:
+            return True                                           # can't tell: wait, up to the timeout
+    try: os.kill(pid, 0)
+    except ProcessLookupError: return False
+    except OSError: pass
+    return True
+
+
+class _FetchLock:
+    """One download at a time across processes (two mixes started together would otherwise write the same pack)"""
+    def __init__(self): self.path = os.path.join(ROOT, '.fetch.lock')
+
+    def __enter__(self):
+        os.makedirs(ROOT, exist_ok=True)
+        import time
+        for i in range(3600):
+            try: os.mkdir(self.path); break
+            except FileExistsError:
+                try: pid = int(open(os.path.join(self.path, 'pid')).read())
+                except (OSError, ValueError): pid = None
+                if pid and not _alive(pid):
+                    try: os.remove(os.path.join(self.path, 'pid')); os.rmdir(self.path)
+                    except OSError: pass
+                    continue
+                if i == 0: print('sampler: another process is downloading sample libraries; waiting for it', file=sys.stderr, flush=True)
+                time.sleep(1)
+        else:
+            raise RuntimeError(f'{self.path} is still there after an hour: remove it if no download is running')
+        with open(os.path.join(self.path, 'pid'), 'w') as f: f.write(str(os.getpid()))
+        return self
+
+    def __exit__(self, *a):
+        try: os.remove(os.path.join(self.path, 'pid')); os.rmdir(self.path)
+        except OSError: pass
+
+
+def _download(libs):
+    script = os.path.join(LIBRARY, 'tools', 'fetch.sh')
+    if not (os.path.isfile(script) and which('sh')): return 'tools/fetch.sh or sh is not available here'
+    with _FetchLock():
+        libs = [l for l in libs if not _have(l)]                 # another process may have fetched some meanwhile
+        if not libs: return None
+        mb = _mb(libs)
+        print(f'sampler: the score needs sample libraries that are not downloaded yet: {", ".join(libs)}'
+              + (f' (about {mb} MB)' if mb else '') + '. Downloading them now into core/audio/instruments/ with '
+              'tools/fetch.sh, from the "assets" release of the library on GitHub (LEMO_FETCH=0 turns this off).',
+              file=sys.stderr, flush=True)
+        try: out = sys.stderr.fileno()                           # keep the progress off stdout, which a script may pipe
+        except (AttributeError, OSError, ValueError): out = None
+        for l in libs:
+            try: subprocess.run(['sh', script, 'instruments', l], cwd=LIBRARY, stdout=out)
+            except OSError as e: print(f'sampler: could not run tools/fetch.sh ({e})', file=sys.stderr)
+    global _IDX
+    _IDX = None                                                   # each pack brings a fresh index.json
+    return 'the download failed'
+
+
+def ensure(names, fetch=None):
+    """Make sure the sample libraries these instruments need are downloaded. The missing ones are named together and,
+    unless fetch=False or LEMO_FETCH=0, downloaded now with tools/fetch.sh, one pack after the other.
+    Raises RuntimeError with the commands to run by hand when a library is still missing. Returns the libraries that were missing."""
+    libs = list(OrderedDict.fromkeys(lib_of(n) for n in names))
+    with _lock:
+        miss = [l for l in libs if not _have(l)]
+        if not miss: return []
+        if fetch is None: fetch = os.environ.get('LEMO_FETCH', '1') != '0'
+        why = _download(miss) if fetch else 'automatic download is off: LEMO_FETCH=0'
+        still = [l for l in libs if not _have(l)]
+        if still:
+            raise RuntimeError(f'sample libraries not downloaded: {", ".join(still)}; {why}. Run, from the library root '
+                               f'({LIBRARY}): {_fetch_cmd(still)}')
+        return miss
+
+
 # —— Instrument object ——
 class Inst:
     def __init__(self, nm):
         self.name, self.spec = nm, REG[nm]
-        src = self.spec['src']; self.lib = (src[0] if isinstance(src, tuple) else src).split('/')[0]
-        if not (os.path.isdir(os.path.join(ROOT, self.lib)) and os.path.exists(INDEX)):
-            raise RuntimeError(f'{nm}: its sample library "{self.lib}" is not downloaded. Run, from the library root: sh tools/fetch.sh instruments {self.lib}')
+        self.lib = lib_of(nm)
+        if not _have(self.lib):
+            # this one and every library the running script seems to need (instrument names quoted in it), all at once
+            try: ensure([nm] + _script_names())
+            except RuntimeError as e: raise RuntimeError(f'{nm}: {e}') from None
         idx = _load_index()
         if nm not in idx:
             zs, off = _analyze(nm, _scan(nm)); idx[nm] = dict(zones=zs, octave_fix=off)
@@ -470,7 +615,15 @@ def load(nm):
     return _INST[nm]
 
 
-def instruments(fam=None): return [k for k, v in REG.items() if fam is None or v['fam'] == fam]
+FAMILIES = ('strings', 'woodwinds', 'brass', 'percussion', 'keyboards', 'plucked', 'folk')
+FAM_ALIASES = {'弦乐': 'strings', '木管': 'woodwinds', '铜管': 'brass', '打击': 'percussion', '键盘': 'keyboards', '拨弦': 'plucked', '民族': 'folk'}   # the Chinese names still work
+
+
+def instruments(fam=None):
+    """Instrument names, all or one family: strings / woodwinds / brass / percussion / keyboards / plucked / folk (the Chinese names are accepted too).
+    An unknown family gives [] (as it always has); FAMILIES lists the families"""
+    if isinstance(fam, str): fam = FAM_ALIASES.get(fam, fam.lower())
+    return [k for k, v in REG.items() if fam is None or v['fam'] == fam]
 
 
 # —— Sample reading / transposition cache ——
@@ -625,6 +778,7 @@ def render(events, dur=None, master=True):
         if isinstance(e, dict): evs.append(e)
         else:
             k = ['t', 'inst', 'pitch', 'dur', 'vel', 'pan', 'gain']; evs.append(dict(zip(k, e)))
+    ensure(list(OrderedDict.fromkeys(e['inst'] for e in evs)))   # every library the score needs, named and fetched before any note is made
     if dur is None: dur = max(e['t'] + (e.get('dur') or 1) + 3 for e in evs)
     buf = np.zeros((int(dur * SR), 2), np.float32)
     for e in evs:
@@ -668,3 +822,35 @@ def credits(names):
         if LIC[l][2]: need.append(LIC[l][2])
         else: thanks.add(LIC[l][0])
     return list(OrderedDict.fromkeys(need)) + ([f'Samples (CC0): {", ".join(sorted(thanks))}'] if thanks else [])
+
+
+def _need(args):
+    """.venv/bin/python core/audio/sampler.py --need <name | script.py> …: fetch the libraries before a long render starts"""
+    names = []
+    for a in args:
+        if a.endswith('.py'):
+            if not os.path.isfile(a):
+                print(f'✗ {a}: no such script', file=sys.stderr); return 1
+            got = names_in(a); names += got
+            try: shown = os.path.relpath(a)
+            except ValueError: shown = a                          # Windows: another drive
+            print(f'sampler: {shown} plays {", ".join(got) if got else "no sampled instrument"}', file=sys.stderr)
+        else: names += [n for n in a.split(',') if n]
+    try:
+        ensure(names)
+    except (RuntimeError, KeyError) as e:
+        print(f'✗ {e}', file=sys.stderr); return 1
+    libs = sorted({lib_of(n) for n in names})
+    print(f'✓ sample libraries ready: {", ".join(libs)}' if libs else '✓ no sample library needed', file=sys.stderr)
+    return 0
+
+
+if __name__ == '__main__' and sys.argv[1:2] == ['--need']:
+    sys.exit(_need(sys.argv[2:]))
+if __name__ == '__main__':   # self-check, no samples needed: python3 core/audio/sampler.py
+    assert midi('C4') == 60 and midi('A4') == 69 and name(61) == 'C#4'
+    assert instruments() == list(REG)
+    for f in FAMILIES: assert instruments(f), f
+    assert instruments('弦乐') == instruments('strings') == instruments('Strings')
+    assert instruments('未知') == [] and instruments('no-such-family') == []
+    print('sampler: self-check ok')

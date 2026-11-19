@@ -7,30 +7,36 @@ The production library is in [vendor/lemo-opuscar](../vendor/lemo-opuscar/). Its
 | Need | Read next |
 | --- | --- |
 | Direct a new film: benchmark, alternative structures, staging, camera, sound, rhythm and delivery | [DIRECTOR.md](../vendor/lemo-opuscar/DIRECTOR.md), then [TECHNIQUE.md](../vendor/lemo-opuscar/TECHNIQUE.md) |
-| Choose a style and understand its invariants | [59-style index](../vendor/lemo-opuscar/styles/README.md); read the selected STYLE.md |
+| Choose a style and understand its invariants | [99-style index](../vendor/lemo-opuscar/styles/README.md); read the selected STYLE.md |
 | Learn an implementation technique | The selected style's DEMO.md and `demo/`, after a topic-specific treatment; documentary material acquisition tools may come first |
 | Render a full page or inspect the page contract | [core/README.md](../vendor/lemo-opuscar/core/README.md) and [native Lemo workflow](native-lemo.md) |
+| Generate images for a ✦ style | `core/image/gen_image.py` and core/README.md "Image generation"; only with the user's own image tool |
+| Draw any map, globe or satellite view | DIRECTOR.md §13 (Maps): borders, China's full territory, wording and map-data credits |
 | Develop or reuse a personal style | [MY-STYLES.md](../vendor/lemo-opuscar/MY-STYLES.md) |
 | Browse visual references without opening all source files | [local gallery](../vendor/lemo-opuscar/styleboard/index.html), [gallery data](../vendor/lemo-opuscar/styleboard/catalog.json), style posters and `demo/stills/` |
 | Determine what is actually bundled and under which terms | [snapshot manifest](../provenance/lemo-snapshot.json), [THIRD_PARTY.md](../THIRD_PARTY.md), and the selected demo's CREDITS |
 
 ## Styles and reusable production techniques
 
-All 59 styles retain STYLE.md, DEMO.md, `style.json`, a demo page, CREDITS, a poster and a style frame. Read the full style index for names and use cases; the groups below expose the different capabilities rather than reducing them to one template.
+All 99 styles retain STYLE.md, DEMO.md, `style.json`, a demo entry, CREDITS, a poster and a style frame. Most demos are web pages; firefly-pointillism and oscilloscope-math (ⓟ) render frames from Python (`demo/film.py`, `build.sh`) and use a readcheck bridge page. Three styles (✦: comic-history, manga-panels, text-flash-cuts) draw with an image generator the user provides; see [native-lemo.md](native-lemo.md#image-generation-styles). Read each STYLE.md for its technique; the groups below are upstream's 15 families.
 
-| Family | Count | Technique entry points |
+| Family | Count | Styles (✦ needs an image generator; ⓟ renders from Python) |
 | --- | ---: | --- |
-| Edit & Documentary | 8 | [caption-news](../vendor/lemo-opuscar/styles/caption-news/STYLE.md), newsreel, countdown, city-symphony, visual-investigation, kino-montage, telestrator, news-package: source discovery and logging, footage preparation, captions, split screens, montage, investigation, tactical overlays and broadcast graphics |
-| Evidence Films | 8 | [satellite-briefing](../vendor/lemo-opuscar/styles/satellite-briefing/STYLE.md), briefing-board, lidar-survey, white-model, data-physical, teardown, microscope, archive-lighttable: sourced measurements, real imagery/scans/CAD, projection, material data displays and anchored annotations |
-| Hand-drawn & Painting | 7 | [watercolor](../vendor/lemo-opuscar/styles/watercolor/STYLE.md), crayon-book, ink-wash, impasto, one-line, whiteboard, urban-sketch: stroke engines, pigment and paper compositing, height-lit paint, path reveals, calligraphy and procedural drawing |
-| East Asian Traditions | 4 | [shadow-puppet](../vendor/lemo-opuscar/styles/shadow-puppet/STYLE.md), ukiyoe, papercut-red, paper-lantern: articulated silhouettes, woodblock grammar, cut-paper shapes, layered light and material-native transitions |
-| Print & Printmaking | 5 | [risograph](../vendor/lemo-opuscar/styles/risograph/STYLE.md), halftone-dossier, woodcut, engraving, silkscreen-poster: ink separation, registration, halftone, carved marks, hatching and screen-print layers |
-| Graphic & Type | 7 | [swiss-motion](../vendor/lemo-opuscar/styles/swiss-motion/STYLE.md), spy-titles, art-deco, blueprint, stained-glass, pictogram-motion, ascii-crt: type grids, title sequences, diagram construction, geometric ornament, icon choreography and CRT post-processing |
-| Information & Keynote | 5 | [dataviz](../vendor/lemo-opuscar/styles/dataviz/STYLE.md), iso-infographic, dark-keynote, living-screencast, hologram-hud: chart storytelling, isometric systems, product presentation, simulated application actions and interface choreography |
-| Cartoon & Anime | 4 | [scifi-toon](../vendor/lemo-opuscar/styles/scifi-toon/STYLE.md), rubber-hose, cel-anime-80s, midcentury-toon: character rigs, expressions, lip sync, pose blending, hand animation and cel effects |
-| Games | 4 | [pixel-rpg](../vendor/lemo-opuscar/styles/pixel-rpg/STYLE.md), hd-2d, microgame, game-show: pixel drawing and fonts, sprites with 3D environments, rapid game-state choreography and timed show graphics |
-| Cinema & Eras | 2 | [silent-film](../vendor/lemo-opuscar/styles/silent-film/STYLE.md), backrooms: pantomime, ink redraw, intertitles, film damage, found-footage camera and VHS treatment |
-| Materials & 3D | 5 | [glass-product](../vendor/lemo-opuscar/styles/glass-product/STYLE.md), brick-toy, paper-popup, tilt-shift, lowpoly-island: physical materials, reflections, caustics, exploded geometry, folding, miniature staging and depth of field |
+| Edit & Documentary · 剪辑纪实 | 8 | [caption-news](../vendor/lemo-opuscar/styles/caption-news/STYLE.md), city-symphony, countdown, kino-montage, news-package, newsreel, telestrator, visual-investigation |
+| Instruments & Evidence · 仪器实证 | 8 | [archive-lighttable](../vendor/lemo-opuscar/styles/archive-lighttable/STYLE.md), briefing-board, dark-documentary, lidar-survey, microscope, satellite-briefing, security-xray, thermal-camera |
+| Data & Maps · 数据地图 | 6 | [data-physical](../vendor/lemo-opuscar/styles/data-physical/STYLE.md), dataviz, map-explainer, pip-simulation, transit-map, white-model |
+| Painting & Illustration · 绘画插画 | 5 | [colored-pencil](../vendor/lemo-opuscar/styles/colored-pencil/STYLE.md), crayon-book, impasto, urban-sketch, watercolor |
+| Sketch & Board · 速写板书 | 7 | [chalkboard](../vendor/lemo-opuscar/styles/chalkboard/STYLE.md), ipad-sketch, marker-paper, one-line, sketchnote, stick-explainer, whiteboard |
+| Traditional Crafts · 传统工艺 | 7 | [gilded-illumination](../vendor/lemo-opuscar/styles/gilded-illumination/STYLE.md), ink-wash, paper-lantern, papercut-red, shadow-puppet, stained-glass, ukiyoe |
+| Print & Printmaking · 印刷版画 | 8 | [engraving](../vendor/lemo-opuscar/styles/engraving/STYLE.md), halftone-dossier, pop-art, printed-long-take, risograph, silkscreen-poster, vintage-collage, woodcut |
+| Graphic & Type · 平面排版 | 8 | [art-deco](../vendor/lemo-opuscar/styles/art-deco/STYLE.md), bauhaus-shapes, flat-space-explainer, pictogram-motion, silhouette-rhythm, spy-titles, swiss-motion, text-flash-cuts ✦ |
+| Line Diagrams · 线稿图解 | 8 | [assembly-line-diagram](../vendor/lemo-opuscar/styles/assembly-line-diagram/STYLE.md), blueprint, hardcore-info, instruction-manual, iso-infographic, pen-plotter, precise-mechanism, teardown |
+| Cartoons · 卡通动画 | 6 | [cel-anime-80s](../vendor/lemo-opuscar/styles/cel-anime-80s/STYLE.md), comic-history ✦, manga-panels ✦, midcentury-toon, rubber-hose, scifi-toon |
+| Games · 电子游戏 | 4 | [game-show](../vendor/lemo-opuscar/styles/game-show/STYLE.md), hd-2d, microgame, pixel-rpg |
+| Film & Tape · 胶片录像 | 5 | [ascii-crt](../vendor/lemo-opuscar/styles/ascii-crt/STYLE.md), backrooms, double-exposure, scratch-film, silent-film |
+| Screens & Interfaces · 屏幕界面 | 6 | [dark-keynote](../vendor/lemo-opuscar/styles/dark-keynote/STYLE.md), desktop-flythrough, hologram-hud, living-screencast, one-bit-dither, spreadsheet |
+| Light & Lines · 发光线条 | 5 | [circuit-board](../vendor/lemo-opuscar/styles/circuit-board/STYLE.md), firefly-pointillism ⓟ, flow-field, neon-tubes, oscilloscope-math ⓟ |
+| 3D & Miniature · 立体微缩 | 8 | [brick-toy](../vendor/lemo-opuscar/styles/brick-toy/STYLE.md), crayon-world, glass-product, isometric-picture-book, lowpoly-island, memphis-diorama, paper-popup, tilt-shift |
 
 The old eight integrated renderers remain useful starter and compatibility tools. Their built-in layouts and subject choices do not define the limits of these full source styles.
 
@@ -89,13 +95,13 @@ Other demo code contains reusable brushes, rigs, shaders, scene props and score 
 
 ## Dependencies, assets and maintenance
 
-The library retains 2,289 of the source checkout's 2,304 tracked files. The manifest records retained files and the 15 excluded files separately. All core tools, 59 styles and their demo sources, visual references, licenses and production guides remain. Git history and materials upstream did not commit are excluded.
+The library retains 3,922 of the source checkout's 3,942 tracked files (Lemo-Opuscar 2.0.x, commit `00a7f9e`). The manifest records retained files and the 20 excluded files separately. All core tools, 99 styles and their demo sources, visual references, licences (`LICENSE`, `LICENSES/`, `REUSE.toml`) and production guides remain. Since 2.0.0 the guides and STYLE/DEMO docs are CC BY-NC 4.0 with a permission to use them for your own films; code stays MIT ([THIRD_PARTY.md](../THIRD_PARTY.md)). Git history and materials upstream did not commit are excluded.
 
 - [TECHNIQUE.md §1](../vendor/lemo-opuscar/TECHNIQUE.md#1-requirements-and-install), `package-lock.json` and the four `requirements*.txt` files describe core, voice, music and instrument-index development dependencies. Style-specific packages belong in the project.
 - [tools/assets.json](../vendor/lemo-opuscar/tools/assets.json) records seven downloadable packs with hashes; [tools/fetch.sh](../vendor/lemo-opuscar/tools/fetch.sh) implements acquisition. No voice models, instrument sample packs, HDRIs or finished demo videos are present locally. Demo fonts and raw data often need separate acquisition. `core/fonts/` contains only eight subsets, with limited Chinese coverage.
 - [MAINTAINING.md](../vendor/lemo-opuscar/MAINTAINING.md) and [styles/_template](../vendor/lemo-opuscar/styles/_template/) explain adding a style, metadata, source/media checks and library demo gates. These are maintenance workflows, not requirements to modify the vendor tree for a user's film.
 - [styleboard/build.py](../vendor/lemo-opuscar/styleboard/build.py) generates catalogs, gallery/README sections, the feature page and web metadata; `styleboard/frames.sh` creates gallery frames. Generated pages retain upstream branding and canonical links.
 - `tools/release.py` remains for its style-completeness and reference-hygiene checks. Its upstream release actions are not part of ordinary film production.
-- Upstream plugin/directory installers, nested skill entry points, marketplace metadata, GitHub Pages deployment and web publication scripts are omitted. This avoids duplicate skill registration and an unnecessary second installation. The importer preserves this exclusion policy.
+- Upstream plugin/directory installers (including `plugin/skills/lemo-opuscar/scripts/setup.sh`, which AGENTS.md mentions; use `aaa lemo doctor` instead), nested skill entry points, marketplace metadata, GitHub Pages deployment and web/film publication scripts (`publish.sh`, `web_cuts.sh`, `films_repo.sh`, `site_media.sh`) are omitted. This avoids duplicate skill registration and an unnecessary second installation. The importer preserves this exclusion policy.
 
 Code/documentation licensing, demo-media attribution, third-party asset terms and the three excluded demo voice tracks are separated in [THIRD_PARTY.md](../THIRD_PARTY.md). Missing dependencies or assets must remain visible; a preserved source file is not proof that its whole pipeline was executed or that a new film meets an artistic benchmark.

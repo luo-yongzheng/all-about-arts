@@ -1,36 +1,30 @@
-一个月饼的相思 · A Mooncake's Longing — Paper-cut Lightbox (Lemo-Opuscar demo)
+The Last Night Train · 末班夜车 — Paper-cut Lightbox 纸雕灯影 (Lemo-Opuscar demo)
 LemoLab × Claude Opus 5.5
 
-All paper layers, figures, props, calligraphy layouts and the lightbox are drawn by code in this folder
-(Canvas2D paper layers + three.js renderer). No photos or AI-generated images inside the box.
-Story, script and shot design are original.
+Story, picture, score and sound are made in code in this folder. Every paper layer, the train, the stations and the end card
+are drawn by src/ (Canvas2D paper layers + three.js renderer). No photos, footage or generated images are used.
+The line and its stations are fiction (see FACTS.md).
 
-Music (both used in the film, crossfaded at ~37 s):
-- "Ripples" — Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License
-  http://creativecommons.org/licenses/by/4.0/  · file: music/km_Ripples.mp3
-- "Nu Flute" — Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License
-  http://creativecommons.org/licenses/by/4.0/  · file: music/km_Nu_Flute.mp3
+Narration
+- Kokoro TTS (kokoro-onnx, model Kokoro-82M v1.0, voice bm_george), Apache License 2.0
+  https://github.com/thewh1teagle/kokoro-onnx · https://huggingface.co/hexgrad/Kokoro-82M
+  Generated offline with core/tts/tts.py and checked with core/tts/asr_check.py (faster-whisper base.en, MIT).
 
-3D assets and textures (Poly Haven, CC0), loaded from core/assets/polyhaven/:
-- tea_set_01 — https://polyhaven.com/a/tea_set_01
-- american_walnut_veneer (walnut_diff / walnut_nor / walnut_rough) — https://polyhaven.com/a/american_walnut_veneer
-Environment lighting: three.js RoomEnvironment (procedural, MIT). No HDRI is used (the HDRIs and the desk lamp in
-core/assets/polyhaven/ belong to the shared folder, not to this film).
+Music (written for this film, played on sampled instruments by core/audio/sampler.py)
+- Piano: "Salamander Grand Piano V3" by Alexander Holm, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/)
+- Samples (CC0): VS Chamber Orchestra: Community Edition (Versilian Studios), Versilian Community Sample Library (Versilian Studios)
+  Instruments: glockenspiel, bowed vibraphone, harp, flute, solo violin, violins, violins tremolo, violas, cellos, contrabass, piano.
 
-Fonts (SIL Open Font License 1.1, Google Fonts; files in fonts/src/, licence texts not bundled — see fonts.google.com):
-- Ma Shan Zheng — titles, poem, seals
-- Zhi Mang Xing — running-script notes
-- Long Cang — the granddaughter's handwriting
-- Noto Serif SC — subtitles and credits
+Sound effects
+- Procedural (core/audio/sfx.py and mix.py): snow wind, river, sea, room tone, wheel clacks, rumble, horn, brake hiss,
+  lamp clicks, shimmer, tunnel whooshes, paper.
 
-Voice: Microsoft Edge neural TTS voice zh-CN-XiaoxiaoNeural, generated with the open-source edge-tts client
-(github.com/rany2/edge-tts).
-LICENCE EXCEPTION: this voice track (the narration in paper-lantern.mp4) is NOT covered by the library's CC BY 4.0
-licence for demo films; Microsoft's terms for redistributing Edge TTS audio are unclear. We plan to re-voice it with
-Kokoro (core/tts/). In your own film, use Kokoro or a voice you have the right to use, never this track.
-Speech check / word timings: faster-whisper (MIT) with the Systran faster-whisper-medium model (MIT).
-Sound effects: synthesized in mix.py (no samples).
+Fonts (SIL Open Font License 1.1; fetched into fonts/ by tools/fonts.py, licence texts alongside)
+- Cormorant Garamond — Christian Thalmann (Catharsis Fonts), https://github.com/CatharsisFonts/Cormorant
+- Noto Serif SC (subset to the characters the film uses) — Adobe / Google, https://github.com/notofonts/noto-cjk
 
-Texts quoted: 苏轼《水调歌头·明月几时有》(Song dynasty); 田汝成《西湖游览志余》(Ming dynasty) — public domain.
+Picture engine
+- three.js r170 (MIT), loaded from the library's node_modules.
 
-Software: three.js (MIT), playwright-core (Apache-2.0), FFmpeg (LGPL/GPL).
+ON SCREEN
+The CC BY material above is credited on the end card, in fine print held at least 2.5 s: Piano: “Salamander Grand Piano V3”, Alexander Holm, CC BY 3.0.

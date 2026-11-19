@@ -7,6 +7,7 @@ export function stage(o = {}) {
   const U = {
     uLight: { value: new THREE.Vector3(...(o.light || [0, .05, -.12])) }, uLightR: { value: o.lightR ?? .14 },
     uLightCol: { value: new THREE.Color(o.lightCol || '#ffe0a8') }, uLit: { value: 1 },
+    uFloor: { value: o.floor ?? .22 }, uBeamO: { value: new THREE.Vector3(0, 0, 0) }, uBeamD: { value: new THREE.Vector3(0, .05, .3) }, uBeamCol: { value: new THREE.Color(o.beamCol || '#ffcf86') },
   };
   const cam = new THREE.PerspectiveCamera(o.fov ?? 26, 16 / 9, .01, 30);
   // Top LED: shines from above the front of the box toward the lower back, so shadows fall on the paper layers behind

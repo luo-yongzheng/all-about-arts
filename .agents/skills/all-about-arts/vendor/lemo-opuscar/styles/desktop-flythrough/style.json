@@ -1,0 +1,23 @@
+{
+ "slug": "desktop-flythrough",
+ "num": "70",
+ "en": "Tabletop App Flythrough",
+ "cn": "桌面卡片穿梭",
+ "aka": [
+  "Desktop Flythrough",
+  "桌面穿梭"
+ ],
+ "category_en": "Screens & Interfaces",
+ "category_cn": "屏幕界面",
+ "film": "Before the Ding",
+ "film_cn": "叮之前",
+ "line": "A cat photo hops across app cards on a sunlit desk, from one phone to a friend's.",
+ "line_cn": "一张猫照片跳过桌上的应用卡片，从一台手机飞到朋友手机里，一镜跟到底。",
+ "uses": [
+  "App explainers",
+  "Workflows",
+  "Products"
+ ],
+ "frame_sec": 56.85,
+ "dur": 60.0
+}

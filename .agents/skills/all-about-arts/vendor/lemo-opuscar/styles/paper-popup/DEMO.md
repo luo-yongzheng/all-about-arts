@@ -22,7 +22,7 @@ How the demo used the native moves:
 
 Story shape: real desk establishing (10 s) → book opens → Chapter 1 home world and the hero's wish (the light beyond the page) → Chapter 2 an obstacle character, beaten by stomping and then *helped* (smoothed out), who turns into a companion → Chapter 3 a journey with a gag (a whale spouts confetti) and a day → night flip → Final Chapter: the blank last page, fear, "Here goes!" → the companion catches the hero and they fly out over the desk → landing, reveal, "Hello, big world!" → end title on the desk with "The End?".
 
-How we suggested adapting it at the time (kept for history; STYLE.md §11 now gives the range): make the topic's world the book's spreads (3–4 chapters, each with one paper mechanism), give the hero one wish that points *outside* the book, and end by crossing into the real room.
+One way to adapt it (STYLE.md §11 gives the range): make the topic's world the book's spreads (3–4 chapters, each with one paper mechanism), give the hero one wish that points *outside* the book, and end by crossing into the real room.
 
 ## Shots
 
@@ -84,7 +84,7 @@ Depth of field (`post.js`): CoC in pixels, max 14, 64-tap golden-angle spiral ga
 **Fonts:** Fredoka 500/600/700 (subtitles, bubbles, signs), Lilita One (cover, chapter banners, action words, end title), IM Fell English (cover tagline, "The End", "The End?"), ZCOOL KuaiLe (Chinese). All OFL, downloaded to `demo/fonts/` by `fetch_fonts.mjs` (Chinese subset = only the characters in the source files).
 
 **Titles and subtitles as built:**
-- Narration subtitles (`hud.js drawSubs`): English Fredoka 500 40 px, cream `#fffaf0`, 8 px dark-brown outline, soft shadow, wrap at 1720 px; Chinese in ZCOOL KuaiLe 32 px below. Fade in 0.3 s before the line, hold until 0.25 s after the audio, fade 0.3 s.
+- Narration subtitles (`hud.js drawSubs`): English Fredoka 500 40 px, cream `#fffaf0`, 8 px dark-brown outline, soft shadow, wrap at 1720 px; Chinese in ZCOOL KuaiLe 32 px below. Fade in 0.3 s before the line, hold until 0.25 s after the audio, fade 0.3 s. The English is always one line: a narration line wider than 1720 px is shown in parts (`story.js VO_SPLIT`), cut in the pause between two words (word times from `words.py`), the Chinese split with it; the parts switch without a fade, only the first fades in and the last fades out.
 - Speech bubbles (`drawBubbles`): radius 44, 6 px ink outline, soft drop shadow, tail projected from 3D every frame, pops in with `back()`, English at 30 chars/s (Fredoka 600 46 px), then the Chinese (ZCOOL KuaiLe 32 px, `#7a5e4c`) and a bobbing red "next" triangle.
 - Chapter banners (`drawChapter`): a hanging cardboard sign on two strings, red ribbon "Chapter N", title in Lilita One 84 px gold `#ffcf3f` with a 12 px ink stroke, Chinese under it.
 - Action words (`drawAction`, `drawBang`): "NICE!" / "GREAT!" in italic Lilita One 120 px, gradient fill, white + ink double stroke, rays; a red "!" over the startled hero.
@@ -99,13 +99,13 @@ The sign-off **"LemoLab × Claude Opus 5.5"** (× = U+00D7) belongs to this libr
 
 ## Pitfalls tied to this demo
 
-- **A single-plane boat hid the character sitting in it**: split into sail (behind, z −3 mm) and hull (in front, z +2 mm) with Pip between them.
-- **Foreground blur**: forest ferns and a bush at 20.9 s filled the frame near the lens.
-- **Mixer bug**: passing a stereo (N×2) array to a 1-D limiter silently crushed all SFX to −96 dB. Limit each channel separately.
-- **Shadow settings that worked**: spot shadow map 4096², bias −6e-5, normalBias 4e-4. Leaf materials: emissive map = colour map, emissive .42.
+- **A single-plane boat hides the character sitting in it**: split it into sail (behind, z −3 mm) and hull (in front, z +2 mm) with Pip between them.
+- **Foreground blur**: keep ferns and bushes away from the lens: near it they fill the frame with blur (the forest at 20.9 s).
+- **Mixer bug**: passing a stereo (N×2) array to a 1-D limiter silently crushes all SFX to −96 dB. Limit each channel separately.
+- **Shadow settings**: spot shadow map 4096², bias −6e-5, normalBias 4e-4. Leaf materials: emissive map = colour map, emissive .42.
 - **Headless WebGL speed**: default Chrome uses SwiftShader (~620 ms/frame); `--use-angle=gl --enable-gpu --ignore-gpu-blocklist` gives tens of ms per frame on Apple Silicon. Serve over HTTP (`serve.mjs`, started inside `render.mjs`).
 - **Poly Haven API**: Python `urllib` gets 403; download with `curl`.
-- **Font subsetting**: `fetch_fonts.mjs` only includes characters present in `story.js/hud.js/main.js/art.js` at download time. The ZCOOL KuaiLe subset has no Latin glyphs, so Latin words in the Chinese credit row fell back to a system serif; use `'"ZCOOL KuaiLe", Fredoka'`.
+- **Font subsetting**: `fetch_fonts.mjs` only includes characters present in `story.js/hud.js/main.js/art.js` at download time. The ZCOOL KuaiLe subset has no Latin glyphs, so Latin words in the Chinese credit row fall back to a system serif; use `'"ZCOOL KuaiLe", Fredoka'`.
 - **Redraw cost**: Pip's canvases are redrawn only when the pose (quantized to 1/40) changes.
 
 ## Build notes

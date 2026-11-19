@@ -1,427 +1,412 @@
-// film.js · scene demo: an outdoor trail guide (silkscreen travel poster)
-// The timeline is derived entirely from content.json (works for 1–4 trails), 100 BPM, one beat = 0.6 s
-import { makeTextures, squeegee, screenFrame, wipeFront, wipeRegion, ink, rectPath, polyPath, circlePath, ringPath, clamp, lerp, mix, hash, mulberry, paperSheet, inkFinish } from './engine/silk.js';
-import { buildPoster, drawPoster, drawBanner, swapFrontLine, pickInk, BANNER_ART, BANNER_BANDS, PW, PH, ART, BW, BH, readTime } from './engine/poster.js';
+// film.js · "The Long Way Home" (silkscreen travel poster). One timeline for the whole 50 s film, full-bleed prints only:
+// the camera always stays inside the picture (no table, no paper edge). 108 BPM waltz (3/4): beat 0.5556 s, bar 1.6667 s.
+// The ticket stub sits at the same place on screen in every city; from shot 4 on it is drawn in screen space.
+import { makeTextures, squeegee, wipeRegion, ink, rectPath, clamp, lerp, hash, inkFinish } from './engine/silk.js';
+import { drawPrint, tiltFront, textBoxes, drawArt, headerBoxes, drawStub, stubBoxes, drawEndCard, STUB, AW, AH, FONT_T } from './engine/poster.js';
+import { temple, istanbul, paris, boca, sea, BOCA_INKS } from './engine/scenes.js';
 
-export const BPM = 100, B = 60 / BPM;
+export const BPM = 108, B = 60 / BPM, BAR = 3 * B, DUR = 50;
+const W = 1920, H = 1080;
 const ss = t => { t = clamp(t); return t * t * (3 - 2 * t); };
 const eio = t => { t = clamp(t); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 const eo = t => 1 - Math.pow(1 - clamp(t), 3);
-const ei = t => Math.pow(clamp(t), 3);
 const seg = (t, a, b) => clamp((t - a) / (b - a));
-const W = 1920, H = 1080;
+const bt = (bar, beat = 0) => +(bar * BAR + beat * B).toFixed(4);
 
-let C, T, POS, TL, ctx;
-// World coordinates (the print table): banner centred on the origin, posters below it
-const BAN = [-900, -220];          // banner top-left (1800×440, centred on the origin)
-const PO = [-500, 420];            // poster top-left (on the print table)
+// ---------------- palettes (one per print; ≤ 6 inks + a lit-face ink) ----------------
+export const PAPER = '#F3EAD8';
+const PAL = {
+  beijingDawn: { sky1: '#F5C978', sky2: '#E8866A', far: '#9A88AE', mid: '#22447C', near: '#1B1F34', sun: '#D8432B', glow: '#5D86C4' },
+  istanbul: { sky1: '#F6DFB2', sky2: '#E9A27A', far: '#8DB9BE', mid: '#C9705A', near: '#1F2D3A', sun: '#F2C14E', glow: '#6E8BA3' },
+  paris: { sky1: '#F4E6CC', sky2: '#A9C1DE', far: '#C3B3D2', mid: '#5B6E9C', near: '#252B42', sun: '#E4553F', glow: '#EDC77E' },
+  boca: { sky1: '#F8E7B0', sky2: '#82C7D8', far: '#B9A9C6', mid: '#3B5B7A', near: '#232B3A', sun: '#E2543D', glow: '#F7E2A6' },
+  sea: { sky1: '#2C3B69', sky2: '#1C2650', far: '#46598A', mid: '#203A63', near: '#111A2F', sun: '#F2D28A', glow: '#3F6395' },
+  beijingDusk: { sky1: '#F2A766', sky2: '#A25A84', far: '#6E5C8E', mid: '#26386E', near: '#151A2C', sun: '#E4502F', glow: '#5578B4' },
+  beijingNight: { sky1: '#2A3762', sky2: '#18204A', far: '#3A4778', mid: '#1F2D5C', near: '#0F1426', sun: '#F2BE4E', glow: '#3D5A97' },
+};
+// ---------------- prints ----------------
+const PRINTS = {
+  beijing: { scene: temple(3), city: 'BEIJING', cityZh: '北京', day: 1, km: '0', landmark: 'TEMPLE OF HEAVEN', built: '1420', seed: 5 },
+};
 
-export function setup(content, canvas) {
-  C = content; ctx = canvas.getContext('2d');
-  T = makeTextures(C.palette.paper, 7);
-  POS = C.trails.map((tr, i) => buildPoster(C, tr, i, C.trails.length));
-  TL = timeline();
-  return TL;
+// ---------------- timeline (whole-film clock) ----------------
+const P1 = {
+  sun: [-.9, 2.4], sky1: [bt(0, 2), .5], sky2: [bt(1, 0), .5], far: [bt(1, 1), .45], mid: [bt(1, 2), .45],
+  near: [bt(2, 0), .45], acc: [bt(2, .5), .32], lit: [bt(2, 1), .32],
+  stub: [bt(3, 1), .34], day: [bt(3, 1.5), .2], header: [bt(3, 2), .32], landmark: [bt(3, 2.5), .2], km: [bt(4, 0), .22],
+  sign: [4.5 * BAR, .26],
+};
+const LIFT1 = bt(2, 2);                 // 4.44 s: the screen hinges up
+const INK_OF = { sun: 'sun', sky1: 'sky1', sky2: 'sky2', far: 'far', mid: 'mid', near: 'near', acc: 'sun', lit: 'glow' };
+// ---------------- the rest of the journey (whole-film clock) ----------------
+const SC = { istanbul: istanbul(7), paris: paris(9), boca: boca(13), sea: sea(17), temple: temple(3) };
+// Istanbul is printed on sixteenth notes (faster by subdividing the beat, same tempo); its stub lands early so it can be read
+const IST = { cover: 10.3, sky: [10.28, .26], far: [10.42, .22], mid: [10.56, .22], near: [10.70, .22], acc: [10.84, .18], lit: [10.98, .18],
+  header: [10.56, .3], panel: [10.70, .25], day: [10.84, .15], big: [10.98, .18], small: [11.12, .18] };
+const PAR = { swap: [bt(8, 1.5), .5], crane: [14.4, 17.7], header: [14.45, .32], panel: [14.45, .25], day: [14.5, .15], big: [14.6, .18], small: [14.7, .18] };
+const BA = { swap: [bt(10, 2), .6], near: [18.33, .26], header: [18.61, .32], acc: [18.75, .2], panel: [19.17, .3], day: [19.31, .18], big: [19.44, .2], small: [19.72, .2], truck: [17.9, 22.2] };
+const PUSH = { t0: bt(13, .5), t1: 25.5, mesh: [24.4, .45], silence: [26.86, bt(16, 2)] };
+const CLAMP = bt(16, 2);                                                   // 27.78 s
+const SEA = { swap: [CLAMP + .17, .5], out: [28.2, 29.4], truck: [28.2, 33.33], lift: [28.55, .45], count: [28.6, 36.1] };
+const HOME = { swap: [bt(20), .55], snap: bt(22), push: [36.9, 41.6], night: [bt(25, 1), .6], card1: [46.2, .4], card2: [46.6, .35] };
+const TRAV0 = 20360, TRAV1 = 39630, FAR = 19270;
+
+export const SHOTS = [
+  { n: 1, t0: 0, t1: bt(2) }, { n: 2, t0: bt(2), t1: bt(3, 1) }, { n: 3, t0: bt(3, 1), t1: 10 },
+  { n: 4, t0: 10, t1: PAR.swap[0] }, { n: 5, t0: PAR.swap[0], t1: BA.swap[0] }, { n: 6, t0: BA.swap[0], t1: PUSH.t0 },
+  { n: 7, t0: PUSH.t0, t1: CLAMP }, { n: 8, t0: CLAMP, t1: HOME.swap[0] }, { n: 9, t0: HOME.swap[0], t1: HOME.snap },
+  { n: 10, t0: HOME.snap, t1: HOME.night[0] }, { n: 11, t0: HOME.night[0], t1: DUR },
+];
+
+let ctx, T, CUES = [], SIGN = false, NOCAP = false;
+export function setup(canvas, opts) {
+  ctx = canvas.getContext('2d'); T = makeTextures(PAPER, 7); CUES = opts.cues || []; SIGN = !!opts.sign; NOCAP = !!opts.nocap;
+  return { dur: DUR, ev: events() };
 }
-const pal = (key) => C.palette[key] || C.palette.noon;
-
-// ---------------- Timeline ----------------
-function timeline() {
-  const n = POS.length, secs = [], ev = [];
-  const E = (t, type, o = {}) => ev.push({ t: +t.toFixed(3), type, ...o });
-  // S1 banner + title
-  const s1 = { kind: 'banner', t0: 0, sky: [-.45, 1.0], lift: 1.0, title: [1.2, 1.5], footer: [1.35, 1.6], pull: [1.0, 1.65], t1: 8 * B };
-  E(0, 'squeegee', { dur: 1.0, ink: 'sky' }); E(1.0, 'lift'); E(1.2, 'squeegee', { dur: .3, ink: 'title' }); E(1.35, 'squeegee', { dur: .25, ink: 'footer' });
-  E(1.5, 'title'); secs.push(s1);
-  let s = s1.t1;
-  POS.forEach((P, i) => {
-    const mode = i === 0 ? 'press' : (i === n - 1 && n > 1 ? 'ascent' : 'quick');
-    const statStr = P.items.map(it => it.value).join(' ');
-    const sec = { kind: mode, P, i, t0: s };
-    if (mode === 'press') {
-      sec.tilt = [s, s + B];
-      sec.pulls = { sky: s + B, far: s + 2 * B, mid: s + 3 * B, near: s + 4 * B };
-      sec.pullDur = .45; sec.lift = s + 5 * B; sec.push = [s + 5 * B, s + 7 * B];
-      sec.band = s + 6 * B; sec.name = s + 7 * B;
-      sec.items = P.items.map((_, k) => s + 8 * B + k * B / 2);
-    } else if (mode === 'quick') {
-      sec.pulls = { sky: s - .3, far: s + B / 2, mid: s + B, near: s + 1.5 * B };
-      sec.pullDur = .26; sec.back = [s + 2 * B, s + 3.2 * B];
-      sec.band = s + 2.5 * B; sec.name = s + 3 * B;
-      sec.items = P.items.map((_, k) => s + 3.5 * B + k * B / 2);
-    } else {
-      sec.climb = [s, s + 7 * B]; sec.clack = s + 8 * B; sec.down = [s + 8 * B, s + 9.5 * B];
-      sec.band = s + 9 * B; sec.name = s + 9.5 * B;
-      sec.items = P.items.map((_, k) => s + 10 * B + k * B / 2);
-      sec.pals = [...new Set([POS[i - 1] ? POS[i - 1].trail.time_of_day : 'noon', 'golden', P.trail.time_of_day])].filter(k => C.palette[k]);
-    }
-    // ---- events (sound-effect and score sync points are all taken from here) ----
-    if (mode === 'press') { E(sec.tilt[0], 'tilt', { i }); ['sky', 'far', 'mid', 'near'].forEach((k, j) => E(sec.pulls[k], 'pull', { i, layer: k, n: j, dur: sec.pullDur })); E(sec.lift, 'lift', { i }); }
-    else if (mode === 'quick') { E(s, 'wipe', { i }); ['sky', 'far', 'mid', 'near'].forEach((k, j) => E(sec.pulls[k], 'pull', { i, layer: k, n: j, dur: sec.pullDur, quick: 1 })); E(sec.back[0], 'pullback', { i }); }
-    else {
-      E(s, 'wipe', { i }); E(s, 'ascent', { i, dur: sec.climb[1] - sec.climb[0] });
-      const nS = sec.pals.length - 1; for (let k = 1; k <= nS; k++) E(lerp(sec.climb[0], sec.climb[1], k / (nS + 1)), 'swap', { i, k, dur: .35 });
-      ['near', 'spurC', 'spurB', 'spurA'].forEach((id, j) => E(lerp(sec.climb[0], sec.climb[1], [.12, .3, .5, .7][j]), 'part', { i, layer: id }));
-      E(sec.climb[1], 'silence', { dur: sec.clack - sec.climb[1] }); E(sec.clack, 'clack', { i }); E(sec.down[0], 'tiltdown', { i });
-    }
-    E(sec.band, 'band', { i }); E(sec.name, 'name', { i });
-    sec.items.forEach((a, k) => E(a, 'item', { i, k, last: k === sec.items.length - 1 ? 1 : 0, climb: P.items[k].climb ? 1 : 0 }));
-    const lastItem = sec.items[sec.items.length - 1] ?? sec.name;
-    const need = Math.max(sec.name + readTime(P.trail.name), lastItem + readTime(statStr));
-    sec.t1 = Math.ceil((need + .05) / B) * B + (mode === 'ascent' ? 0 : B);
-    secs.push(sec); s = sec.t1;
-  });
-  // S5 posters go up on the wall
-  const foot = readTime(C.footer);
-  const wall = { kind: 'wall', t0: s, pull: [s, s + 2 * B], t1: 0 };
-  wall.hold0 = s + 2 * B; wall.t1 = wall.hold0 + Math.ceil(Math.max(3.6, foot) / B) * B;
-  secs.push(wall);
-  const end = { kind: 'end', t0: wall.t1, t1: wall.t1 + 6 * B }; secs.push(end);
-  // silence at the end of the quick-print section (before the signature section)
-  const asc = secs.find(q => q.kind === 'ascent'); if (asc) E(asc.t0 - 2 * B, 'silence', { dur: 2 * B, pre: 1 });
-  E(wall.t0, 'wallpull'); E(wall.hold0, 'land', { dur: wall.t1 - wall.hold0 }); E(end.t0, 'endcard', { dur: end.t1 - end.t0 }); E(end.t0 + .5, 'endpull', { dur: .3 });
-  secs.forEach(q => E(q.t0, 'section', { kind: q.kind, t1: q.t1, time_of_day: q.P ? q.P.trail.time_of_day : null }));
+function events() {
+  const ev = [], E = (t, type, o = {}) => ev.push({ t: +t.toFixed(3), type, ...o });
+  for (const k of Object.keys(INK_OF)) { const [a, d] = P1[k]; E(Math.max(0, a), 'pull', { city: 'beijing', layer: k, dur: +(d - Math.max(0, -a)).toFixed(3), ink: INK_OF[k] }); }
+  E(LIFT1, 'lift'); E(LIFT1 - .5, 'wake', { place: 'beijing' });
+  E(P1.stub[0], 'stub', { dur: P1.stub[1] }); E(P1.header[0], 'header');
+  E(P1.day[0], 'item', { k: 0 }); E(P1.landmark[0], 'item', { k: 1 }); E(P1.km[0], 'item', { k: 2, accent: 1 });
+  if (SIGN) E(P1.sign[0], 'sign');
+  E(P1.stub[0], 'push', { dur: 4.7 });
+  // Istanbul
+  E(10.0, 'wipe', { dur: .6 }); E(9.7, 'wake', { place: 'istanbul' });
+  ['sky', 'far', 'mid', 'near', 'acc', 'lit'].forEach((k, j) => E(IST[k][0], 'pull', { city: 'istanbul', layer: k, n: j, dur: IST[k][1], quick: 1 }));
+  const info = (o, city) => { E(o.header[0], 'header', { city }); E(o.panel[0], 'stub', { dur: o.panel[1], city }); E(o.day[0], 'item', { k: 0 }); E(o.big[0], 'item', { k: 2, accent: 1 }); E(o.small[0], 'item', { k: 1 }); };
+  info(IST, 'istanbul');
+  // Paris
+  E(PAR.swap[0], 'sweep', { dur: PAR.swap[1], to: 'paris' }); E(PAR.swap[0] - .4, 'wake', { place: 'paris' }); E(PAR.crane[0], 'crane', { dur: PAR.crane[1] - PAR.crane[0] }); info(PAR, 'paris');
+  // Buenos Aires
+  E(BA.swap[0], 'sweep', { dur: BA.swap[1], to: 'boca', fountain: 1 }); E(BA.swap[0] - .4, 'wake', { place: 'boca' });
+  E(BA.near[0], 'pull', { city: 'boca', layer: 'near', n: 4, dur: BA.near[1], quick: 1 }); E(BA.acc[0], 'pull', { city: 'boca', layer: 'acc', n: 5, dur: BA.acc[1], quick: 1 });
+  E(BA.truck[0], 'truck', { dur: BA.truck[1] - BA.truck[0] }); info(BA, 'boca');
+  // the far side: push into the number, silence, clamp
+  E(PUSH.t0, 'bigpush', { dur: PUSH.t1 - PUSH.t0 }); E(PUSH.mesh[0], 'meshdown', { dur: PUSH.mesh[1] });
+  E(25.0, 'drop'); E(PUSH.silence[0], 'silence', { dur: +(PUSH.silence[1] - PUSH.silence[0]).toFixed(3) }); E(CLAMP, 'clamp');
+  // the way home
+  E(SEA.swap[0], 'sweep', { dur: SEA.swap[1], to: 'sea' }); E(SEA.lift[0], 'lift'); E(SEA.out[0], 'pullout', { dur: SEA.out[1] - SEA.out[0] }); E(SEA.swap[0], 'wake', { place: 'sea' });
+  E(SEA.out[0], 'truck', { dur: SEA.truck[1] - SEA.truck[0], long: 1 }); E(SEA.count[0], 'count', { dur: SEA.count[1] - SEA.count[0] });
+  E(HOME.swap[0], 'sweep', { dur: HOME.swap[1], to: 'dusk' }); E(HOME.swap[0] - .5, 'wake', { place: 'home' });
+  E(HOME.snap, 'snap'); E(HOME.push[0], 'push', { dur: HOME.push[1] - HOME.push[0] });
+  E(HOME.night[0], 'sweep', { dur: HOME.night[1], to: 'night' }); E(HOME.night[0] - .3, 'wake', { place: 'night' });
+  E(HOME.card1[0], 'endpull', { dur: HOME.card1[1] }); E(HOME.card2[0], 'endpull', { dur: HOME.card2[1], text: 1 });
+  for (const c of CUES) E(c.vo, 'vo', { id: c.id });
+  SHOTS.forEach(s => E(s.t0, 'shot', { n: s.n, t1: s.t1 }));
   ev.sort((a, b) => a.t - b.t);
-  return { secs, ev, dur: end.t1 };
+  return ev;
 }
 
-// ---------------- Camera ----------------
-function cam(cx, cy, z, rot = 0) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(W / 2, H / 2); if (rot) ctx.rotate(rot); ctx.scale(z, z); ctx.translate(-cx, -cy); }
-
-// ---------------- Print table: old wooden workbench (flat boards + wood grain + dried ink stains + tape marks) ----------------
-const TABLE = '#6B4E36';
-let TABLE_CACHE = null;
-function buildTable() {
-  const r = mulberry(21), planks = [], stains = [], tapes = [];
-  const x0 = -2200, x1 = 2200, y0 = -1400, y1 = 2600, ph = 170;
-  const tones = ['#6E5039', '#664A34', '#73553C', '#6A4C35', '#5F4430'];
-  for (let y = y0, k = 0; y < y1; y += ph, k++) {
-    const grain = new Path2D(), knots = new Path2D();
-    for (let g = 0; g < 7; g++) {
-      const gy = y + 14 + g * 22 + r() * 8, amp = 3 + r() * 5, f = .002 + r() * .003, ph0 = r() * 6;
-      grain.moveTo(x0, gy); for (let x = x0; x <= x1; x += 40) grain.lineTo(x, gy + amp * Math.sin(x * f + ph0) + 2 * Math.sin(x * f * 3.7));
-    }
-    for (let q = 0; q < 3; q++) { const kx = x0 + r() * (x1 - x0), ky = y + 30 + r() * (ph - 60); knots.ellipse(kx, ky, 22 + r() * 18, 7 + r() * 5, 0, 0, 7); }
-    planks.push({ y, color: tones[k % tones.length], grain, knots });
+// ---------------- camera: art units, z ≥ 1, the view never leaves the picture ----------------
+const K1 = [
+  [0, 0, [1240, 452, 3.2]],
+  [0, bt(0, 2), [1236, 452, 3.34], 'lin'],
+  [bt(0, 2), .55, [1180, 440, 2.25]],
+  [bt(1, 0), .55, [1090, 470, 1.62]],
+  [bt(1, 1), .5, [1010, 520, 1.3]],
+  [bt(1, 2), .5, [975, 535, 1.12]],
+  [bt(2, 0), .6, [960, 540, 1.0]],
+  [P1.stub[0] - .3, 10 - P1.stub[0] + .3, [985, 532, 1.035], 'eio'],
+];
+function camAt(keys, t) {
+  let s = keys[0][2].slice();
+  for (const [t0, d, to, kind] of keys) {
+    if (t < t0) break;
+    const u = d <= 0 ? 1 : seg(t, t0, t0 + d), e = kind === 'lin' ? u : kind === 'eio' ? eio(u) : eo(u);
+    s = [lerp(s[0], to[0], e), lerp(s[1], to[1], e), Math.exp(lerp(Math.log(s[2]), Math.log(to[2]), e))];
   }
-  // dried ink stains: irregular flat blobs (ink spilled while printing), colours taken from this film's palette
-  const pals = Object.keys(C.palette).filter(k => C.palette[k] && C.palette[k].sky2).map(k => C.palette[k]);
-  const avoid = (x, y) => (x > PO[0] - 60 && x < PO[0] + PW + 60 && y > PO[1] - 60 && y < PO[1] + PH + 60) || (x > BAN[0] - 60 && x < BAN[0] + BW + 60 && y > BAN[1] - 60 && y < BAN[1] + BH + 60);
-  for (let i = 0; i < 12; i++) {
-    let x, y, n = 0; do { x = x0 + 300 + r() * (x1 - x0 - 600); y = y0 + 200 + r() * (y1 - y0 - 400); n++; } while (avoid(x, y) && n < 30);
-    const pp = pals[i % pals.length], col = [pp.sky2, pp.near, pp.sun, pp.mid, pp.far][(r() * 5) | 0];
-    const R = 50 + r() * 70, pts = [], m = 11;
-    for (let j = 0; j < m; j++) { const a = j / m * 6.283, rr = R * (.65 + .5 * r()) * (j % 3 === 0 ? 1.3 : 1); pts.push([x + Math.cos(a) * rr * 1.25, y + Math.sin(a) * rr * .8]); }
-    const path = new Path2D(); pts.forEach((q, j) => { const nq = pts[(j + 1) % m]; if (!j) path.moveTo((q[0] + nq[0]) / 2, (q[1] + nq[1]) / 2); else path.quadraticCurveTo(q[0], q[1], (q[0] + nq[0]) / 2, (q[1] + nq[1]) / 2); });
-    path.closePath();
-    if (r() < .45) { const d = new Path2D(); d.arc(x + R * 1.6, y + (r() - .5) * R, 4 + r() * 6, 0, 7); path.addPath(d); }   // flicked ink dots
-    if (r() < .35) { const sm = new Path2D(); const sx = x - R * 2.4; sm.rect(sx, y - 5, R * 1.8, 10 + r() * 6); path.addPath(sm); }   // squeegee smear
-    stains.push({ path, col: mix(col, TABLE, .45), a: .7 });
-  }
-  // tape marks: old tape strips left after peeling (light beige, ragged edges)
-  for (let i = 0; i < 9; i++) {
-    let x, y, n = 0; do { x = x0 + 300 + r() * (x1 - x0 - 600); y = y0 + 200 + r() * (y1 - y0 - 400); n++; } while (avoid(x, y) && n < 30);
-    tapes.push({ x, y, w: 60 + r() * 120, h: 22 + r() * 8, a: (r() - .5) * .6, torn: r() < .6, dirty: r() < .5 });
-  }
-  return { planks, stains, tapes, x0, x1, ph };
+  const z = Math.max(1, s[2]), hw = W / 2 / z, hh = H / 2 / z;      // keep the whole view inside the print
+  return [clamp(s[0], hw, AW - hw), clamp(s[1], hh, AH - hh), z];
 }
-function table() {
-  if (!TABLE_CACHE) TABLE_CACHE = buildTable();
-  const TB = TABLE_CACHE;
-  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = TABLE; ctx.fillRect(0, 0, W, H); ctx.restore();
-  for (const p of TB.planks) {
-    ctx.fillStyle = p.color; ctx.fillRect(TB.x0, p.y, TB.x1 - TB.x0, TB.ph);
-    ctx.fillStyle = 'rgba(35,22,12,.55)'; ctx.fillRect(TB.x0, p.y, TB.x1 - TB.x0, 5);           // board seams
-    ctx.fillStyle = 'rgba(255,230,190,.07)'; ctx.fillRect(TB.x0, p.y + 5, TB.x1 - TB.x0, 3);
-    ctx.save(); ctx.strokeStyle = 'rgba(40,24,12,.22)'; ctx.lineWidth = 2; ctx.stroke(p.grain); ctx.fillStyle = 'rgba(40,24,12,.25)'; ctx.fill(p.knots); ctx.restore();
-  }
-  for (const s0 of TB.stains) { ctx.save(); ctx.globalAlpha = s0.a; ctx.fillStyle = s0.col; ctx.fill(s0.path); ctx.globalAlpha = s0.a * .5; ctx.translate(-2, -2); ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fill(s0.path); ctx.restore(); }
-  for (const tp of TB.tapes) {
-    ctx.save(); ctx.translate(tp.x, tp.y); ctx.rotate(tp.a);
-    ctx.fillStyle = tp.dirty ? 'rgba(205,184,140,.75)' : 'rgba(222,204,160,.8)';
-    ctx.beginPath(); ctx.moveTo(-tp.w / 2, -tp.h / 2); ctx.lineTo(tp.w / 2, -tp.h / 2);
-    if (tp.torn) { for (let k = 0; k <= 5; k++) ctx.lineTo(tp.w / 2 + (k % 2 ? -6 : 3), -tp.h / 2 + tp.h * k / 5); } else ctx.lineTo(tp.w / 2, tp.h / 2);
-    ctx.lineTo(-tp.w / 2, tp.h / 2); ctx.closePath(); ctx.fill();
-    if (tp.dirty) { ctx.fillStyle = 'rgba(60,40,25,.25)'; ctx.fillRect(-tp.w / 2 + 6, -3, tp.w * .5, 5); }
+let CAM = [W / 2, H / 2, 1];
+function cam(cx, cy, z) { CAM = [cx, cy, z]; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-cx, -cy); }
+const toScreen = (x, y) => [W / 2 + (x - CAM[0]) * CAM[2], H / 2 + (y - CAM[1]) * CAM[2]];
+
+// ---------------- the screen over the print: mesh while printing; lifting = the frame's bottom bar sweeps up and away ----------------
+function mesh(lift) {
+  if (lift >= 1) return;
+  const up = ss(lift) * (AH + 260);                     // the hinged screen rises: its lower edge travels up the print
+  const y1 = AH + 40 - up;                              // lower edge of the mesh (art units)
+  ctx.save();
+  ctx.beginPath(); ctx.rect(-100, -100, AW + 200, y1 + 100); ctx.clip();
+  ctx.fillStyle = 'rgba(236,214,128,.05)'; ctx.fillRect(-100, -100, AW + 200, AH + 200);
+  ctx.strokeStyle = 'rgba(60,52,30,.12)'; ctx.lineWidth = .4; ctx.beginPath();
+  for (let x = -60; x < AW + 60; x += 6) { ctx.moveTo(x, -60); ctx.lineTo(x, AH + 60); }
+  for (let y = -60; y < AH + 60; y += 6) { ctx.moveTo(-60, y); ctx.lineTo(AW + 60, y); }
+  ctx.stroke(); ctx.restore();
+  if (lift > 0) {                                        // the frame's bottom bar: aluminium + blue tape, its shadow on the print
+    ctx.save();
+    ctx.globalAlpha = .22; ctx.fillStyle = '#000'; ctx.fillRect(-100, y1 + 34, AW + 200, 26 + 30 * lift);
+    ctx.globalAlpha = 1; ctx.fillStyle = '#B7B2A6'; ctx.fillRect(-100, y1, AW + 200, 34);
+    ctx.fillStyle = '#D6D1C4'; ctx.fillRect(-100, y1, AW + 200, 5); ctx.fillStyle = '#8E897E'; ctx.fillRect(-100, y1 + 28, AW + 200, 6);
+    ctx.fillStyle = '#3C6E9E'; ctx.fillRect(-100, y1 - 10, AW + 200, 10);
     ctx.restore();
   }
 }
-function regTape(x, y, w, h) {
-  ctx.fillStyle = '#D9C38A';
-  const L = 60, th = 16;
-  for (const [px, py, sx, sy] of [[x, y, -1, -1], [x + w, y, 1, -1], [x, y + h, -1, 1], [x + w, y + h, 1, 1]]) {
-    ctx.fillRect(Math.min(px, px + sx * L), py + (sy < 0 ? -th : 0) - sy * 2, L, th);
-    ctx.fillRect(px + (sx < 0 ? -th : 0) - sx * 2, Math.min(py, py + sy * L), th, L);
+
+// ---------------- Beijing (shots 1–3) ----------------
+const prog1 = (t) => (k) => { const v = P1[k]; if (!v) return 0; return seg(t, v[0], v[0] + v[1]); };
+const ANG = -.08;
+function beijing(t) {
+  const [cx, cy, z] = camAt(K1, t);
+  cam(cx, cy, z);
+  const pal = PAL.beijingDawn, P = PRINTS.beijing, prog = prog1(t);
+  drawPrint(ctx, P, { pal, T, prog, angle: ANG, reg: 1, imprint: SIGN });
+  // wet sheen behind the blade on the big pulls, dry within ~0.6 s
+  for (const k of ['sky1', 'sky2', 'mid', 'near']) {
+    const [a, d] = P1[k], u = seg(t, a, a + d), dry = seg(t, a + d, a + d + .6);
+    if (u <= 0 || dry >= 1) continue;
+    const f = tiltFront(u, ANG), mx = (f.a[0] + f.b[0]) / 2, my = (f.a[1] + f.b[1]) / 2;
+    const g = ctx.createLinearGradient(mx - f.lead[0] * 260, my - f.lead[1] * 260, mx, my);
+    g.addColorStop(0, 'rgba(255,250,235,0)'); g.addColorStop(.75, `rgba(255,250,235,${.06 * (1 - dry)})`); g.addColorStop(1, `rgba(255,250,235,${.18 * (1 - dry)})`);
+    ctx.save(); ctx.fillStyle = g; ctx.translate(mx, my); ctx.rotate(ANG); ctx.fillRect(-1400, -260, 2800, 262); ctx.restore();
+  }
+  mesh(seg(t, LIFT1, LIFT1 + .45));
+  for (const k of Object.keys(INK_OF)) {
+    const [a, d] = P1[k], u = seg(t, a, a + d);
+    if (u <= 0 || u >= 1) continue;
+    const f = tiltFront(u, ANG), o = 16;
+    squeegee(ctx, [f.a[0] + f.lead[0] * o, f.a[1] + f.lead[1] * o], [f.b[0] + f.lead[0] * o, f.b[1] + f.lead[1] * o], f.lead,
+      { color: pal[INK_OF[k]], seed: a * 10 + 3, roll: (f.a[1] + f.b[1]) / 60, scale: 1.3, handle: .4, shadow: .18 });
   }
 }
-function sheetShadow(x, y, w, h, a = .3) { ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = '#000'; ctx.fillRect(x + 8, y + 12, w, h); ctx.restore(); }
 
-// ---------------- Sections ----------------
-function banner(sec, t) {
-  const p = seg(t, sec.sky[0], sec.sky[1]);
-  const sqX = wipeFront([BAN[0], BAN[1], BW, BH], 'right', p, 34);
-  // camera: first tracks sideways with the squeegee (close-up), pulls back to the whole banner once the pull ends, then slowly pushes in
-  const k = eo(seg(t, sec.pull[0], sec.pull[1]));
-  const zc = lerp(1.95, 1.8, ss(seg(t, 0, 1.0))), zw = .96;         // opening close-up → banner fills the frame width (about 5% margins), about 40% of frame height
-  const cxClose = sqX - 150, cyClose = 0;
-  let z = lerp(zc, zw, k), cx = lerp(cxClose, 0, k), cy = lerp(cyClose, 0, k);
-  z *= 1 + .03 * ss(seg(t, 1.8, sec.t1));                 // slow push-in while the title is read
-  cam(cx, cy, z, lerp(-.03, 0, k));
-  table();
-  regTape(BAN[0], BAN[1], BW, BH);
-  sheetShadow(BAN[0], BAN[1], BW, BH, .25);
-  ctx.save(); ctx.translate(BAN[0], BAN[1]);
-  drawBanner(ctx, C, { pal: pal(C.banner_time || 'golden'), T, sky: p, title: seg(t, sec.title[0], sec.title[1]), footer: seg(t, sec.footer[0], sec.footer[1]), reg: 1 });
+// ======================================================================================================
+// Shots 4–11
+// ======================================================================================================
+let OZ = [W / 2, H / 2, 1];                                            // screen-space zoom wrapped around everything (the push into the stub)
+function camS(cx, cy, z) { CAM = [cx, cy, z]; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(W / 2, H / 2); ctx.scale(OZ[2], OZ[2]); ctx.translate(-OZ[0], -OZ[1]); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-cx, -cy); }
+function screenS() { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(W / 2, H / 2); ctx.scale(OZ[2], OZ[2]); ctx.translate(-OZ[0], -OZ[1]); }
+const sp = (t, v) => v ? seg(t, v[0], v[0] + v[1]) : 0;
+const fmt = (n) => Math.round(n).toLocaleString('en-US');
+
+// a re-ink sweep in screen space: everything behind the blade is the next print
+const SW_BOX = [-500, -500, W + 1000, H + 1000];
+function swRegion(p, ang, seed) { const m = new DOMMatrix().translate(W / 2, H / 2).rotate(ang * 180 / Math.PI).translate(-W / 2, -H / 2); const o = new Path2D(); o.addPath(wipeRegion(SW_BOX, 'down', p, seed, 50, 7), m); return o; }
+function swFront(p, ang) {
+  const y = -500 - 50 + p * (H + 1000 + 100), m = new DOMMatrix().translate(W / 2, H / 2).rotate(ang * 180 / Math.PI).translate(-W / 2, -H / 2);
+  const a = m.transformPoint(new DOMPoint(-500, y)), b = m.transformPoint(new DOMPoint(W + 500, y)), d = m.transformPoint(new DOMPoint(0, 1)), o = m.transformPoint(new DOMPoint(0, 0));
+  return { a: [a.x, a.y], b: [b.x, b.y], lead: [d.x - o.x, d.y - o.y] };
+}
+function sweep(p, ang, drawA, drawB, beads, seed = 3) {
+  if (p <= 0) { drawA(); return; }
+  if (p >= 1) { drawB(); return; }
+  drawA();
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clip(swRegion(p, ang, seed)); drawB(); ctx.restore();
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const f = swFront(p, ang), o = 22, L = Math.hypot(f.b[0] - f.a[0], f.b[1] - f.a[1]);
+  const bd = beads.length === 1 ? [{ t0: 0, t1: 1, color: beads[0] }] : beads.map((c, i) => ({ t0: i / beads.length + .004, t1: (i + 1) / beads.length, color: c }));
+  squeegee(ctx, [f.a[0] + f.lead[0] * o, f.a[1] + f.lead[1] * o], [f.b[0] + f.lead[0] * o, f.b[1] + f.lead[1] * o], f.lead, { beads: bd, seed, roll: p * 40, scale: 1.6, handle: .35, shadow: .16 });
   ctx.restore();
-  // wet-ink sheen: freshly pulled ink shines for a stretch behind the squeegee, travels with it and slowly goes matte
-  const wet = 1 - seg(t, sec.sky[1], sec.sky[1] + .8);
-  if (p > 0 && wet > 0) {
-    ctx.save(); ctx.globalAlpha = wet; ctx.beginPath(); ctx.rect(BAN[0] + 14, BAN[1] + 14, Math.max(0, sqX - BAN[0] - 14), BANNER_ART[3]); ctx.clip();
-    const g = ctx.createLinearGradient(sqX - 420, 0, sqX, 0); g.addColorStop(0, 'rgba(255,250,235,0)'); g.addColorStop(.6, 'rgba(255,250,235,.08)'); g.addColorStop(1, 'rgba(255,250,235,.34)');
-    ctx.fillStyle = g; ctx.fillRect(sqX - 420, BAN[1], 420, BH);
-    ctx.restore();
-  }
-  const lift = seg(t, sec.lift, sec.lift + .45);
-  const box = [BAN[0] - 90, BAN[1] - 90, BW + 180, BH + 180];
-  const emu = new Path2D(); emu.rect(box[0], box[1], box[2], box[3]); emu.rect(BAN[0] + 14, BAN[1] + 14, BW - 28, BANNER_ART[3]);
-  if (lift < 1) screenFrame(ctx, box, { lift: ss(lift), frame: 40, mesh: 'rgba(236,214,128,.03)', emulsion: emu, emulsionAlpha: .55, meshStep: 3.4, meshLine: 'rgba(70,60,30,.16)' });
-  // squeegee (split fountain: the ink bead on the blade is segmented by the sky colour bands)
-  if (t < sec.lift + .35) {
-    const bp = pal(C.banner_time || 'golden');
-    const up = ss(seg(t, sec.lift, sec.lift + .35));
-    const x = sqX + 14 + up * 120, y0 = BAN[1] - 38, y1 = BAN[1] + BH + 38;
-    const tt = (yy) => (yy - y0) / (y1 - y0);
-    ctx.save(); ctx.globalAlpha = 1 - up;
-    const BB = BANNER_BANDS;
-    squeegee(ctx, [x, y0], [x, y1], [1, 0], { beads: [['sky2', bp.sky2], ['sky1', bp.sky1], ['far', bp.far]].map(([k, c]) => ({ t0: tt(BAN[1] + BB[k][0] + 16), t1: tt(BAN[1] + BB[k][1]), color: c })), seed: 3, scale: 1.25, roll: sqX / 30 });
-    ctx.restore();
-  }
-  // title squeegee (one quick pull, dark ink)
-  const tp = seg(t, sec.title[0], sec.title[1]);
-  if (tp > 0 && tp < 1) {
-    const x = wipeFront([BAN[0], BAN[1] + 20, BW, 330], 'right', tp, 40) + 12;
-    squeegee(ctx, [x, BAN[1] - 38], [x, BAN[1] + BH + 38], [1, 0], { color: pal(C.banner_time || 'golden').near, seed: 5, roll: x / 30, scale: 1.25 });
+}
+
+// the screen frame bar crossing the frame (art or screen units): y1 = lower edge of the mesh
+function meshAt(y1, w = W, h = H, bar = true) {
+  ctx.save(); ctx.beginPath(); ctx.rect(-100, -100, w + 200, y1 + 100); ctx.clip();
+  ctx.fillStyle = 'rgba(236,214,128,.05)'; ctx.fillRect(-100, -100, w + 200, h + 200);
+  ctx.strokeStyle = 'rgba(60,52,30,.14)'; ctx.lineWidth = .4; ctx.beginPath();
+  for (let x = -60; x < w + 60; x += 6) { ctx.moveTo(x, -60); ctx.lineTo(x, h + 60); }
+  for (let y = -60; y < h + 60; y += 6) { ctx.moveTo(-60, y); ctx.lineTo(w + 60, y); }
+  ctx.stroke(); ctx.restore();
+  if (bar && y1 < h + 40) {
+    ctx.save(); ctx.globalAlpha = .22; ctx.fillStyle = '#000'; ctx.fillRect(-100, y1 + 34, w + 200, 40);
+    ctx.globalAlpha = 1; ctx.fillStyle = '#B7B2A6'; ctx.fillRect(-100, y1, w + 200, 34);
+    ctx.fillStyle = '#D6D1C4'; ctx.fillRect(-100, y1, w + 200, 5); ctx.fillStyle = '#8E897E'; ctx.fillRect(-100, y1 + 28, w + 200, 6);
+    ctx.fillStyle = '#3C6E9E'; ctx.fillRect(-100, y1 - 10, w + 200, 10); ctx.restore();
   }
 }
 
-// Shared drawing of a poster on the print table
-function posterOnTable(P, st) {
-  regTape(PO[0], PO[1], PW, PH);
-  sheetShadow(PO[0], PO[1], PW, PH, .22);
-  ctx.save(); ctx.translate(PO[0], PO[1]); drawPoster(ctx, P, st); ctx.restore();
-}
-const pullProg = (sec, id, t) => { const k = id === 'sun' ? 'sky' : id; const a = sec.pulls[k] ?? sec.pulls.near; return seg(t, a, a + sec.pullDur); };
-function planeGroup(id) { return id === 'sun' ? 'sky' : ['main', 'spurA', 'spurB', 'spurC'].includes(id) ? 'mid' : id; }
-
-function press(sec, t) {
-  const P = POS[sec.i], pl = pal(P.trail.time_of_day);
-  // camera: tilts down from the banner to the full poster → pushes in to the info band
-  const tilt = eio(seg(t, sec.tilt[0], sec.tilt[1]));
-  const push = eio(seg(t, sec.push[0], sec.push[1]));
-  const full = [0, PO[1] + PH / 2 - 10, .66];
-  const bandC = [0, PO[1] + 1290, 1.55];
-  let cx = lerp(0, full[0], tilt), cy = lerp(0, full[1], tilt), z = lerp(.96 * 1.03, full[2], tilt);
-  cx = lerp(cx, bandC[0], push); cy = lerp(cy, bandC[1], push); z = lerp(z, bandC[2], push);
-  z *= 1 + .02 * seg(t, sec.items[0], sec.t1);
-  cam(cx, cy, z); table();
-  if (tilt < 1) { ctx.save(); ctx.translate(BAN[0], BAN[1]); sheetShadow(0, 0, BW, BH, .25); drawBanner(ctx, C, { pal: pal(C.banner_time || 'golden'), T }); ctx.restore(); }
-  const st = { pal: pl, T, prog: id => pullProg(sec, planeGroup(id), t), band: seg(t, sec.band, sec.band + .3), name: seg(t, sec.name, sec.name + .3), header: seg(t, sec.name, sec.name + .3), trail: seg(t, sec.band, sec.band + .6), items: sec.items.map(a => seg(t, a, a + .18)) };
-  posterOnTable(P, st);
-  // screen + squeegee
-  const lift = seg(t, sec.lift, sec.lift + .4);
-  const box = [PO[0] - 70, PO[1] - 70, PW + 140, PH + 140];
-  if (lift < 1) screenFrame(ctx, box, { lift: ss(lift), frame: 44 });
-  for (const k of ['sky', 'far', 'mid', 'near']) {
-    const a = sec.pulls[k], p = seg(t, a, a + sec.pullDur);
-    if (p > 0 && p < 1) {
-      const y = PO[1] + wipeFront([0, ART[1] - 60, PW, ART[3] + 120], 'down', clamp(p * 1.35), 30) - 60 + 14;
-      const inkKey = k === 'sky' ? 'sky1' : k === 'far' ? P.sc.planes.find(q => q.id === 'far').parts[0].ink : k === 'mid' ? 'mid' : 'near';
-      squeegee(ctx, [PO[0] - 30, y], [PO[0] + PW + 30, y], [0, 1], { color: pl[inkKey], seed: a * 10, roll: y / 30, scale: 1.3 });
-    }
-  }
-}
-
-// Transition through foreground tree shadows (screen-space occluder, colour = the previous poster's near-layer ink)
+// screen-space foreground silhouette (old cypresses) crossing right to left; it covers the frame for about one frame at t0
 function treeWipe(t, t0, color) {
   const u = seg(t, t0 - .3, t0 + .3); if (u <= 0 || u >= 1) return;
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
-  const w = W * 1.25, cxw = lerp(W + w / 2 + 120, -w / 2 - 120, ss(u)), x = cxw - w / 2;   // at the midpoint it exactly covers the frame (about 1 frame); the next poster swaps in then
-  const p = new Path2D(); p.moveTo(x, -20);
-  for (let y = -20; y <= H + 20; y += 40) p.lineTo(x - 50 - 70 * hash(y * .37), y);
-  for (let y = H + 20; y >= -20; y -= 40) p.lineTo(x + w + 60 + 80 * hash(y * .61 + 3), y);
-  p.closePath(); ctx.fillStyle = color; ctx.fill(p);
-  ctx.restore();
+  const w = W * 1.25, cx = lerp(W + w / 2 + 160, -w / 2 - 160, ss(u)), x = cx - w / 2;
+  const p = new Path2D(); p.moveTo(x, -40);
+  for (let y = -40; y <= H + 40; y += 60) { const b = 70 + 90 * hash(y * .37); p.quadraticCurveTo(x - b, y + 30, x - b * .4, y + 60); }
+  p.lineTo(x + w, H + 40);
+  for (let y = H + 40; y >= -40; y -= 60) { const b = 70 + 110 * hash(y * .61 + 3); p.quadraticCurveTo(x + w + b, y - 30, x + w + b * .3, y - 60); }
+  p.closePath(); ctx.fillStyle = color; ctx.fill(p); ctx.restore();
 }
 
-function quick(sec, t) {
-  const P = POS[sec.i], pl = pal(P.trail.time_of_day);
-  const back = eio(seg(t, sec.back[0], sec.back[1]));
-  const s = seg(t, sec.t0 - .3, sec.back[0]);
-  const close = [0, PO[1] + 400 + 40 * s, 1.25 + .04 * s];      // the full sheet width and top edge are in frame, so it's clear which poster this is; the poster fills 100% of the frame height
-  const bandC = [0, PO[1] + 1300, 1.5];                          // the info band is fully in frame, ~13% margin each side
-  const cx = lerp(close[0], bandC[0], back), cy = lerp(close[1], bandC[1], back), z = lerp(close[2], bandC[2], back);
-  cam(cx, cy, z); table();
-  posterOnTable(P, { pal: pl, T, prog: id => pullProg(sec, planeGroup(id), t), band: seg(t, sec.band, sec.band + .25), name: seg(t, sec.name, sec.name + .3), header: seg(t, sec.far ?? sec.name, sec.name + .3), trail: seg(t, sec.band, sec.band + .5), items: sec.items.map(a => seg(t, a, a + .18)) });
+// stub state for a city at time t
+function stubCity(t, o, day, km, label, value) {
+  return { panel: sp(t, o.panel), rows: { day: { p: sp(t, o.day), n: day }, big: { p: sp(t, o.big), label: 'FROM HOME', value: km }, small: { p: sp(t, o.small), label, value } } };
 }
+function stubReturn(t, day) {
+  const u = ss(seg(t, SEA.count[0], SEA.count[1]));
+  const home = Math.round(lerp(FAR, 0, u) / 10) * 10, trav = Math.round(lerp(TRAV0, TRAV1, u) / 10) * 10, live = u > 0 && u < 1;
+  return { panel: 1, rows: { day: { p: 1, n: day }, big: { p: 1, label: 'FROM HOME', value: fmt(home), live }, small: { p: 1, label: 'TRAVELLED', value: fmt(trav) + ' KM', live } } };
+}
+function stubDraw(pal, s, seed) { screenS(); drawStub(ctx, { pal, T, panel: s.panel, rows: s.rows, seed }); }
 
-// ---- Wall (visitor centre): layout ----
-function wallLayout() {
-  // banner (4:1) hung centred above the posters; the height budget first guarantees the values are ≥30 px once the posters are on the wall (s ≥ .47)
-  const n = POS.length, gap = 54, maxW = 1700;
-  const bw0 = Math.min(1150, W * .62), bh0 = BH * bw0 / BW;
-  const s = Math.min((maxW - (n - 1) * gap) / n / PW, (H - 44 - bh0 - 26) / PH, .62);
-  const pw = PW * s, ph = PH * s, total = n * pw + (n - 1) * gap;
-  const bw = bw0, bs = bw / BW, bh = BH * bs;
-  const top = Math.max(14, (H - 30 - (bh + 26 + ph)) / 2);
-  const x0 = (W - total) / 2;
-  return { s, pw, ph, bs, bh, banner: [(W - bw) / 2, top], posters: POS.map((_, i) => [x0 + i * (pw + gap), top + bh + 26]) };
-}
-function wall(t, glint = -1) {
-  const Lw = wallLayout(), wp = C.palette.wall || { board: '#5E4432', groove: '#3F2C21', rail: '#8A6547' };
-  ctx.fillStyle = wp.board; ctx.fillRect(-2000, -2000, 6000, 6000);
-  ctx.fillStyle = wp.groove; for (let x = -1200; x < 3200; x += 96) ctx.fillRect(x, -2000, 5, 6000);
-  ctx.fillStyle = mix(wp.board, '#ffffff', .07); for (let x = -1200; x < 3200; x += 96) ctx.fillRect(x + 5, -2000, 3, 6000);
-  ctx.fillStyle = wp.rail; ctx.fillRect(-2000, H - 44, 6000, 18); ctx.fillStyle = wp.groove; ctx.fillRect(-2000, H - 26, 6000, 2000);
-  // banner
-  const [bx, by] = Lw.banner;
-  ctx.save(); ctx.globalAlpha = .35; ctx.fillStyle = '#1a120c'; ctx.fillRect(bx + 10, by + 12, BW * Lw.bs, BH * Lw.bs); ctx.restore();
-  ctx.save(); ctx.translate(bx, by); ctx.scale(Lw.bs, Lw.bs); drawBanner(ctx, C, { pal: pal(C.banner_time || 'golden'), T }); ctx.restore();
-  POS.forEach((P, i) => {
-    const [x, y] = Lw.posters[i];
-    ctx.save(); ctx.globalAlpha = .35; ctx.fillStyle = '#1a120c'; ctx.fillRect(x + 12, y + 14, Lw.pw, Lw.ph); ctx.restore();
-    ctx.save(); ctx.translate(x, y); ctx.scale(Lw.s, Lw.s); drawPoster(ctx, P, { pal: pal(P.trail.time_of_day), T }); ctx.restore();
-    // push pins
-    ctx.fillStyle = '#C9C2B2'; for (const dx of [18, Lw.pw - 18]) { ctx.beginPath(); ctx.arc(x + dx, y + 16, 5, 0, 7); ctx.fill(); }
-  });
-  return Lw;
-}
-
-function ascent(sec, t) {
-  const P = POS[sec.i], Lw = wallLayout(), [wx, wy] = Lw.posters[sec.i];
-  const u = seg(t, sec.climb[0], sec.climb[1]);
-  const ue = u < .5 ? ss(u * 2) * .5 * .7 + u * .3 : .5 + (1 - Math.pow(1 - (u - .5) * 2, 2)) * .5;   // slow start, steady middle, decelerates at the top
-  // camera (poster units): valley floor → summit (rising within one shot)
-  const start = [520, 800, 2.3], top = [500, 400, 2.06], band = [500, 1300, 1.72];
-  let cx = lerp(start[0], top[0], ue), cy = lerp(start[1], top[1], ue), z = lerp(start[2], top[2], ue);
-  const dn = eio(seg(t, sec.down[0], sec.down[1]));
-  cx = lerp(cx, band[0], dn); cy = lerp(cy, band[1], dn); z = lerp(z, band[2], dn);
-  z *= 1 + .025 * ss(seg(t, sec.items[0], sec.t1));          // very slow push-in while the numbers are read
-  // per-layer parallax: near layers sink faster; each ridge parts to the sides as the camera passes it, and at the top everything returns and clicks into register
-  const settle = seg(t, sec.climb[1], sec.clack);
-  const loose = 1 - ss(seg(t, sec.clack - .02, sec.clack + .04));
-  const pass = { near: .12, spurC: .3, spurB: .5, spurA: .7, main: .95 };
-  const off = (id, pl) => {
-    const f = pl.depth, dy = (top[1] - cy) * (f - 1) * .42;
-    const side = pl.side || 0, pu = pass[id] ?? 1;
-    const bump = Math.exp(-Math.pow((u - pu) / .16, 2)) * (1 - settle);
-    const sx = side * 190 * bump * (f - .3);
-    const jig = loose * 5 * (1 - settle * .6);
-    return [(sx + jig * Math.sin(f * 9)) * loose, (dy + bump * 40 * (f - .3) + jig * Math.cos(f * 7)) * loose];
-  };
-  // colour swap: the same poster is reprinted whole as time passes (noon → afternoon → dusk)
-  const pals = sec.pals.map(pal); const nS = pals.length - 1;
-  const swapTimes = pals.slice(1).map((_, k) => lerp(sec.climb[0], sec.climb[1], (k + 1) / (nS + 1)));
-  let base = pals[0], swap = null;
-  swapTimes.forEach((st, k) => { const p = seg(t, st, st + .35); if (p >= 1) base = pals[k + 1]; else if (p > 0) swap = { pal: pals[k + 1], p, dir: 'up' }; });
-  // convert to wall coordinates
-  cam(wx + cx * Lw.s, wy + cy * Lw.s, z / Lw.s);
-  wall(t);
-  ctx.save(); ctx.translate(wx, wy); ctx.scale(Lw.s, Lw.s);
-  const ANG = -.21;
-  if (swap) swap.angle = ANG;
-  const sep = loose * (settle > 0 ? 1 - .5 * settle : 1) * clamp(u * 6);
-  drawPoster(ctx, P, { pal: base, T, off, reg: .35 + loose * 1.25, sep, swap, trail: clamp(u * 1.08), band: seg(t, sec.band, sec.band + .3), name: seg(t, sec.name, sec.name + .3), header: 1, items: sec.items.map(a => seg(t, a, a + .18)) });
-  // colour-swap reprint: one big squeegee pushes up across the whole poster
-  if (swap) {                // big diagonal squeegee: shows only the blade, the ink bead and a section of handle
-    const [a0, a1] = swapFrontLine(swap.p, ANG), dx = a1[0] - a0[0], dy = a1[1] - a0[1], L = Math.hypot(dx, dy);
-    const nrm = [dy / L, -dx / L];                       // direction of travel (biased upward)
-    const off2 = 26;
-    squeegee(ctx, [a0[0] + nrm[0] * -off2, a0[1] + nrm[1] * -off2], [a1[0] + nrm[0] * -off2, a1[1] + nrm[1] * -off2], nrm, { color: swap.pal.sky2, scale: 1.1, seed: 11, shadow: .1, handle: .3, roll: t * 40 });
+// ---- one city print, with its own camera ----
+function cityIst(t) {
+  camS(lerp(960, 900, ss(seg(t, 10.3, 14.2))), lerp(540, 520, ss(seg(t, 10.3, 14.2))), lerp(1, 1.04, ss(seg(t, 10.3, 14.2))));
+  const prog = (k) => sp(t, IST[k]);
+  drawArt(ctx, SC.istanbul, { pal: PAL.istanbul, T, prog, angle: -.06, seed: 21, header: { text: 'ISTANBUL', zh: '伊斯坦布尔', p: sp(t, IST.header) } });
+  for (const k of ['sky', 'far', 'mid', 'near', 'acc', 'lit']) {
+    const u = sp(t, IST[k]); if (u <= 0 || u >= 1) continue;
+    const f = tiltFrontS(u, -.06, SC.istanbul), o = 16, ink0 = { sky: 'sky2', far: 'far', mid: 'mid', near: 'near', acc: 'sun', lit: 'glow' }[k];
+    squeegee(ctx, [f.a[0] + f.lead[0] * o, f.a[1] + f.lead[1] * o], [f.b[0] + f.lead[0] * o, f.b[1] + f.lead[1] * o], f.lead, { color: PAL.istanbul[ink0], seed: IST[k][0] * 10, roll: (f.a[1] + f.b[1]) / 60, scale: 1.3, handle: .4, shadow: .18 });
   }
-  ctx.restore();
+  stubDraw(PAL.istanbul, stubCity(t, IST, 6, '7,060', 'HAGIA SOPHIA', 'BUILT 537'), 61);
 }
-
-function wallShot(sec, t) {
-  const Lw = wallLayout(), last = POS.length - 1, [wx, wy] = Lw.posters[last];
-  const k = eio(seg(t, sec.pull[0], sec.pull[1]));
-  const from = [wx + 500 * Lw.s, wy + 1300 * Lw.s, 1.72 * 1.025 / Lw.s];
-  const cx = lerp(from[0], W / 2, k), cy = lerp(from[1], H / 2, k), z = Math.exp(lerp(Math.log(from[2]), 0, k));
-  cam(cx, cy, z * (1 + .012 * seg(t, sec.hold0, sec.t1)));
-  wall(t);
-  // ink-film sheen: a diagonal glint slowly sweeps across the three posters (only on inked areas, very faint)
-  const g = seg(t, sec.hold0 + .6, sec.hold0 + 3.2);
-  if (g > 0 && g < 1) {
-    ctx.save(); ctx.beginPath(); Lw.posters.forEach(([x, y]) => ctx.rect(x, y, Lw.pw, Lw.ph)); ctx.rect(Lw.banner[0], Lw.banner[1], BW * Lw.bs, BH * Lw.bs); ctx.clip();
-    const gx = lerp(-300, W + 300, ss(g)), gr = ctx.createLinearGradient(gx - 220, 0, gx + 220, 0);
-    gr.addColorStop(0, 'rgba(255,248,230,0)'); gr.addColorStop(.5, 'rgba(255,248,230,.10)'); gr.addColorStop(1, 'rgba(255,248,230,0)');
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.transform(1, 0, -.35, 1, 190, 0); ctx.fillStyle = gr; ctx.fillRect(-400, 0, W + 800, H);
-    ctx.restore();
+function tiltFrontS(p, angle, S) {
+  const W0 = S.w || AW, H0 = S.h || AH, box = [-300, -300, W0 + 600, H0 + 600], y = -300 - 34 + p * (H0 + 600 + 68);
+  const m = new DOMMatrix().translate(W0 / 2, H0 / 2).rotate(angle * 180 / Math.PI).translate(-W0 / 2, -H0 / 2);
+  const a = m.transformPoint(new DOMPoint(-300, y)), b = m.transformPoint(new DOMPoint(W0 + 300, y)), d = m.transformPoint(new DOMPoint(0, 1)), o = m.transformPoint(new DOMPoint(0, 0));
+  return { a: [a.x, a.y], b: [b.x, b.y], lead: [d.x - o.x, d.y - o.y] };
+}
+function cityParis(t, stub = true) {
+  const u = eio(seg(t, PAR.crane[0], PAR.crane[1])), cy = lerp(1080, 540, u);
+  camS(960, cy, 1);
+  const loose = lerp(.35, .9, seg(t, PAR.swap[0], BA.swap[0]));
+  const off = (pull, d) => [Math.sin(d * 9 + 1) * 6 * loose, (1080 - cy) * (d - .4) * .32 + Math.cos(d * 7) * 5 * loose];
+  drawArt(ctx, SC.paris, { pal: PAL.paris, T, angle: -.06, seed: 23, off, sep: loose, reg: 1 + loose, header: { text: 'PARIS', zh: '巴黎', p: sp(t, PAR.header) } });
+  if (stub) stubDraw(PAL.paris, stubCity(t, PAR, 11, '8,220', 'EIFFEL TOWER', 'BUILT 1889'), 63);
+}
+function cityBoca(t, stub = true) {
+  const u = ss(seg(t, BA.truck[0], BA.truck[1])), cx = lerp(960, 1640, u);
+  camS(cx, 540, 1);
+  const loose = lerp(.8, 1.6, seg(t, BA.swap[0], PUSH.t0 + 1));
+  const off = (pull, d) => [(cx - 960) * (d - .5) * .22 + Math.sin(d * 11 + t * .7) * 7 * loose, Math.cos(d * 5 + t * .6) * 6 * loose];
+  const prog = (k) => k === 'near' ? sp(t, BA.near) : k === 'acc' ? sp(t, BA.acc) : 1;
+  drawArt(ctx, SC.boca, { pal: PAL.boca, T, prog, angle: -.05, seed: 25, off, sep: loose * .8, reg: 1 + loose, header: { text: 'BUENOS AIRES', zh: '布宜诺斯艾利斯', p: sp(t, BA.header) } });
+  for (const k of ['near', 'acc']) {
+    const v = sp(t, BA[k]); if (v <= 0 || v >= 1) continue;
+    const f = tiltFrontS(v, -.05, SC.boca), o = 16;
+    squeegee(ctx, [f.a[0] + f.lead[0] * o, f.a[1] + f.lead[1] * o], [f.b[0] + f.lead[0] * o, f.b[1] + f.lead[1] * o], f.lead, { color: PAL.boca[k === 'near' ? 'near' : 'sun'], seed: 7, roll: (f.a[1] + f.b[1]) / 60, scale: 1.3, handle: .4, shadow: .18 });
   }
+  if (stub) stubDraw(PAL.boca, stubCity(t, BA, 19, '19,270', 'OBELISCO', 'BUILT 1936'), 65);
+}
+function citySea(t) {
+  const cx = lerp(4300, 1100, ss(seg(t, SEA.truck[0], SEA.truck[1])));
+  camS(cx, 540, 1);
+  const off = (pull, d) => [Math.sin(d * 9 + t) * 5, Math.cos(d * 6 + t * .8) * 6 * d];
+  drawArt(ctx, SC.sea, { pal: PAL.sea, T, angle: -.05, seed: 27, off, sep: .9, reg: 1.8 });
+  stubDraw(PAL.sea, stubReturn(t, 24), 67);
+}
+function cityHome(t, pal, night) {
+  const snapped = t >= HOME.snap, k = 1 - ss(seg(t, HOME.snap - .02, HOME.snap + .05));
+  const loose = snapped ? k : 1;
+  const off = (pull, d) => [Math.sin(d * 9 + t * .9 + 1) * 36 * d * loose, (Math.cos(d * 6 + t * .7) * 26 * d - 18 * d) * loose];
+  const pu = eio(seg(t, HOME.push[0], HOME.push[1]));
+  camS(960, 540, 1);
+  drawArt(ctx, SC.temple, { pal, T, angle: -.08, seed: 29, off, sep: loose, reg: snapped ? 0.35 * (1 - k) + 1 * k : 1.6, header: { text: 'BEIJING', zh: '北京', p: 1 } });
+  stubDraw(pal, stubReturn(t, 30), 69);
 }
 
-// Ending: the last pull — the closing information is printed as a small landscape poster (a split-fountain pull prints the picture, a second pull prints the info band)
-let END_CACHE = null;
-function endShapes() {
-  if (END_CACHE) return END_CACHE;
-  const far = [[-20, 600]]; for (let x = 0; x <= W + 40; x += 40) far.push([x, 470 - 70 * Math.abs(Math.sin(x * .0042 + .4)) - 30 * Math.abs(Math.sin(x * .013))]); far.push([W + 20, 600]);
-  const mid = [[-20, 620], [0, 540], [260, 470], [520, 520], [760, 430], [900, 360], [1010, 410], [1180, 500], [1420, 470], [1660, 530], [1940, 500], [1940, 620]];
-  const lit = [[900, 360], [1010, 410], [1180, 500], [1080, 505], [960, 430]];
-  const trail = []; for (let k = 0; k < 9; k++) trail.push([640 + k * 30 + (k % 2) * 12, 560 - k * 22]);
-  return (END_CACHE = { far: polyPath(far), mid: polyPath(mid), lit: polyPath(lit), trail });
+function shotsLater(t, s) {
+  OZ = [W / 2, H / 2, 1];
+  if (s.n === 4) {
+    if (t < IST.cover) beijing(t); else cityIst(t);
+    treeWipe(t, IST.cover, PAL.beijingDawn.near);
+  } else if (s.n === 5) {
+    const p = sp(t, PAR.swap);
+    sweep(p, -.32, () => cityIst(t), () => cityParis(t), [PAL.paris.sky2, PAL.paris.sky1, PAL.paris.far, PAL.paris.near], 5);
+  } else if (s.n === 6) {
+    const p = sp(t, BA.swap);
+    sweep(p, -.28, () => cityParis(t), () => cityBoca(t), BOCA_INKS, 9);
+  } else if (s.n === 7) {
+    const u = eio(seg(t, PUSH.t0, PUSH.t1)), u2 = seg(t, PUSH.t1, CLAMP);
+    OZ = [lerp(W / 2, 1655, u), lerp(H / 2, 498, u), Math.exp(lerp(0, Math.log(5.2), u)) * (1 + .13 * u2)];
+    cityBoca(t);
+    screenS(); meshAt(lerp(-260, H + 60, ss(sp(t, PUSH.mesh))));
+  } else if (s.n === 8) {
+    const jolt = t < CLAMP + .12 ? Math.sin((t - CLAMP) * 90) * 3 * (1 - (t - CLAMP) / .12) : 0;
+    const z0 = 5.2 * 1.13, u = eo(seg(t, SEA.out[0], SEA.out[1]));
+    OZ = [lerp(1655, W / 2, u), lerp(498, H / 2, u) + jolt, Math.exp(lerp(Math.log(z0), 0, u))];
+    const p = sp(t, SEA.swap);
+    sweep(p, -.3, () => cityBoca(t), () => citySea(t), [PAL.sea.sky2, PAL.sea.sky1, PAL.sea.mid, PAL.sea.near], 11);
+    const lift = sp(t, SEA.lift);
+    if (lift < 1) { screenS(); meshAt(lerp(H + 60, -300, ss(lift))); }
+  } else if (s.n === 9) {
+    const p = sp(t, HOME.swap);
+    sweep(p, -.3, () => citySea(t), () => cityHome(t, PAL.beijingDusk), [PAL.beijingDusk.sky1, PAL.beijingDusk.sky2, PAL.beijingDusk.mid, PAL.beijingDusk.near], 13);
+  } else {
+    const pu = eio(seg(t, HOME.push[0], HOME.push[1]));
+    OZ = [lerp(W / 2, 1010, pu), lerp(H / 2, 520, pu), lerp(1, 1.035, pu)];
+    const p = sp(t, HOME.night);
+    sweep(p, -.3, () => cityHome(t, PAL.beijingDusk), () => cityHome(t, PAL.beijingNight), [PAL.beijingNight.sky1, PAL.beijingNight.sky2, PAL.beijingNight.sun, PAL.beijingNight.near], 15);
+    const c1 = sp(t, HOME.card1), c2 = sp(t, HOME.card2);
+    if (c1 > 0) {
+      screenS(); drawEndCard(ctx, PAL.beijingNight, T, c1, c2);
+      for (const [v, pal, k] of [[c1, PAL.beijingNight.near, 'down'], [c2, PAL.beijingNight.sun, 'right']]) {
+        if (v <= 0 || v >= 1) continue;
+        if (k === 'down') { const y = 236 - 20 - 40 + v * (600 + 40 + 80); squeegee(ctx, [1270, y + 12], [1890, y + 12], [0, 1], { color: pal, seed: 3, roll: y / 30, scale: 1.2, handle: .35, shadow: .16 }); }
+        else { const x = 1300 - 50 + v * (560 + 100); squeegee(ctx, [x + 12, 200], [x + 12, 870], [1, 0], { color: pal, seed: 4, roll: x / 30, scale: 1.2, handle: .35, shadow: .16 }); }
+      }
+    }
+  }
+  OZ = [W / 2, H / 2, 1];
 }
-function endCard(sec, t) {
-  cam(W / 2, H / 2, 1); wall(t);
-  const pl = pal(POS[POS.length - 1].trail.time_of_day), E0 = endShapes();
-  const p1 = seg(t, sec.t0, sec.t0 + .55), p2 = seg(t, sec.t0 + .5, sec.t0 + .8);
-  const M = 36, ART_B = 610;
+
+// ---------------- subtitles: a printed strip (near ink, paper-coloured type), pulled on with each line ----------------
+const SUB_INK = '#1B1F34';
+function subtitle(t) {
+  if (NOCAP) return;
+  const c = CUES.find(q => t >= q.t0 && t < q.t1); if (!c) return;
+  const pIn = seg(t, c.t0, c.t0 + .12), pOut = seg(t, c.t1 - .1, c.t1);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  // paper (a whole fresh sheet, appearing with the first pull)
-  const c1 = wipeRegion([0, 0, W, H], 'right', p1, 3, 60, 8);
-  ctx.save(); ctx.clip(c1); paperSheet(ctx, T, 0, 0, W, H, 1.1);
-  ctx.save(); ctx.beginPath(); ctx.rect(M, M, W - 2 * M, ART_B - M); ctx.clip();
-  ink(ctx, { path: rectPath(0, 0, W, H), knock: ringPath(1660, 350, 128, 146) }, { color: pl.sky1, sheen: 1 });
-  const top = new Path2D(); top.rect(0, 0, W, 120); for (let i = 0; i < 5; i++) { const cell = 26, th = cell * (1 - (i + .5) / 5) * .95 + 2; top.rect(0, 120 + i * cell, W, th); }
-  ink(ctx, { path: top }, { color: pl.sky2, reg: [1.5, .8], sheen: 1, trap: .4 });
-  ink(ctx, { path: circlePath(1660, 350, 108) }, { color: pl.sun, reg: [3, 1.5], sheen: 1 });
-  ink(ctx, { path: E0.far }, { color: pl.far, reg: [-1, 1], sheen: 1, trap: 1 });
-  ink(ctx, { path: E0.mid }, { color: pl.mid, reg: [1.2, -.8], sheen: 1, trap: 1 });
-  ink(ctx, { path: E0.lit }, { color: pl.glow || pl.sky2, reg: [1.2, -.8], sheen: 1 });
-  ctx.strokeStyle = pl.sun; ctx.lineWidth = 7; E0.trail.forEach(([x, y]) => { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 16, y - 11); ctx.stroke(); });
-  ctx.restore();
-  ink(ctx, { paint: (c) => { c.font = '900 118px BigShoulders'; c.letterSpacing = '3px'; c.textAlign = 'center'; c.fillText(C.title.toUpperCase(), W / 2 - 60, 300); } }, { color: pickInk([pl.sky1, pl.sky2], [pl.near, pl.mid], 3), reg: [2, -1] });
-  ctx.restore();
-  // second pull: info band + credit
-  if (p2 > 0) {
-    const c2 = p2 < 1 ? wipeRegion([0, ART_B, W, H - ART_B], 'right', p2, 9, 50, 8) : null;
-    ink(ctx, { path: rectPath(M, ART_B + 12, W - 2 * M, H - ART_B - 12 - M) }, { color: pl.near, clip: c2, sheen: 1 });
-    const hi = pickInk(pl.near, [pl.sky1, pl.sun], 4.5), lo = pickInk(pl.near, [pl.sky2, pl.glow, pl.sky1], 3.5);
-    ink(ctx, { paint: (c) => { c.textAlign = 'center';
-      c.font = '700 40px Outfit'; c.letterSpacing = '14px'; c.fillStyle = pl.sun; c.fillText('SILKSCREEN TRAVEL POSTER', W / 2, ART_B + 100);
-      c.fillStyle = pl.sun; c.fillRect(W / 2 - 420, ART_B + 128, 840, 5);
-      c.fillStyle = hi; c.font = '600 38px Outfit'; c.letterSpacing = '9px'; c.fillText('LEMO-OPUSCAR', W / 2, ART_B + 196); c.fillText('LEMOLAB × CLAUDE OPUS 5.5', W / 2, ART_B + 248);
-      c.fillStyle = lo; c.font = '500 24px Outfit'; c.letterSpacing = '3px';
-      c.fillText('FONTS: BIG SHOULDERS DISPLAY, OUTFIT (SIL OFL)', W / 2, ART_B + 322);
-      c.fillText('SAMPLES: VCSL, VSCO 2 CE, KARORYFER (CC0) · ARTWORK, GUITARS & SOUND MADE IN CODE', W / 2, ART_B + 360);
-    } }, { color: hi, clip: c2, reg: [1.2, .6] });
-  }
-  inkFinish(ctx, T, 0, 0, W, H, 1.1, p1 >= 1 ? 1 : 0);
-  // squeegee
-  if (p1 > 0 && p1 < 1) { const x = wipeFront([0, 0, W, H], 'right', p1, 60); const BB = [[pl.sky2, 0, .28], [pl.sky1, .28, .5], [pl.far, .5, .6]];
-    squeegee(ctx, [x + 10, -40], [x + 10, H + 40], [1, 0], { beads: BB.map(([c, a, b]) => ({ t0: a + .04, t1: b, color: c })), scale: 1.6, seed: 9, roll: x / 30 }); }
-  if (p2 > 0 && p2 < 1) { const x = wipeFront([0, ART_B, W, H - ART_B], 'right', p2, 50); squeegee(ctx, [x + 10, ART_B - 10], [x + 10, H + 40], [1, 0], { color: pl.near, scale: 1.4, seed: 4, roll: x / 30 }); }
+  ctx.font = `600 40px NotoSC`; ctx.letterSpacing = '2px'; const wz = ctx.measureText(c.zh).width;
+  ctx.font = `500 28px ${FONT_T}`; ctx.letterSpacing = '.6px'; const we = ctx.measureText(c.en).width;
+  const w = Math.max(wz, we) + 76, h = 118, x = (W - w) / 2, y = H - 46 - h;
+  ctx.save();
+  if (pIn < 1) ctx.clip(wipeRegion([x, y, w, h], 'right', pIn, 7 + c.id.length, 26, 5));
+  if (pOut > 0) { const r = new Path2D(); r.rect(x + w * pOut, y - 10, w, h + 20); ctx.clip(r); }
+  ink(ctx, { path: rectPath(x, y, w, h) }, { color: SUB_INK, sheen: .6 });
+  ink(ctx, { paint: (g) => {
+    g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+    g.font = `600 40px NotoSC`; g.letterSpacing = '2px'; g.fillText(c.zh, W / 2, y + 54);
+    g.font = `500 28px ${FONT_T}`; g.letterSpacing = '.6px'; g.fillText(c.en, W / 2, y + 96);
+  } }, { color: PAPER, reg: [1.2, -.8] });
+  inkFinish(ctx, T, x, y, w, h, .7, .8);
+  ctx.restore(); ctx.letterSpacing = '0px';
 }
 
 export function render(t) {
-  const sec = TL.secs.find(s => t >= s.t0 && t < s.t1) || TL.secs[TL.secs.length - 1];
-  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = TABLE; ctx.fillRect(0, 0, W, H);
-  if (sec.kind === 'banner') banner(sec, t);
-  else if (sec.kind === 'press') press(sec, t);
-  else if (sec.kind === 'quick') quick(sec, t);
-  else if (sec.kind === 'ascent') ascent(sec, t);
-  else if (sec.kind === 'wall') wallShot(sec, t);
-  else endCard(sec, t);
-  // tree-shadow transitions between sections
-  TL.secs.forEach((s, k) => { if ((s.kind === 'quick' || s.kind === 'ascent') && Math.abs(t - s.t0) < .3) { const prev = TL.secs[k - 1]; treeWipe(t, s.t0, pal(prev.P.trail.time_of_day).near); } });
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
+  const s = SHOTS.find(q => t >= q.t0 && t < q.t1) || SHOTS[SHOTS.length - 1];
+  if (s.n <= 3) beijing(t); else shotsLater(t, s);
+  subtitle(t);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
-export const getTL = () => TL;
+
+// every on-screen text at t (pixels), for readcheck; live counters are left out until they stop
+export function texts(t) {
+  const out = [], s = SHOTS.find(q => t >= q.t0 && t < q.t1) || SHOTS[SHOTS.length - 1];
+  const push = (id, text, b) => { if (b[0] < 0 || b[1] < 0 || b[2] > W || b[3] > H) return; out.push({ id, text, x0: b[0], y0: b[1], x1: b[2], y1: b[3] }); };
+  const z = (b) => { const f = (x, y) => [W / 2 + (x - OZ[0]) * OZ[2], H / 2 + (y - OZ[1]) * OZ[2]]; const [a, c] = f(b[0], b[1]), [d, e] = f(b[2], b[3]); return [a, c, d, e]; };
+  const world = (b) => { const [x0, y0] = toScreen(b[0], b[1]), [x1, y1] = toScreen(b[2], b[3]); return z([x0, y0, x1, y1]); };
+  if (s.n <= 3) {
+    const [cx, cy, zz] = camAt(K1, t); CAM = [cx, cy, zz]; OZ = [W / 2, H / 2, 1];
+    const prog = prog1(t);
+    for (const b of textBoxes(PRINTS.beijing)) if (prog(b.pull) >= 1) push(b.id, b.text, world(b.box));
+    return out;
+  }
+  // replay the camera of the current shot without drawing
+  shotsLaterCam(t, s);
+  const city = s.n === 4 ? (t >= IST.cover ? ['istanbul', IST, 'ISTANBUL', '伊斯坦布尔', stubCity(t, IST, 6, '7,060', 'HAGIA SOPHIA', 'BUILT 537')] : null)
+    : s.n === 5 ? ['paris', PAR, 'PARIS', '巴黎', stubCity(t, PAR, 11, '8,220', 'EIFFEL TOWER', 'BUILT 1889')]
+    : s.n === 6 || s.n === 7 ? ['boca', BA, 'BUENOS AIRES', '布宜诺斯艾利斯', stubCity(t, BA, 19, '19,270', 'OBELISCO', 'BUILT 1936')]
+    : s.n === 8 ? ['sea', null, null, null, stubReturn(t, 24)] : ['temple', null, 'BEIJING', '北京', stubReturn(t, 30)];
+  if (!city) return out;
+  const [key, o, en, zh, st] = city;
+  if (en && (!o || sp(t, o.header) >= 1) && !(s.n >= 10 && t >= HOME.card1[0])) for (const b of headerBoxes(SC[key], { text: en, zh })) push(b.id, b.text, world(b.box));
+  if (!(t >= HOME.card1[0])) for (const b of stubBoxes(st.rows)) if (b.p >= 1 && !b.live) push(b.id, b.text, z(b.box));
+  if (t >= HOME.card2[0] + HOME.card2[1]) for (const [id, text, y0, y1] of [['card-title', 'THE LONG WAY HOME', 260, 450], ['card-zh', '绕远路回家', 460, 510], ['card-style', 'SILKSCREEN TRAVEL POSTER', 580, 616], ['card-style-zh', '丝印旅行海报', 626, 662], ['card-sign', 'LemoLab × Claude Opus 5.5', 730, 762]]) push(id, text, z([1340, y0, 1830, y1]));
+  return out;
+}
+// camera only (for texts): same maths as shotsLater, no drawing
+function shotsLaterCam(t, s) {
+  OZ = [W / 2, H / 2, 1];
+  if (s.n === 4) { const u = ss(seg(t, 10.3, 14.2)); CAM = [lerp(960, 900, u), lerp(540, 520, u), lerp(1, 1.04, u)]; }
+  else if (s.n === 5) { const u = eio(seg(t, PAR.crane[0], PAR.crane[1])); CAM = [960, lerp(1080, 540, u), 1]; }
+  else if (s.n === 6 || s.n === 7) {
+    CAM = [lerp(960, 1640, ss(seg(t, BA.truck[0], BA.truck[1]))), 540, 1];
+    if (s.n === 7) { const u = eio(seg(t, PUSH.t0, PUSH.t1)), u2 = seg(t, PUSH.t1, CLAMP); OZ = [lerp(W / 2, 1655, u), lerp(H / 2, 498, u), Math.exp(lerp(0, Math.log(5.2), u)) * (1 + .13 * u2)]; }
+  } else if (s.n === 8) { const u = eo(seg(t, SEA.out[0], SEA.out[1])); OZ = [lerp(1655, W / 2, u), lerp(498, H / 2, u), Math.exp(lerp(Math.log(5.2 * 1.13), 0, u))]; CAM = [lerp(4300, 1100, ss(seg(t, SEA.truck[0], SEA.truck[1]))), 540, 1]; }
+  else { CAM = [960, 540, 1]; if (s.n >= 10) { const pu = eio(seg(t, HOME.push[0], HOME.push[1])); OZ = [lerp(W / 2, 1010, pu), lerp(H / 2, 520, pu), lerp(1, 1.035, pu)]; } }
+}
+

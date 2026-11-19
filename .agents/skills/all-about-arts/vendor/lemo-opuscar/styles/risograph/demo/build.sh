@@ -1,8 +1,11 @@
 #!/bin/sh
 # Rebuild "Sunday Ride" from scratch: sh styles/risograph/demo/build.sh (runs from any directory)
+# Needs the core, voice and music tiers: setup.sh deps voice music (music/score.py uses numba).
 set -e
 cd "$(dirname "$0")/../../.."
 PY=.venv/bin/python; D=styles/risograph/demo
+$PY -c 'import numba' 2>/dev/null || { echo "risograph: the demo needs the music tier (numba, for music/score.py), which isn't installed. Run: sh plugin/skills/lemo-opuscar/scripts/setup.sh deps voice music" >&2; exit 1; }
+sh styles/risograph/demo/tools/fonts.sh   # fonts: not in git (CREDITS names them) → fonts/ (after the numba check: that comes first)
 $PY core/tts/tts.py $D/lines.json $D/voices                     # 1. Kokoro voice-over (am_adam)
 $PY core/tts/asr_check.py $D/lines.json $D/voices               # 2. whisper line-by-line check (should report mismatches: 0)
 $PY $D/music/score.py                                           # 3. original bossa nova score → music/score.wav + stems (~25s)
@@ -13,4 +16,4 @@ node $D/tools/video_png.mjs $D --fps 24 --workers 3 --out $D/out/video24.mp4   #
 sh $D/tools/mux.sh $D/out/video24.mp4 $D/mix.wav styles/risograph/risograph.mp4 24 0   # 8. mux: crf16 -tune grain, −14 LUFS
 node core/render/still.mjs $D 28.8 --q 'nosub=1' --out $D/out/still --prefix sf_ && cp $D/out/still/sf_28.8.jpg $D/stills/styleframe.jpg
 node core/render/still.mjs $D 28.8 --q 'nosub=1&poster=1' --out $D/out/still --prefix po_ && cp $D/out/still/po_28.8.jpg styles/risograph/poster.jpg
-node core/render/still.mjs $D 0 --q 'sheet=1&v=2' --out $D/out/still --prefix ms_ && cp $D/out/still/ms_0.jpg $D/stills/modelsheet_v2.jpg
+node core/render/still.mjs $D 0 --q 'sheet=1' --out $D/out/still --prefix ms_   # model sheet → out/still/ms_0.jpg

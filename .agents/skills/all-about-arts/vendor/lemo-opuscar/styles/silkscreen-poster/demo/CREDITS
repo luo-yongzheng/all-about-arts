@@ -1,17 +1,21 @@
-Three Trails — Silkscreen Travel Poster demo · credits
+The Long Way Home 绕远路回家 · Silkscreen Travel Poster demo
+LemoLab × Claude Opus 5.5
 
-All artwork, poster designs, the park, trails and data are fictional and drawn by code in this folder (engine/, film.js). No generated images.
+Picture: drawn in code (Canvas 2D, engine/silk.js). Landmarks (Temple of Heaven, Hagia Sophia, Eiffel Tower, the Obelisco and
+La Boca's houses) are stylised silhouettes drawn as paths from their general shape, not traced from photographs. No logos, no brands,
+no maps. The traveller and the trip are fiction; the distances and years on the stubs are facts, with sources in FACTS.md.
 
-Fonts (SIL Open Font License 1.1)
-- Big Shoulders Display — Patric King / The Chicago Design Collective — fonts/BigShouldersDisplay.ttf, license fonts/OFL-BigShouldersDisplay.txt — https://github.com/google/fonts/tree/main/ofl/bigshouldersdisplay
-- Outfit — Rodrigo Fuenzalida — fonts/Outfit.ttf, license fonts/OFL-Outfit.txt — https://github.com/google/fonts/tree/main/ofl/outfit
-- League Gothic — The League of Moveable Type (bundled, not used in the final cut) — fonts/LeagueGothic.ttf, license fonts/OFL-LeagueGothic.txt
+Fonts (SIL Open Font License 1.1; licences in fonts/, files fetched by tools/fetch_fonts.sh):
+  Big Shoulders Display — Patric King / Google Fonts
+  Outfit — Rodrigo Fuenzalida / Google Fonts
+  Noto Sans SC — Adobe / Google
 
-Music (music/compose.py; original, 100 BPM open-D folk)
-- Acoustic guitar: physical-model strums (core/audio/pluck.py); slide guitar: additive synthesis in numpy.
-- VCSL — Versilian Community Sample Library (CC0 1.0), https://github.com/sgossner/VCSL: harmonica, cajon, snare (brushes), shaker.
-- VSCO 2 Community Edition (CC0 1.0), https://github.com/sgossner/VSCO-2-CE: suspended cymbal.
-- Karoryfer Samples "Sneakybass" upright bass (CC0 1.0), https://github.com/sfzinstruments
+Voice: Kokoro-82M v1.0 (hexgrad, Apache-2.0) via kokoro-onnx, voice bf_emma. Checked with faster-whisper (MIT), model base.en.
 
-Sound effects and ambience
-- Synthesized in mix.py: squeegee on mesh, ink bead, screen hinge, paper stamps, registration clamp, pine brush, lake, waterfall, wind, visitor-center room.
+Music (original score, music/compose.py) and sound (procedural foley and ambience, mix.py):
+  guitar_nylon, accordion, world_perc (darbuka) — FreePats project (freepats.zenvoid.org), CC0
+  jazz_bass — Karoryfer Samples "Sneakybass" / sfzinstruments, CC0
+  glockenspiel, harmonica, snare2 (taps), shaker, cajon — Versilian Community Sample Library (Versilian Studios), CC0
+  sus_cymbal — Versilian Studios Chamber Orchestra 2 Community Edition (VSCO 2 CE), CC0
+  Squeegee, ink, screen, paper, clamp, wind, water, birds, gulls, ferry horn, bicycle bell and crickets: synthesized in code
+  (core/audio/sfx.py + mix.py).

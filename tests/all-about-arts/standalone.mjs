@@ -47,7 +47,7 @@ try{
   const cli=path.join(host.path,'scripts/aaa.mjs');
   const doctor=await call(cli,['doctor']);
   const styles=(await call(cli,['styles'])).styles;
-  assert.equal(styles.length,59);assert.equal(styles.filter(s=>s.status==='integrated').length,8);
+  assert.equal(styles.length,99);assert.equal(styles.filter(s=>s.status==='integrated').length,8);
   report.hosts.push({host:host.host,entry:host.path,doctor,styles:styles.length});
  }
  const cli=path.join(skill,'scripts/aaa.mjs');

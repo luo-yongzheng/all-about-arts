@@ -13,6 +13,7 @@ The user gives a style and a topic, sometimes more (length, language, voice, mus
 - Length **30–60 s**; shorter and tight beats padded. Beyond two or three minutes multiplies time and token cost: tell the user.
 - 1920×1080 at 24 fps by default; an output frame rate set in the style's `STYLE.md` (30 or 60 fps, for example) wins, and is what you pass to `--fps` and `mux.sh`; other sizes (vertical 1080×1920, for example) with `--size WxH` on the render tools.
 - Voice and subtitles in the language the user writes in. Subtitles burned in and exported as `.srt`.
+- **The language on screen is the film's, not the demo's.** Many `STYLE.md` files set a Chinese line above an English line (subtitles, titles, labels): those are the two languages of our demos. A film in one language sets that line alone, in the upper line's place and size. A film in two keeps the stack, its main language on top. For another script, choose an openly licensed face of the same kind (weight, serif or sans, written or printed). The rest of the style's type stays: sizes, placement, how the text arrives.
 - Loudness −14 LUFS.
 
 Say it in the questions when it matters: a good Chinese voice uses Microsoft's online service (edge-tts) and needs a connection; offline, Kokoro reads Chinese but sounds plain (TECHNIQUE.md §4).
@@ -21,7 +22,7 @@ Requests that only change the plan:
 
 - **No voice, or no subtitles.** Drop those steps and say so in the treatment.
 - **Their own voice recording.** Use it as it is; transcribe it with faster-whisper for word timings.
-- **Their own material**: logos, photos, footage, and for styles built from real material (the Evidence Films) their own data, scans, imagery or CAD. Ask whether they have any; what they give comes first, and the sources in the `STYLE.md` are the fallback. Before you download from those sources, tell the user what you will fetch, from where and under which licence. Rights: section 12.
+- **Their own material**: logos, photos, footage, and for a style built from real data or scans (its `STYLE.md` says so) their own data, scans, imagery or CAD. Ask whether they have any; what they give comes first, and the sources in the `STYLE.md` are the fallback. Before you download from those sources, tell the user what you will fetch, from where and under which licence. Rights: section 12.
 
 ## 2. Find a benchmark first
 
@@ -118,12 +119,13 @@ Render 6–9 key shots with the real drawing code, tiled into one sheet (`core/r
 - Voice: every line transcribes back correctly (speech-to-text check). For Chinese, one misheard character in a short line is normal: listen, and if it is right, let the check expect what the model heard (TECHNIQUE.md §4).
 - Loudness about −14 LUFS; no black frames, no NaN frames; subtitles in sync and not covering key action.
 - Every row of the sound design table is actually in the mix.
+- Every map, globe or satellite view passes section 13, checked enlarged.
 - No LemoLab sign-off: `grep -rniE "lemo ?lab|opus 5\.5" <project folder>` finds nothing outside `LICENSE`, `CREDITS` and the library's path in `LIB=` lines, and you have watched the last seconds of the film (text drawn into an image can't be grepped).
 
 **Deliver**, in the project folder (the complete list):
 
 - `<name>.mp4` (24 fps unless `STYLE.md` sets another rate, about −14 LUFS) and `poster.jpg`;
-- `<name>.srt`, when the film has narration, dialogue or subtitles;
+- `<name>.srt`, when the film has narration, dialogue or subtitles; when the subtitles are burned into the picture, `subtitles_<lang>.srt` instead (desktop players load a `.srt` named like the video on top of the picture, so every line would show twice);
 - `TREATMENT.md`;
 - `CREDITS`: every third-party asset in the film (sample libraries, music, fonts, images, the voice engine) with its source and licence (TECHNIQUE.md §11);
 - the source, with a one-command `build.sh` (TECHNIQUE.md §2).
@@ -135,3 +137,14 @@ Render 6–9 key shots with the real drawing code, tiled into one sheet (`core/r
 - References teach grammar only. Don't copy characters, designs, melodies, shots, logos or type designs.
 - No existing works, games, brands or events appear in the film unless the user owns them or has the right to use them. That includes the logos, photos and footage the user hands you: use them when they say they have the right, otherwise draw fictional stand-ins.
 - Some of our demos are unofficial fan films of real events or characters. Keep the style, and never carry those names, marks or characters into a user's film.
+
+## 13. Maps
+
+These apply to every frame that shows a map, a globe or satellite imagery, in every style.
+
+- **No borders unless the film is about them.** Draw coastlines, terrain, imagery or streets, without national or provincial borders. Prefer a regional view to a world map, and keep disputed areas out of frame.
+- **When China is in frame, draw all of it.** Taiwan, Hainan, the South China Sea islands with the dashed line (in frame, or in an inset), and the Diaoyu Islands with Chiwei Yu. Taiwan and the mainland are one country, in the same colour and the same treatment. Zangnan and Aksai Chin are drawn as on China's standard map.
+- **Default border data doesn't meet this.** The default boundaries of Natural Earth, world-atlas and OpenStreetMap can't be used to draw China. When the film needs borders, use China-view data (such as Natural Earth's `admin_0_countries_chn` layers, checked against the standard map) or China's standard map service (bzdt.ch.mnr.gov.cn).
+- **Words follow the same map.** Taiwan, Hong Kong and Macao are never listed as countries: not in labels, legends, subtitles, the voice-over or data tables. A list that includes them is "countries and regions". Clean a dataset's country field before you chart it.
+- **Other disputed areas**: the same; frame them out, or leave their borders undrawn.
+- **Check and credit.** Before delivery, enlarge every map shot and check it against these rules. `CREDITS` names the map data, its source and its view (for example "Natural Earth 1:50m, China view").

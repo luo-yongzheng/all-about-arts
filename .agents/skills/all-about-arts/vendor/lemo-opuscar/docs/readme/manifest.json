@@ -1,0 +1,1850 @@
+{
+ "cover.jpg": {
+  "k": "d839f6a1b53d0065ce56",
+  "m": "a1aa0a73bf30f4033e022d3d389884950d6a71b6"
+ },
+ "readme/cards/archive-lighttable-en-dark.webp": {
+  "k": "421f49a861801ff1ff0a"
+ },
+ "readme/cards/archive-lighttable-en-light.webp": {
+  "k": "95f838a87318e6319d74"
+ },
+ "readme/cards/archive-lighttable-poster.webp": {
+  "k": "1010290f826e38b71d85"
+ },
+ "readme/cards/archive-lighttable-zh-dark.webp": {
+  "k": "048231b86c2a3cb4a4bf"
+ },
+ "readme/cards/archive-lighttable-zh-light.webp": {
+  "k": "ee1e299823b15c2e8b44"
+ },
+ "readme/cards/art-deco-en-dark.webp": {
+  "k": "499ec3dd9f8f62c72aa5"
+ },
+ "readme/cards/art-deco-en-light.webp": {
+  "k": "0c31d77e9034dfff5cbd"
+ },
+ "readme/cards/art-deco-poster.webp": {
+  "k": "33a9d712ccf199a8d9ec"
+ },
+ "readme/cards/art-deco-zh-dark.webp": {
+  "k": "650419e88d9dc33eceb0"
+ },
+ "readme/cards/art-deco-zh-light.webp": {
+  "k": "2345a531ffc4a1e96462"
+ },
+ "readme/cards/ascii-crt-en-dark.webp": {
+  "k": "4b4fa9156db252787036"
+ },
+ "readme/cards/ascii-crt-en-light.webp": {
+  "k": "e39ad1f1bf19c20da397"
+ },
+ "readme/cards/ascii-crt-poster.webp": {
+  "k": "b3efca3e74309d6d60a2"
+ },
+ "readme/cards/ascii-crt-zh-dark.webp": {
+  "k": "0a341dfdbf1bf90f1795"
+ },
+ "readme/cards/ascii-crt-zh-light.webp": {
+  "k": "1bc798ddecc1f16c2c46"
+ },
+ "readme/cards/assembly-line-diagram-en-dark.webp": {
+  "k": "b9a7bb4c7e2d6321a8c8"
+ },
+ "readme/cards/assembly-line-diagram-en-light.webp": {
+  "k": "97bbe1c558e9edfd049c"
+ },
+ "readme/cards/assembly-line-diagram-poster.webp": {
+  "k": "ef94ebceb674b6db0aa6"
+ },
+ "readme/cards/assembly-line-diagram-zh-dark.webp": {
+  "k": "e6a8c991ec86616e22aa"
+ },
+ "readme/cards/assembly-line-diagram-zh-light.webp": {
+  "k": "2fd22c8c26f20805ab57"
+ },
+ "readme/cards/backrooms-en-dark.webp": {
+  "k": "c33b1b05b9db508ee8a6"
+ },
+ "readme/cards/backrooms-en-light.webp": {
+  "k": "573fb394a861067b4790"
+ },
+ "readme/cards/backrooms-poster.webp": {
+  "k": "bba77a64bf193b3419e2"
+ },
+ "readme/cards/backrooms-zh-dark.webp": {
+  "k": "fddb32f0e11b4b78527a"
+ },
+ "readme/cards/backrooms-zh-light.webp": {
+  "k": "1469bba44c07fa445d66"
+ },
+ "readme/cards/bauhaus-shapes-en-dark.webp": {
+  "k": "6772dcac3207393cba0a"
+ },
+ "readme/cards/bauhaus-shapes-en-light.webp": {
+  "k": "67c69c5009ba5cf93fb7"
+ },
+ "readme/cards/bauhaus-shapes-poster.webp": {
+  "k": "cfbe362a042bf3808490"
+ },
+ "readme/cards/bauhaus-shapes-zh-dark.webp": {
+  "k": "04346464525244e8ea8f"
+ },
+ "readme/cards/bauhaus-shapes-zh-light.webp": {
+  "k": "5359a5d967651ddbbf52"
+ },
+ "readme/cards/blueprint-en-dark.webp": {
+  "k": "0c0fce809f95b43cbb6c"
+ },
+ "readme/cards/blueprint-en-light.webp": {
+  "k": "04e29f5fc558d4e58974"
+ },
+ "readme/cards/blueprint-poster.webp": {
+  "k": "10f473e59de7c0e7ad8c"
+ },
+ "readme/cards/blueprint-zh-dark.webp": {
+  "k": "4e80c6a75e23851f7265"
+ },
+ "readme/cards/blueprint-zh-light.webp": {
+  "k": "f3b62440f5220386913f"
+ },
+ "readme/cards/brick-toy-en-dark.webp": {
+  "k": "5b8243e133ec81f488ac"
+ },
+ "readme/cards/brick-toy-en-light.webp": {
+  "k": "c0c371ca024768b92a55"
+ },
+ "readme/cards/brick-toy-poster.webp": {
+  "k": "7c00cc337dbe36c2b1eb"
+ },
+ "readme/cards/brick-toy-zh-dark.webp": {
+  "k": "8c7dd738c6ca5e71bce3"
+ },
+ "readme/cards/brick-toy-zh-light.webp": {
+  "k": "30cba6b72b73d42d42bb"
+ },
+ "readme/cards/briefing-board-en-dark.webp": {
+  "k": "f25cd8c081c86e1271b0"
+ },
+ "readme/cards/briefing-board-en-light.webp": {
+  "k": "21f42aeea0068a6aced2"
+ },
+ "readme/cards/briefing-board-poster.webp": {
+  "k": "8cd7188c73ee798a87b5"
+ },
+ "readme/cards/briefing-board-zh-dark.webp": {
+  "k": "8a25e1f0092d3a5c47da"
+ },
+ "readme/cards/briefing-board-zh-light.webp": {
+  "k": "261dbfe04b0183f6d0dc"
+ },
+ "readme/cards/caption-news-en-dark.webp": {
+  "k": "07162027ff97f5bcbe74"
+ },
+ "readme/cards/caption-news-en-light.webp": {
+  "k": "966e3d84bb07e55bf178"
+ },
+ "readme/cards/caption-news-poster.webp": {
+  "k": "d1b1a5a82df523df4d49"
+ },
+ "readme/cards/caption-news-zh-dark.webp": {
+  "k": "e2752ecab4a368f21de4"
+ },
+ "readme/cards/caption-news-zh-light.webp": {
+  "k": "acb0bdfdce8a08fede6f"
+ },
+ "readme/cards/cel-anime-80s-en-dark.webp": {
+  "k": "f0773d0a81958759dcda"
+ },
+ "readme/cards/cel-anime-80s-en-light.webp": {
+  "k": "632f14e5b9d662cc43f1"
+ },
+ "readme/cards/cel-anime-80s-poster.webp": {
+  "k": "7e1c53c7106af7750c3e"
+ },
+ "readme/cards/cel-anime-80s-zh-dark.webp": {
+  "k": "4cd3a3cb657c3a54aaa6"
+ },
+ "readme/cards/cel-anime-80s-zh-light.webp": {
+  "k": "f6d10600c6d2863d06c3"
+ },
+ "readme/cards/chalkboard-en-dark.webp": {
+  "k": "34e0d387ac7833f0c5fe"
+ },
+ "readme/cards/chalkboard-en-light.webp": {
+  "k": "0eeae01f3f7ce9ce2ca0"
+ },
+ "readme/cards/chalkboard-poster.webp": {
+  "k": "1216f1d2523a73354de5"
+ },
+ "readme/cards/chalkboard-zh-dark.webp": {
+  "k": "45a3137068e2086cd0d9"
+ },
+ "readme/cards/chalkboard-zh-light.webp": {
+  "k": "c9d5dfca9068939c2725"
+ },
+ "readme/cards/circuit-board-en-dark.webp": {
+  "k": "b4fd042e990ed745aad7"
+ },
+ "readme/cards/circuit-board-en-light.webp": {
+  "k": "147c1e9cd8192005fc13"
+ },
+ "readme/cards/circuit-board-poster.webp": {
+  "k": "bbdf6612665f40a82fa4"
+ },
+ "readme/cards/circuit-board-zh-dark.webp": {
+  "k": "46dc5fff666dd12b53fd"
+ },
+ "readme/cards/circuit-board-zh-light.webp": {
+  "k": "0d03b556a6c25245add6"
+ },
+ "readme/cards/city-symphony-en-dark.webp": {
+  "k": "936643b6f111ecc1ea97"
+ },
+ "readme/cards/city-symphony-en-light.webp": {
+  "k": "ab7294847de6cf67e3c5"
+ },
+ "readme/cards/city-symphony-poster.webp": {
+  "k": "73b57eca56e220343d4d"
+ },
+ "readme/cards/city-symphony-zh-dark.webp": {
+  "k": "4c0440648b9da9dba7c2"
+ },
+ "readme/cards/city-symphony-zh-light.webp": {
+  "k": "3bb01deacab48f02ca96"
+ },
+ "readme/cards/colored-pencil-en-dark.webp": {
+  "k": "dbccb243ac8aa2c18e81"
+ },
+ "readme/cards/colored-pencil-en-light.webp": {
+  "k": "2f14e2576e00d30b7c3a"
+ },
+ "readme/cards/colored-pencil-poster.webp": {
+  "k": "67b5bc912669c19bb31b"
+ },
+ "readme/cards/colored-pencil-zh-dark.webp": {
+  "k": "aab96bba21b4e68c78e6"
+ },
+ "readme/cards/colored-pencil-zh-light.webp": {
+  "k": "fa68e85fd3c478121ada"
+ },
+ "readme/cards/comic-history-en-dark.webp": {
+  "k": "7cca0f51f60659129df1"
+ },
+ "readme/cards/comic-history-en-light.webp": {
+  "k": "c9e5ff79a6a4c608daa0"
+ },
+ "readme/cards/comic-history-poster.webp": {
+  "k": "151d9a74c76f5758e98c"
+ },
+ "readme/cards/comic-history-zh-dark.webp": {
+  "k": "44f116e9c8ac9db5daed"
+ },
+ "readme/cards/comic-history-zh-light.webp": {
+  "k": "9b457b3b4e829ec01743"
+ },
+ "readme/cards/countdown-en-dark.webp": {
+  "k": "a9ba51acba4378e240c7"
+ },
+ "readme/cards/countdown-en-light.webp": {
+  "k": "f519bc9234af4e50f02f"
+ },
+ "readme/cards/countdown-poster.webp": {
+  "k": "4c7155f4d3485923a9b0"
+ },
+ "readme/cards/countdown-zh-dark.webp": {
+  "k": "16b4f39f3627bcfd3c62"
+ },
+ "readme/cards/countdown-zh-light.webp": {
+  "k": "6fb1d76f662c18686114"
+ },
+ "readme/cards/crayon-book-en-dark.webp": {
+  "k": "aed44bad91fcb9344e21"
+ },
+ "readme/cards/crayon-book-en-light.webp": {
+  "k": "31ac67c4f0b6b62ecd97"
+ },
+ "readme/cards/crayon-book-poster.webp": {
+  "k": "9846086d0ddb44e9c8c3"
+ },
+ "readme/cards/crayon-book-zh-dark.webp": {
+  "k": "7f331bd80970c20249b9"
+ },
+ "readme/cards/crayon-book-zh-light.webp": {
+  "k": "ec977b18647f61f1261b"
+ },
+ "readme/cards/crayon-world-en-dark.webp": {
+  "k": "eb4819215a6d432d9f24"
+ },
+ "readme/cards/crayon-world-en-light.webp": {
+  "k": "5869982c98171f5984a3"
+ },
+ "readme/cards/crayon-world-poster.webp": {
+  "k": "41113733225a2693f89f"
+ },
+ "readme/cards/crayon-world-zh-dark.webp": {
+  "k": "02272ad08b492b513071"
+ },
+ "readme/cards/crayon-world-zh-light.webp": {
+  "k": "605da320e33a65ee6709"
+ },
+ "readme/cards/dark-documentary-en-dark.webp": {
+  "k": "32113f1ad7a68befec7a"
+ },
+ "readme/cards/dark-documentary-en-light.webp": {
+  "k": "3f1bc286e4fdf5e25040"
+ },
+ "readme/cards/dark-documentary-poster.webp": {
+  "k": "32dd6be57fcf7c074846"
+ },
+ "readme/cards/dark-documentary-zh-dark.webp": {
+  "k": "4616686360f08cdc3f57"
+ },
+ "readme/cards/dark-documentary-zh-light.webp": {
+  "k": "1a3f2eca852cbf603e38"
+ },
+ "readme/cards/dark-keynote-en-dark.webp": {
+  "k": "af4dc8e35ee85ebe6062"
+ },
+ "readme/cards/dark-keynote-en-light.webp": {
+  "k": "1a538a171ea353fcb71a"
+ },
+ "readme/cards/dark-keynote-poster.webp": {
+  "k": "cd2de0e448a0a7d578f5"
+ },
+ "readme/cards/dark-keynote-zh-dark.webp": {
+  "k": "a4f252399b26b46a4112"
+ },
+ "readme/cards/dark-keynote-zh-light.webp": {
+  "k": "cc018371af5dcd7c6b1c"
+ },
+ "readme/cards/data-physical-en-dark.webp": {
+  "k": "12b90380548246e66ece"
+ },
+ "readme/cards/data-physical-en-light.webp": {
+  "k": "d4ade11f2beb36b7c891"
+ },
+ "readme/cards/data-physical-poster.webp": {
+  "k": "0ff685a8e65ab3946365"
+ },
+ "readme/cards/data-physical-zh-dark.webp": {
+  "k": "3f4550f631693fa213b0"
+ },
+ "readme/cards/data-physical-zh-light.webp": {
+  "k": "18609e843ae0df210bbd"
+ },
+ "readme/cards/dataviz-en-dark.webp": {
+  "k": "80001657cd1819ff57aa"
+ },
+ "readme/cards/dataviz-en-light.webp": {
+  "k": "58e8e96da82b83549b17"
+ },
+ "readme/cards/dataviz-poster.webp": {
+  "k": "567f679959edb33305ab"
+ },
+ "readme/cards/dataviz-zh-dark.webp": {
+  "k": "a4942dbf6796542d8a5b"
+ },
+ "readme/cards/dataviz-zh-light.webp": {
+  "k": "d88ede09d4cf59745c22"
+ },
+ "readme/cards/desktop-flythrough-en-dark.webp": {
+  "k": "287b68365385645c1c4f"
+ },
+ "readme/cards/desktop-flythrough-en-light.webp": {
+  "k": "cc7e9f7b0cfeb43e064a"
+ },
+ "readme/cards/desktop-flythrough-poster.webp": {
+  "k": "b05111cc603741a03ba6"
+ },
+ "readme/cards/desktop-flythrough-zh-dark.webp": {
+  "k": "1f366975a401c9adefa5"
+ },
+ "readme/cards/desktop-flythrough-zh-light.webp": {
+  "k": "472d826afd163b89722f"
+ },
+ "readme/cards/double-exposure-en-dark.webp": {
+  "k": "f5a8a0943fce548835cd"
+ },
+ "readme/cards/double-exposure-en-light.webp": {
+  "k": "860f80589fe8f75ce8de"
+ },
+ "readme/cards/double-exposure-poster.webp": {
+  "k": "5d2702e5e7215cff09ef"
+ },
+ "readme/cards/double-exposure-zh-dark.webp": {
+  "k": "9765346a1a88019288c4"
+ },
+ "readme/cards/double-exposure-zh-light.webp": {
+  "k": "b4e0ce09ba3f882f328b"
+ },
+ "readme/cards/engraving-en-dark.webp": {
+  "k": "f59430235ecf707c2079"
+ },
+ "readme/cards/engraving-en-light.webp": {
+  "k": "f0d4939ba604c392cefd"
+ },
+ "readme/cards/engraving-poster.webp": {
+  "k": "54130bd18af969285de2"
+ },
+ "readme/cards/engraving-zh-dark.webp": {
+  "k": "52fc69e9289422280708"
+ },
+ "readme/cards/engraving-zh-light.webp": {
+  "k": "f0e072646ac19196c0a0"
+ },
+ "readme/cards/firefly-pointillism-en-dark.webp": {
+  "k": "feb9a87154f3ad7b0986"
+ },
+ "readme/cards/firefly-pointillism-en-light.webp": {
+  "k": "128e1f3690b2735475d4"
+ },
+ "readme/cards/firefly-pointillism-poster.webp": {
+  "k": "c7b85830b342d3047f23"
+ },
+ "readme/cards/firefly-pointillism-zh-dark.webp": {
+  "k": "718f2ce3c4817a7e317c"
+ },
+ "readme/cards/firefly-pointillism-zh-light.webp": {
+  "k": "c512413c92a68703f380"
+ },
+ "readme/cards/flat-space-explainer-en-dark.webp": {
+  "k": "d4f30534e007177b2852"
+ },
+ "readme/cards/flat-space-explainer-en-light.webp": {
+  "k": "67461802cd6eb980353f"
+ },
+ "readme/cards/flat-space-explainer-poster.webp": {
+  "k": "af02813bb7ee3da75a50"
+ },
+ "readme/cards/flat-space-explainer-zh-dark.webp": {
+  "k": "84c88e9b063807ca8a09"
+ },
+ "readme/cards/flat-space-explainer-zh-light.webp": {
+  "k": "0ff7099dc606e576678f"
+ },
+ "readme/cards/flow-field-en-dark.webp": {
+  "k": "0a1f5dea70f4e5fd77bc"
+ },
+ "readme/cards/flow-field-en-light.webp": {
+  "k": "c212981743b09dcbf362"
+ },
+ "readme/cards/flow-field-poster.webp": {
+  "k": "3e78036494b49a4f1499"
+ },
+ "readme/cards/flow-field-zh-dark.webp": {
+  "k": "7832ce0e484d80692cfb"
+ },
+ "readme/cards/flow-field-zh-light.webp": {
+  "k": "55e1a927f8ef692b1315"
+ },
+ "readme/cards/game-show-en-dark.webp": {
+  "k": "a801022a37866b6acba8"
+ },
+ "readme/cards/game-show-en-light.webp": {
+  "k": "967e9f566d7aa2f3997c"
+ },
+ "readme/cards/game-show-poster.webp": {
+  "k": "d41f5cc862c4f2e0ccd6"
+ },
+ "readme/cards/game-show-zh-dark.webp": {
+  "k": "6ed289074dd19bbf0173"
+ },
+ "readme/cards/game-show-zh-light.webp": {
+  "k": "ca78e0ac6df32d5718bd"
+ },
+ "readme/cards/gilded-illumination-en-dark.webp": {
+  "k": "5c108a6b6c02a1864432"
+ },
+ "readme/cards/gilded-illumination-en-light.webp": {
+  "k": "27e08f2047626401505a"
+ },
+ "readme/cards/gilded-illumination-poster.webp": {
+  "k": "540908ce66e81726a5b7"
+ },
+ "readme/cards/gilded-illumination-zh-dark.webp": {
+  "k": "b78d4945eef1e3359a2d"
+ },
+ "readme/cards/gilded-illumination-zh-light.webp": {
+  "k": "f0203375673ea9b4ab2b"
+ },
+ "readme/cards/glass-product-en-dark.webp": {
+  "k": "bc3120c50f8183998c9f"
+ },
+ "readme/cards/glass-product-en-light.webp": {
+  "k": "f2b65d5553a507ea3d34"
+ },
+ "readme/cards/glass-product-poster.webp": {
+  "k": "e7fa01a424eef1b002c8"
+ },
+ "readme/cards/glass-product-zh-dark.webp": {
+  "k": "747cb0698d74ef104a5a"
+ },
+ "readme/cards/glass-product-zh-light.webp": {
+  "k": "13cebe71f929ded11b0b"
+ },
+ "readme/cards/halftone-dossier-en-dark.webp": {
+  "k": "99e10489534e0670efdf"
+ },
+ "readme/cards/halftone-dossier-en-light.webp": {
+  "k": "5931d78fccd8821967da"
+ },
+ "readme/cards/halftone-dossier-poster.webp": {
+  "k": "8cb304acad4ce6f426f1"
+ },
+ "readme/cards/halftone-dossier-zh-dark.webp": {
+  "k": "8a7433d2d095849ad5ac"
+ },
+ "readme/cards/halftone-dossier-zh-light.webp": {
+  "k": "48fdd24280700c8f0b08"
+ },
+ "readme/cards/hardcore-info-en-dark.webp": {
+  "k": "1bd4191d0c8b81c1e7b5"
+ },
+ "readme/cards/hardcore-info-en-light.webp": {
+  "k": "dbaf83a74595c942e1f5"
+ },
+ "readme/cards/hardcore-info-poster.webp": {
+  "k": "527643b37ec72379d2bf"
+ },
+ "readme/cards/hardcore-info-zh-dark.webp": {
+  "k": "5bb014121b1225cd3f86"
+ },
+ "readme/cards/hardcore-info-zh-light.webp": {
+  "k": "160ce2c6eb18773235a1"
+ },
+ "readme/cards/hd-2d-en-dark.webp": {
+  "k": "9e879892b42829f4652e"
+ },
+ "readme/cards/hd-2d-en-light.webp": {
+  "k": "ac125d626393d5d7d160"
+ },
+ "readme/cards/hd-2d-poster.webp": {
+  "k": "9d4875f49dff3e3ced84"
+ },
+ "readme/cards/hd-2d-zh-dark.webp": {
+  "k": "dfdf56303c713b6bc35e"
+ },
+ "readme/cards/hd-2d-zh-light.webp": {
+  "k": "1b8256f69c2a6c5f1725"
+ },
+ "readme/cards/hologram-hud-en-dark.webp": {
+  "k": "58db7d4bf7cf0b3298d4"
+ },
+ "readme/cards/hologram-hud-en-light.webp": {
+  "k": "b82b63f1dca771177f11"
+ },
+ "readme/cards/hologram-hud-poster.webp": {
+  "k": "cfcc30bdc44dad5dbbf8"
+ },
+ "readme/cards/hologram-hud-zh-dark.webp": {
+  "k": "4460b63ddf30fe3cf860"
+ },
+ "readme/cards/hologram-hud-zh-light.webp": {
+  "k": "a04b3df1e11929e3a2fc"
+ },
+ "readme/cards/impasto-en-dark.webp": {
+  "k": "25c8d65731c75eebfad3"
+ },
+ "readme/cards/impasto-en-light.webp": {
+  "k": "995937b9da2c811c0eb9"
+ },
+ "readme/cards/impasto-poster.webp": {
+  "k": "b136fb90d6591a37c5f7"
+ },
+ "readme/cards/impasto-zh-dark.webp": {
+  "k": "a3713c82efe4d20712ee"
+ },
+ "readme/cards/impasto-zh-light.webp": {
+  "k": "4c26a03fa09279f1530e"
+ },
+ "readme/cards/ink-wash-en-dark.webp": {
+  "k": "2b6c978b45a40b67c9bc"
+ },
+ "readme/cards/ink-wash-en-light.webp": {
+  "k": "9827bfebdec110e7176b"
+ },
+ "readme/cards/ink-wash-poster.webp": {
+  "k": "5f46d86d217f2c32fbc7"
+ },
+ "readme/cards/ink-wash-zh-dark.webp": {
+  "k": "5f0c1c38d69473b1f2c3"
+ },
+ "readme/cards/ink-wash-zh-light.webp": {
+  "k": "511da6d645cf2d368a42"
+ },
+ "readme/cards/instruction-manual-en-dark.webp": {
+  "k": "39756be982e0d74140cc"
+ },
+ "readme/cards/instruction-manual-en-light.webp": {
+  "k": "d4140a1ce1c1b44123ef"
+ },
+ "readme/cards/instruction-manual-poster.webp": {
+  "k": "689ee5d6bc7afd60f298"
+ },
+ "readme/cards/instruction-manual-zh-dark.webp": {
+  "k": "2e73cc41824c7336e869"
+ },
+ "readme/cards/instruction-manual-zh-light.webp": {
+  "k": "72edc64cc57706f963da"
+ },
+ "readme/cards/ipad-sketch-en-dark.webp": {
+  "k": "051d7b41565f3ac2a2e3"
+ },
+ "readme/cards/ipad-sketch-en-light.webp": {
+  "k": "1a751d1ec9c1b40d29ea"
+ },
+ "readme/cards/ipad-sketch-poster.webp": {
+  "k": "4a4922bb142dd612acc5"
+ },
+ "readme/cards/ipad-sketch-zh-dark.webp": {
+  "k": "7330a866da7644931805"
+ },
+ "readme/cards/ipad-sketch-zh-light.webp": {
+  "k": "9e8a74de4173f1bea341"
+ },
+ "readme/cards/iso-infographic-en-dark.webp": {
+  "k": "0c30bdfa69c65532e4e6"
+ },
+ "readme/cards/iso-infographic-en-light.webp": {
+  "k": "177b274d10242e1818c0"
+ },
+ "readme/cards/iso-infographic-poster.webp": {
+  "k": "782fe695202fb50e37fe"
+ },
+ "readme/cards/iso-infographic-zh-dark.webp": {
+  "k": "fc106d269d49e13e656c"
+ },
+ "readme/cards/iso-infographic-zh-light.webp": {
+  "k": "e0373fc31668629e7c57"
+ },
+ "readme/cards/isometric-picture-book-en-dark.webp": {
+  "k": "eac4257abdd7e54859c1"
+ },
+ "readme/cards/isometric-picture-book-en-light.webp": {
+  "k": "6fcd786df08c4e8c3633"
+ },
+ "readme/cards/isometric-picture-book-poster.webp": {
+  "k": "aed2f8512ec667308ab1"
+ },
+ "readme/cards/isometric-picture-book-zh-dark.webp": {
+  "k": "4c7594cce251492bb0ad"
+ },
+ "readme/cards/isometric-picture-book-zh-light.webp": {
+  "k": "2e09ac8f1e5cd9a65d9e"
+ },
+ "readme/cards/kino-montage-en-dark.webp": {
+  "k": "b50539cc059343a6ffb4"
+ },
+ "readme/cards/kino-montage-en-light.webp": {
+  "k": "c630ae46e67acd6a3fae"
+ },
+ "readme/cards/kino-montage-poster.webp": {
+  "k": "11357bf1d7c28b4d4112"
+ },
+ "readme/cards/kino-montage-zh-dark.webp": {
+  "k": "5e29cafa34ec850d67e5"
+ },
+ "readme/cards/kino-montage-zh-light.webp": {
+  "k": "f59eac51f92cede363a3"
+ },
+ "readme/cards/lidar-survey-en-dark.webp": {
+  "k": "92be0e9714ce05b27e0c"
+ },
+ "readme/cards/lidar-survey-en-light.webp": {
+  "k": "e050548f039ef055ecab"
+ },
+ "readme/cards/lidar-survey-poster.webp": {
+  "k": "641ae0936d5a3bca8870"
+ },
+ "readme/cards/lidar-survey-zh-dark.webp": {
+  "k": "07037fc453c7212dd71e"
+ },
+ "readme/cards/lidar-survey-zh-light.webp": {
+  "k": "028c7a963855c03287c8"
+ },
+ "readme/cards/living-screencast-en-dark.webp": {
+  "k": "00dbe7bcf7a48d4d7d14"
+ },
+ "readme/cards/living-screencast-en-light.webp": {
+  "k": "4758b350823eaad69488"
+ },
+ "readme/cards/living-screencast-poster.webp": {
+  "k": "b481340c7df75d8c0862"
+ },
+ "readme/cards/living-screencast-zh-dark.webp": {
+  "k": "2a6bcdcc139d845bf11f"
+ },
+ "readme/cards/living-screencast-zh-light.webp": {
+  "k": "7b5b5cb4cf3853e7001a"
+ },
+ "readme/cards/lowpoly-island-en-dark.webp": {
+  "k": "cbebc85cf9a8252073a1"
+ },
+ "readme/cards/lowpoly-island-en-light.webp": {
+  "k": "3cbb6e48ad0eca5f0744"
+ },
+ "readme/cards/lowpoly-island-poster.webp": {
+  "k": "f6eb95382fed8dd58047"
+ },
+ "readme/cards/lowpoly-island-zh-dark.webp": {
+  "k": "32bf8eea36f47cb3b35b"
+ },
+ "readme/cards/lowpoly-island-zh-light.webp": {
+  "k": "e1d14b1afeea87e1f2ef"
+ },
+ "readme/cards/manga-panels-en-dark.webp": {
+  "k": "49c4745f7bebe6d84a4c"
+ },
+ "readme/cards/manga-panels-en-light.webp": {
+  "k": "facb08b039bf700e00dd"
+ },
+ "readme/cards/manga-panels-poster.webp": {
+  "k": "027309de51da143c94a7"
+ },
+ "readme/cards/manga-panels-zh-dark.webp": {
+  "k": "05152ede4093560b6626"
+ },
+ "readme/cards/manga-panels-zh-light.webp": {
+  "k": "7015966d0bf22aa04077"
+ },
+ "readme/cards/map-explainer-en-dark.webp": {
+  "k": "d00639462203c90c9001"
+ },
+ "readme/cards/map-explainer-en-light.webp": {
+  "k": "025e7dda1340b3a60c3c"
+ },
+ "readme/cards/map-explainer-poster.webp": {
+  "k": "573fcaf80545749e6c41"
+ },
+ "readme/cards/map-explainer-zh-dark.webp": {
+  "k": "4f14c5a4f2c115c54f67"
+ },
+ "readme/cards/map-explainer-zh-light.webp": {
+  "k": "8eb8cb570a5e9600c182"
+ },
+ "readme/cards/marker-paper-en-dark.webp": {
+  "k": "f31a57fb6a6cc4a0b08a"
+ },
+ "readme/cards/marker-paper-en-light.webp": {
+  "k": "c875d39acb32e5096226"
+ },
+ "readme/cards/marker-paper-poster.webp": {
+  "k": "d9e58dd45dd9b78e0dce"
+ },
+ "readme/cards/marker-paper-zh-dark.webp": {
+  "k": "b315cb91a0de251f1f22"
+ },
+ "readme/cards/marker-paper-zh-light.webp": {
+  "k": "b7dbce823af718ec3fea"
+ },
+ "readme/cards/memphis-diorama-en-dark.webp": {
+  "k": "fbf3233317b542777e54"
+ },
+ "readme/cards/memphis-diorama-en-light.webp": {
+  "k": "0f2f3a3a5a2f89250517"
+ },
+ "readme/cards/memphis-diorama-poster.webp": {
+  "k": "d986dbdd63a3e6eac62a"
+ },
+ "readme/cards/memphis-diorama-zh-dark.webp": {
+  "k": "47df04dba16fd69a2638"
+ },
+ "readme/cards/memphis-diorama-zh-light.webp": {
+  "k": "d31300e83a052a8d850f"
+ },
+ "readme/cards/microgame-en-dark.webp": {
+  "k": "bed1ead400251317dff0"
+ },
+ "readme/cards/microgame-en-light.webp": {
+  "k": "c46b0f93afbfbd2afe3b"
+ },
+ "readme/cards/microgame-poster.webp": {
+  "k": "bd19992e892a34422372"
+ },
+ "readme/cards/microgame-zh-dark.webp": {
+  "k": "9b24a24265b448de3ca3"
+ },
+ "readme/cards/microgame-zh-light.webp": {
+  "k": "5425e68f3c4c7bd37d85"
+ },
+ "readme/cards/microscope-en-dark.webp": {
+  "k": "f3e4bf2e0d581783e383"
+ },
+ "readme/cards/microscope-en-light.webp": {
+  "k": "6e76ac4f23eb93f41e17"
+ },
+ "readme/cards/microscope-poster.webp": {
+  "k": "0a883fdcf56a52d18c93"
+ },
+ "readme/cards/microscope-zh-dark.webp": {
+  "k": "20fd4209b3488898933f"
+ },
+ "readme/cards/microscope-zh-light.webp": {
+  "k": "72eb96a2ce9b0e8b6a5b"
+ },
+ "readme/cards/midcentury-toon-en-dark.webp": {
+  "k": "523dd8471b4639747729"
+ },
+ "readme/cards/midcentury-toon-en-light.webp": {
+  "k": "690480ef64d7c2138e6d"
+ },
+ "readme/cards/midcentury-toon-poster.webp": {
+  "k": "43139795b9bad66ecbd9"
+ },
+ "readme/cards/midcentury-toon-zh-dark.webp": {
+  "k": "5a5ed5f3828e01ad1db5"
+ },
+ "readme/cards/midcentury-toon-zh-light.webp": {
+  "k": "904ed33231a4b10394b0"
+ },
+ "readme/cards/neon-tubes-en-dark.webp": {
+  "k": "47015eba18a26d3a526b"
+ },
+ "readme/cards/neon-tubes-en-light.webp": {
+  "k": "94704c6c3cc66096f2be"
+ },
+ "readme/cards/neon-tubes-poster.webp": {
+  "k": "3ff6963134b63b66c966"
+ },
+ "readme/cards/neon-tubes-zh-dark.webp": {
+  "k": "0303d69e34822f1db4c4"
+ },
+ "readme/cards/neon-tubes-zh-light.webp": {
+  "k": "7a513bb69058668e2d55"
+ },
+ "readme/cards/news-package-en-dark.webp": {
+  "k": "39011c484c55e55f823c"
+ },
+ "readme/cards/news-package-en-light.webp": {
+  "k": "e9520929d091652163f1"
+ },
+ "readme/cards/news-package-poster.webp": {
+  "k": "94ee102dfda96b407af4"
+ },
+ "readme/cards/news-package-zh-dark.webp": {
+  "k": "573b3efd3f4519ec6f8f"
+ },
+ "readme/cards/news-package-zh-light.webp": {
+  "k": "fa9b328f0a4ee4d9fc09"
+ },
+ "readme/cards/newsreel-en-dark.webp": {
+  "k": "b755cacc304ad19e21f7"
+ },
+ "readme/cards/newsreel-en-light.webp": {
+  "k": "e4f2eba84979ab7d4807"
+ },
+ "readme/cards/newsreel-poster.webp": {
+  "k": "a6491cd890e94f0619e7"
+ },
+ "readme/cards/newsreel-zh-dark.webp": {
+  "k": "ae42dfa20cf77b25b86b"
+ },
+ "readme/cards/newsreel-zh-light.webp": {
+  "k": "0f9e377e89052375bead"
+ },
+ "readme/cards/one-bit-dither-en-dark.webp": {
+  "k": "2c238d0ae160a1ed29e3"
+ },
+ "readme/cards/one-bit-dither-en-light.webp": {
+  "k": "1013fc140f22b32e6fca"
+ },
+ "readme/cards/one-bit-dither-poster.webp": {
+  "k": "502141756f5d1d25d3a0"
+ },
+ "readme/cards/one-bit-dither-zh-dark.webp": {
+  "k": "b9320a1c6cbb9c5f42ed"
+ },
+ "readme/cards/one-bit-dither-zh-light.webp": {
+  "k": "4b25d2826261d973abef"
+ },
+ "readme/cards/one-line-en-dark.webp": {
+  "k": "94023d54991b1a15490a"
+ },
+ "readme/cards/one-line-en-light.webp": {
+  "k": "2fc8f6803b7246a7bf5d"
+ },
+ "readme/cards/one-line-poster.webp": {
+  "k": "30a8e8212b4ae2bc5bef"
+ },
+ "readme/cards/one-line-zh-dark.webp": {
+  "k": "65ab04cfdc34bef9f6c1"
+ },
+ "readme/cards/one-line-zh-light.webp": {
+  "k": "b3a83289c87a72b7fd74"
+ },
+ "readme/cards/oscilloscope-math-en-dark.webp": {
+  "k": "4ea983eefd84d46009a2"
+ },
+ "readme/cards/oscilloscope-math-en-light.webp": {
+  "k": "ba0964440f47d10a8eb6"
+ },
+ "readme/cards/oscilloscope-math-poster.webp": {
+  "k": "0b0dbcd0113741967891"
+ },
+ "readme/cards/oscilloscope-math-zh-dark.webp": {
+  "k": "6db6bbe6b1792e4340a0"
+ },
+ "readme/cards/oscilloscope-math-zh-light.webp": {
+  "k": "83133af854074ffc1d11"
+ },
+ "readme/cards/paper-lantern-en-dark.webp": {
+  "k": "af3eede68069bd8bf3d6"
+ },
+ "readme/cards/paper-lantern-en-light.webp": {
+  "k": "0c832c4fcf41da4b4ca3"
+ },
+ "readme/cards/paper-lantern-poster.webp": {
+  "k": "70b4d3c5adc8254ae2bf"
+ },
+ "readme/cards/paper-lantern-zh-dark.webp": {
+  "k": "d54c40723bbf87bf6cbb"
+ },
+ "readme/cards/paper-lantern-zh-light.webp": {
+  "k": "9c2cc82a2936860960cd"
+ },
+ "readme/cards/paper-popup-en-dark.webp": {
+  "k": "12c27460e9bd89e80991"
+ },
+ "readme/cards/paper-popup-en-light.webp": {
+  "k": "a5ff305e41f0deb986ad"
+ },
+ "readme/cards/paper-popup-poster.webp": {
+  "k": "a7f4bc13b3cae52f6365"
+ },
+ "readme/cards/paper-popup-zh-dark.webp": {
+  "k": "8bad095dbcc2ad59c0d9"
+ },
+ "readme/cards/paper-popup-zh-light.webp": {
+  "k": "87594960207f83dd408e"
+ },
+ "readme/cards/papercut-red-en-dark.webp": {
+  "k": "a3b49930e48f3c5862b5"
+ },
+ "readme/cards/papercut-red-en-light.webp": {
+  "k": "49c315ee4c24d4eaef1e"
+ },
+ "readme/cards/papercut-red-poster.webp": {
+  "k": "c40afa3c526e2de5f90d"
+ },
+ "readme/cards/papercut-red-zh-dark.webp": {
+  "k": "7579cf3d9f396d7b22b1"
+ },
+ "readme/cards/papercut-red-zh-light.webp": {
+  "k": "c8b80c2a1978987d10ab"
+ },
+ "readme/cards/pen-plotter-en-dark.webp": {
+  "k": "eb6a0dca9cdd3b49d370"
+ },
+ "readme/cards/pen-plotter-en-light.webp": {
+  "k": "3c8f7646d5bb2166d868"
+ },
+ "readme/cards/pen-plotter-poster.webp": {
+  "k": "601459982ec45f9a965f"
+ },
+ "readme/cards/pen-plotter-zh-dark.webp": {
+  "k": "0a34183bfb6eefd151a9"
+ },
+ "readme/cards/pen-plotter-zh-light.webp": {
+  "k": "6d468399040c134545e5"
+ },
+ "readme/cards/pictogram-motion-en-dark.webp": {
+  "k": "3e99d5e201edcf21769f"
+ },
+ "readme/cards/pictogram-motion-en-light.webp": {
+  "k": "71c65e2a8196f26bd4f8"
+ },
+ "readme/cards/pictogram-motion-poster.webp": {
+  "k": "fbc74bc024ebe94bfb0f"
+ },
+ "readme/cards/pictogram-motion-zh-dark.webp": {
+  "k": "7f8a6551975d44934e3b"
+ },
+ "readme/cards/pictogram-motion-zh-light.webp": {
+  "k": "d3235c12449bb1bb2111"
+ },
+ "readme/cards/pip-simulation-en-dark.webp": {
+  "k": "d68c68bad97ae82bcedf"
+ },
+ "readme/cards/pip-simulation-en-light.webp": {
+  "k": "8b5abe252c510149bed9"
+ },
+ "readme/cards/pip-simulation-poster.webp": {
+  "k": "5513786e50339670ddd9"
+ },
+ "readme/cards/pip-simulation-zh-dark.webp": {
+  "k": "f7af9b7a18e95bb17041"
+ },
+ "readme/cards/pip-simulation-zh-light.webp": {
+  "k": "9a7675d10057dbcb150f"
+ },
+ "readme/cards/pixel-rpg-en-dark.webp": {
+  "k": "6d87e384098e5d7d4bd5"
+ },
+ "readme/cards/pixel-rpg-en-light.webp": {
+  "k": "e8a82262c3051edfdd0e"
+ },
+ "readme/cards/pixel-rpg-poster.webp": {
+  "k": "e364c564b7d5ceb256de"
+ },
+ "readme/cards/pixel-rpg-zh-dark.webp": {
+  "k": "cb2b0ea2026cb870d1ec"
+ },
+ "readme/cards/pixel-rpg-zh-light.webp": {
+  "k": "a029982bed94e79878e7"
+ },
+ "readme/cards/pop-art-en-dark.webp": {
+  "k": "70e973950f6a9789db70"
+ },
+ "readme/cards/pop-art-en-light.webp": {
+  "k": "244a85819d794030ddd5"
+ },
+ "readme/cards/pop-art-poster.webp": {
+  "k": "99cf4d7303d822bfca06"
+ },
+ "readme/cards/pop-art-zh-dark.webp": {
+  "k": "63fe65d910e5bca0bc1b"
+ },
+ "readme/cards/pop-art-zh-light.webp": {
+  "k": "1a6e2ff5e18ab9b3b2bc"
+ },
+ "readme/cards/precise-mechanism-en-dark.webp": {
+  "k": "7509bd8f1d10e7d4c2f5"
+ },
+ "readme/cards/precise-mechanism-en-light.webp": {
+  "k": "3a34202f4cbdd7bd0e5b"
+ },
+ "readme/cards/precise-mechanism-poster.webp": {
+  "k": "303c06a5f021279a962a"
+ },
+ "readme/cards/precise-mechanism-zh-dark.webp": {
+  "k": "c2fe393905feb33aa392"
+ },
+ "readme/cards/precise-mechanism-zh-light.webp": {
+  "k": "41c5b75ab25d137859da"
+ },
+ "readme/cards/printed-long-take-en-dark.webp": {
+  "k": "fb64f7c468425ed5bfff"
+ },
+ "readme/cards/printed-long-take-en-light.webp": {
+  "k": "c1c6855c26410b80b45d"
+ },
+ "readme/cards/printed-long-take-poster.webp": {
+  "k": "bbd3ee66e764eefef5f4"
+ },
+ "readme/cards/printed-long-take-zh-dark.webp": {
+  "k": "148aa489c4eab6128f60"
+ },
+ "readme/cards/printed-long-take-zh-light.webp": {
+  "k": "172d00c0bf743275f77c"
+ },
+ "readme/cards/risograph-en-dark.webp": {
+  "k": "7271f450cfece6903882"
+ },
+ "readme/cards/risograph-en-light.webp": {
+  "k": "0e3ccb57f1d4d27dd858"
+ },
+ "readme/cards/risograph-poster.webp": {
+  "k": "0698efbccde15eb22855"
+ },
+ "readme/cards/risograph-zh-dark.webp": {
+  "k": "84c94d9f97ff1083a7ac"
+ },
+ "readme/cards/risograph-zh-light.webp": {
+  "k": "87706d2879e02a5fea0c"
+ },
+ "readme/cards/rubber-hose-en-dark.webp": {
+  "k": "8031255d0ac1537ecd76"
+ },
+ "readme/cards/rubber-hose-en-light.webp": {
+  "k": "fbd26908baff03018f47"
+ },
+ "readme/cards/rubber-hose-poster.webp": {
+  "k": "9e2b16b6dbcfb5f989ed"
+ },
+ "readme/cards/rubber-hose-zh-dark.webp": {
+  "k": "f78a297ac41e3b2ed919"
+ },
+ "readme/cards/rubber-hose-zh-light.webp": {
+  "k": "695366d956b0f12fad1c"
+ },
+ "readme/cards/satellite-briefing-en-dark.webp": {
+  "k": "9da152cac48b20e81d6d"
+ },
+ "readme/cards/satellite-briefing-en-light.webp": {
+  "k": "9b4be34100d0cd9616bf"
+ },
+ "readme/cards/satellite-briefing-poster.webp": {
+  "k": "9e7e10fc45f835e42389"
+ },
+ "readme/cards/satellite-briefing-zh-dark.webp": {
+  "k": "9e471a8e604442c701df"
+ },
+ "readme/cards/satellite-briefing-zh-light.webp": {
+  "k": "51a6fd1f4e955dbf3d3a"
+ },
+ "readme/cards/scifi-toon-en-dark.webp": {
+  "k": "00319cfe8831989fa3a2"
+ },
+ "readme/cards/scifi-toon-en-light.webp": {
+  "k": "21252fe01fd86638d693"
+ },
+ "readme/cards/scifi-toon-poster.webp": {
+  "k": "ec0c40e921655f49671b"
+ },
+ "readme/cards/scifi-toon-zh-dark.webp": {
+  "k": "bca63138e20884e6570d"
+ },
+ "readme/cards/scifi-toon-zh-light.webp": {
+  "k": "28beaa9936b831b5f860"
+ },
+ "readme/cards/scratch-film-en-dark.webp": {
+  "k": "841606b2b573af90455b"
+ },
+ "readme/cards/scratch-film-en-light.webp": {
+  "k": "5eba573c6dbbf0f34f42"
+ },
+ "readme/cards/scratch-film-poster.webp": {
+  "k": "9cf7cf3e598d31b4da1d"
+ },
+ "readme/cards/scratch-film-zh-dark.webp": {
+  "k": "b374c68342dc83bba92d"
+ },
+ "readme/cards/scratch-film-zh-light.webp": {
+  "k": "64650a1eacd70915c34c"
+ },
+ "readme/cards/security-xray-en-dark.webp": {
+  "k": "9af885f37718b9734bb0"
+ },
+ "readme/cards/security-xray-en-light.webp": {
+  "k": "8fe98ab49e35125b6243"
+ },
+ "readme/cards/security-xray-poster.webp": {
+  "k": "27a3672aac1dc5a86b4e"
+ },
+ "readme/cards/security-xray-zh-dark.webp": {
+  "k": "831524d10dbf7f5a54c7"
+ },
+ "readme/cards/security-xray-zh-light.webp": {
+  "k": "bb7c962621101e068854"
+ },
+ "readme/cards/shadow-puppet-en-dark.webp": {
+  "k": "0311ea253b3f9f04e257"
+ },
+ "readme/cards/shadow-puppet-en-light.webp": {
+  "k": "eb060e220f00a0d795c0"
+ },
+ "readme/cards/shadow-puppet-poster.webp": {
+  "k": "76577da1243ae1c32dbd"
+ },
+ "readme/cards/shadow-puppet-zh-dark.webp": {
+  "k": "608ba7ba505c853134ae"
+ },
+ "readme/cards/shadow-puppet-zh-light.webp": {
+  "k": "584ca6310b104e89d0ce"
+ },
+ "readme/cards/silent-film-en-dark.webp": {
+  "k": "caeec072a9bc3e421e90"
+ },
+ "readme/cards/silent-film-en-light.webp": {
+  "k": "b710d746c30c98344bed"
+ },
+ "readme/cards/silent-film-poster.webp": {
+  "k": "abe4a8fe98052d4044f3"
+ },
+ "readme/cards/silent-film-zh-dark.webp": {
+  "k": "00cac16f869d3d390825"
+ },
+ "readme/cards/silent-film-zh-light.webp": {
+  "k": "3dcc87b55382b9808272"
+ },
+ "readme/cards/silhouette-rhythm-en-dark.webp": {
+  "k": "a756815d5e9b9ef0df81"
+ },
+ "readme/cards/silhouette-rhythm-en-light.webp": {
+  "k": "fd6dc5970c7d77c83c68"
+ },
+ "readme/cards/silhouette-rhythm-poster.webp": {
+  "k": "8bfd9b707bf952b2a438"
+ },
+ "readme/cards/silhouette-rhythm-zh-dark.webp": {
+  "k": "18290d5d17cde1a02cb8"
+ },
+ "readme/cards/silhouette-rhythm-zh-light.webp": {
+  "k": "7fb1f72e523fee5444f1"
+ },
+ "readme/cards/silkscreen-poster-en-dark.webp": {
+  "k": "b321322fc7bb67966eb0"
+ },
+ "readme/cards/silkscreen-poster-en-light.webp": {
+  "k": "b2959d027bc0c7dda521"
+ },
+ "readme/cards/silkscreen-poster-poster.webp": {
+  "k": "a3db88711199666bbe92"
+ },
+ "readme/cards/silkscreen-poster-zh-dark.webp": {
+  "k": "41577ff55a3c72b1d82d"
+ },
+ "readme/cards/silkscreen-poster-zh-light.webp": {
+  "k": "d5067c31b18d6d655ce4"
+ },
+ "readme/cards/sketchnote-en-dark.webp": {
+  "k": "738d55c0de48aba4acc3"
+ },
+ "readme/cards/sketchnote-en-light.webp": {
+  "k": "a5cbefebcb57eedb5ac6"
+ },
+ "readme/cards/sketchnote-poster.webp": {
+  "k": "7cb7d99128ba87a175b2"
+ },
+ "readme/cards/sketchnote-zh-dark.webp": {
+  "k": "f4e1f514e9cca458f82f"
+ },
+ "readme/cards/sketchnote-zh-light.webp": {
+  "k": "f4a2434afc2efa8f9794"
+ },
+ "readme/cards/spreadsheet-en-dark.webp": {
+  "k": "c2d42690113c3f9ff77c"
+ },
+ "readme/cards/spreadsheet-en-light.webp": {
+  "k": "3da68ff5fc93b2d4d235"
+ },
+ "readme/cards/spreadsheet-poster.webp": {
+  "k": "bab6ead5228fa384da0c"
+ },
+ "readme/cards/spreadsheet-zh-dark.webp": {
+  "k": "a420907f8890fe86276c"
+ },
+ "readme/cards/spreadsheet-zh-light.webp": {
+  "k": "f6095df4f091160772ee"
+ },
+ "readme/cards/spy-titles-en-dark.webp": {
+  "k": "12e1ecfe86b076f0e021"
+ },
+ "readme/cards/spy-titles-en-light.webp": {
+  "k": "46eeda2b1cdbe5becd82"
+ },
+ "readme/cards/spy-titles-poster.webp": {
+  "k": "6247a25d6ca96826c194"
+ },
+ "readme/cards/spy-titles-zh-dark.webp": {
+  "k": "30e99e4006c5270922d8"
+ },
+ "readme/cards/spy-titles-zh-light.webp": {
+  "k": "c056783f5388f47e0874"
+ },
+ "readme/cards/stained-glass-en-dark.webp": {
+  "k": "8df8782414430546ea0e"
+ },
+ "readme/cards/stained-glass-en-light.webp": {
+  "k": "331cc2d5a37cdfbc71f9"
+ },
+ "readme/cards/stained-glass-poster.webp": {
+  "k": "2cf5563144321e739578"
+ },
+ "readme/cards/stained-glass-zh-dark.webp": {
+  "k": "b40e0ffc3373c1107df4"
+ },
+ "readme/cards/stained-glass-zh-light.webp": {
+  "k": "4bb7e1b3cabd2284058e"
+ },
+ "readme/cards/stick-explainer-en-dark.webp": {
+  "k": "30c25063cf9218b81393"
+ },
+ "readme/cards/stick-explainer-en-light.webp": {
+  "k": "92b26818e2bcef92e6f5"
+ },
+ "readme/cards/stick-explainer-poster.webp": {
+  "k": "19252e9ee350a3c4cb2b"
+ },
+ "readme/cards/stick-explainer-zh-dark.webp": {
+  "k": "756e622bf8b752c792eb"
+ },
+ "readme/cards/stick-explainer-zh-light.webp": {
+  "k": "8f40b45f76eb6e670e7d"
+ },
+ "readme/cards/swiss-motion-en-dark.webp": {
+  "k": "2956856b2808ce99e7d7"
+ },
+ "readme/cards/swiss-motion-en-light.webp": {
+  "k": "76ae45b816009f75e2da"
+ },
+ "readme/cards/swiss-motion-poster.webp": {
+  "k": "82b92e9e54080203301e"
+ },
+ "readme/cards/swiss-motion-zh-dark.webp": {
+  "k": "62c56bb91565dbeada5e"
+ },
+ "readme/cards/swiss-motion-zh-light.webp": {
+  "k": "5ddb0ab6043185ea8e83"
+ },
+ "readme/cards/teardown-en-dark.webp": {
+  "k": "21df71a593392c790b9b"
+ },
+ "readme/cards/teardown-en-light.webp": {
+  "k": "1a4c053e435af9ff4a6d"
+ },
+ "readme/cards/teardown-poster.webp": {
+  "k": "5f7c01e3c84c3fbd9edb"
+ },
+ "readme/cards/teardown-zh-dark.webp": {
+  "k": "2ed80dd2f67699d0e1ba"
+ },
+ "readme/cards/teardown-zh-light.webp": {
+  "k": "6918afea13f9f50df7f8"
+ },
+ "readme/cards/telestrator-en-dark.webp": {
+  "k": "0168c6bc9e3d94c50929"
+ },
+ "readme/cards/telestrator-en-light.webp": {
+  "k": "1f1a14de945507c5161f"
+ },
+ "readme/cards/telestrator-poster.webp": {
+  "k": "7ca4a8f0c04980b0576e"
+ },
+ "readme/cards/telestrator-zh-dark.webp": {
+  "k": "1dc4de5882576c091db8"
+ },
+ "readme/cards/telestrator-zh-light.webp": {
+  "k": "8e3b2de3245d3c68e6ae"
+ },
+ "readme/cards/text-flash-cuts-en-dark.webp": {
+  "k": "6fff26c4a7b0ab8d4871"
+ },
+ "readme/cards/text-flash-cuts-en-light.webp": {
+  "k": "cd5cd0e90d9338f7d94e"
+ },
+ "readme/cards/text-flash-cuts-poster.webp": {
+  "k": "8f59f2c4ab52d93c217e"
+ },
+ "readme/cards/text-flash-cuts-zh-dark.webp": {
+  "k": "249cfc129068afa18f7b"
+ },
+ "readme/cards/text-flash-cuts-zh-light.webp": {
+  "k": "a1358dbe68220e531358"
+ },
+ "readme/cards/thermal-camera-en-dark.webp": {
+  "k": "b22e0e9f7743f94046aa"
+ },
+ "readme/cards/thermal-camera-en-light.webp": {
+  "k": "3843de7ba0e0a833383e"
+ },
+ "readme/cards/thermal-camera-poster.webp": {
+  "k": "21d53de0178d39cd3fd4"
+ },
+ "readme/cards/thermal-camera-zh-dark.webp": {
+  "k": "8eb0f20b1d0061c271bc"
+ },
+ "readme/cards/thermal-camera-zh-light.webp": {
+  "k": "990ba5c0dab5c5e68fbe"
+ },
+ "readme/cards/tilt-shift-en-dark.webp": {
+  "k": "4201fd33a3ec301254d0"
+ },
+ "readme/cards/tilt-shift-en-light.webp": {
+  "k": "a0ec7fbe73d597120570"
+ },
+ "readme/cards/tilt-shift-poster.webp": {
+  "k": "7c9df688d759b9de3300"
+ },
+ "readme/cards/tilt-shift-zh-dark.webp": {
+  "k": "066470e7113e713371b3"
+ },
+ "readme/cards/tilt-shift-zh-light.webp": {
+  "k": "92d29fb005d9709f4ea9"
+ },
+ "readme/cards/transit-map-en-dark.webp": {
+  "k": "c58f090740d81af34c7b"
+ },
+ "readme/cards/transit-map-en-light.webp": {
+  "k": "4b8cb22feae43c9c6e40"
+ },
+ "readme/cards/transit-map-poster.webp": {
+  "k": "9e7a94f62933706f212c"
+ },
+ "readme/cards/transit-map-zh-dark.webp": {
+  "k": "00b07791b1aa3fd70acb"
+ },
+ "readme/cards/transit-map-zh-light.webp": {
+  "k": "aa1bee843123a05cd09d"
+ },
+ "readme/cards/ukiyoe-en-dark.webp": {
+  "k": "6835f67a4cd5a8ff9f39"
+ },
+ "readme/cards/ukiyoe-en-light.webp": {
+  "k": "08d727d59c34fe43e81c"
+ },
+ "readme/cards/ukiyoe-poster.webp": {
+  "k": "1400ac0ea2ac1112acf5"
+ },
+ "readme/cards/ukiyoe-zh-dark.webp": {
+  "k": "0032f1ca16c975f793e7"
+ },
+ "readme/cards/ukiyoe-zh-light.webp": {
+  "k": "216a8e82b7494354dab6"
+ },
+ "readme/cards/urban-sketch-en-dark.webp": {
+  "k": "f1485cc0b102ab27a032"
+ },
+ "readme/cards/urban-sketch-en-light.webp": {
+  "k": "498a597047918a2f17e6"
+ },
+ "readme/cards/urban-sketch-poster.webp": {
+  "k": "fbf9a6c6325e50534b46"
+ },
+ "readme/cards/urban-sketch-zh-dark.webp": {
+  "k": "2b03f663a573527f97a5"
+ },
+ "readme/cards/urban-sketch-zh-light.webp": {
+  "k": "f7ad91b7be36b54bb251"
+ },
+ "readme/cards/vintage-collage-en-dark.webp": {
+  "k": "3b4a233c130c5e9eae6f"
+ },
+ "readme/cards/vintage-collage-en-light.webp": {
+  "k": "01f42414327d221ad3a0"
+ },
+ "readme/cards/vintage-collage-poster.webp": {
+  "k": "987129eaa106436ca5ad"
+ },
+ "readme/cards/vintage-collage-zh-dark.webp": {
+  "k": "f0cd5ce6347005cd5594"
+ },
+ "readme/cards/vintage-collage-zh-light.webp": {
+  "k": "d9b5e01d764072c599c6"
+ },
+ "readme/cards/visual-investigation-en-dark.webp": {
+  "k": "9f8dd58bcb1b5330b461"
+ },
+ "readme/cards/visual-investigation-en-light.webp": {
+  "k": "e5a6c5e153aa0645a133"
+ },
+ "readme/cards/visual-investigation-poster.webp": {
+  "k": "f54b583e7965336f0e7c"
+ },
+ "readme/cards/visual-investigation-zh-dark.webp": {
+  "k": "bc9e69c166c6ce496526"
+ },
+ "readme/cards/visual-investigation-zh-light.webp": {
+  "k": "68a6352327bc81845cac"
+ },
+ "readme/cards/watercolor-en-dark.webp": {
+  "k": "7e92429235ce08f025a9"
+ },
+ "readme/cards/watercolor-en-light.webp": {
+  "k": "f2decc6aa54a960e8296"
+ },
+ "readme/cards/watercolor-poster.webp": {
+  "k": "95e4135dcdeadef41d2f"
+ },
+ "readme/cards/watercolor-zh-dark.webp": {
+  "k": "5c223ffc76087d53a5fe"
+ },
+ "readme/cards/watercolor-zh-light.webp": {
+  "k": "e939b00815440bb8766b"
+ },
+ "readme/cards/white-model-en-dark.webp": {
+  "k": "2ff9c398ac6e87f5f7a7"
+ },
+ "readme/cards/white-model-en-light.webp": {
+  "k": "a45216ba3ee472f8a8a8"
+ },
+ "readme/cards/white-model-poster.webp": {
+  "k": "0946effdc2a2601f9677"
+ },
+ "readme/cards/white-model-zh-dark.webp": {
+  "k": "01a722364eafee279e38"
+ },
+ "readme/cards/white-model-zh-light.webp": {
+  "k": "fd004dfb9bd1902ff8e4"
+ },
+ "readme/cards/whiteboard-en-dark.webp": {
+  "k": "addc524f803a8306749a"
+ },
+ "readme/cards/whiteboard-en-light.webp": {
+  "k": "854f0514f8615309aabf"
+ },
+ "readme/cards/whiteboard-poster.webp": {
+  "k": "7f08bcad5bcbc540d188"
+ },
+ "readme/cards/whiteboard-zh-dark.webp": {
+  "k": "6b727822235472d3c32a"
+ },
+ "readme/cards/whiteboard-zh-light.webp": {
+  "k": "ee6e106b37766e7fcb31"
+ },
+ "readme/cards/woodcut-en-dark.webp": {
+  "k": "1c82d455f5e942724370"
+ },
+ "readme/cards/woodcut-en-light.webp": {
+  "k": "15d2e23502f27f3da98f"
+ },
+ "readme/cards/woodcut-poster.webp": {
+  "k": "b8ea57acfd8eb83bb317"
+ },
+ "readme/cards/woodcut-zh-dark.webp": {
+  "k": "e7345a39497076602b02"
+ },
+ "readme/cards/woodcut-zh-light.webp": {
+  "k": "b6d67c77b5d5ecb344ed"
+ },
+ "readme/cover-en.webp": {
+  "k": "0f99e4a830ea0af712cb",
+  "m": "52c7581fd742e4089020d41e0422d341b4c68726"
+ },
+ "readme/cover-zh.webp": {
+  "k": "02019a06e305fc698e28",
+  "m": "52c7581fd742e4089020d41e0422d341b4c68726"
+ },
+ "readme/end-en-dark.webp": {
+  "k": "7756f98ef00d654a45bf",
+  "m": "cdd0a845d85bd9f250a16742a0debea517f31f18"
+ },
+ "readme/end-en-light.webp": {
+  "k": "3afc26f3ba81e6604322",
+  "m": "cdd0a845d85bd9f250a16742a0debea517f31f18"
+ },
+ "readme/end-zh-dark.webp": {
+  "k": "5446bf58b4f7be5f7419",
+  "m": "cdd0a845d85bd9f250a16742a0debea517f31f18"
+ },
+ "readme/end-zh-light.webp": {
+  "k": "3204731a312f6205b9b1",
+  "m": "cdd0a845d85bd9f250a16742a0debea517f31f18"
+ },
+ "readme/opuscar98-en-dark.webp": {
+  "k": "bf1629488657d6b2b2ca",
+  "m": "2e60bdeed8c72a00aca621d2c32e278fe843e425"
+ },
+ "readme/opuscar98-en-light.webp": {
+  "k": "42fcd515291bba809b9a",
+  "m": "2e60bdeed8c72a00aca621d2c32e278fe843e425"
+ },
+ "readme/opuscar98-zh-dark.webp": {
+  "k": "96f1927336b5a1caae48",
+  "m": "2e60bdeed8c72a00aca621d2c32e278fe843e425"
+ },
+ "readme/opuscar98-zh-light.webp": {
+  "k": "6b946f972e810cf64981",
+  "m": "2e60bdeed8c72a00aca621d2c32e278fe843e425"
+ },
+ "readme/station-01-en-dark.webp": {
+  "k": "33dc82c8a9295dee67c3",
+  "m": "3eae19818e20aec4b6cccd56ad0d009bd2cdc8a2"
+ },
+ "readme/station-01-en-light.webp": {
+  "k": "26ab23eb2727e3fd7148",
+  "m": "3eae19818e20aec4b6cccd56ad0d009bd2cdc8a2"
+ },
+ "readme/station-01-zh-dark.webp": {
+  "k": "aa5ea43ea491c2cc5df7",
+  "m": "3eae19818e20aec4b6cccd56ad0d009bd2cdc8a2"
+ },
+ "readme/station-01-zh-light.webp": {
+  "k": "17bccba5501be99a0df7",
+  "m": "3eae19818e20aec4b6cccd56ad0d009bd2cdc8a2"
+ },
+ "readme/station-02-en-dark.webp": {
+  "k": "716776ca915d640f6947",
+  "m": "0c82997f841666085cd54cbd07987169945a2391"
+ },
+ "readme/station-02-en-light.webp": {
+  "k": "7158257c85fc3b13baa2",
+  "m": "0c82997f841666085cd54cbd07987169945a2391"
+ },
+ "readme/station-02-zh-dark.webp": {
+  "k": "6db748537ebbca62308d",
+  "m": "0c82997f841666085cd54cbd07987169945a2391"
+ },
+ "readme/station-02-zh-light.webp": {
+  "k": "5b6c8af746a103b42a49",
+  "m": "0c82997f841666085cd54cbd07987169945a2391"
+ },
+ "readme/station-03-en-dark.webp": {
+  "k": "69050ba32029348f6aee",
+  "m": "2653f6f57a32aa89a8ada6589f40629baf1aa44b"
+ },
+ "readme/station-03-en-light.webp": {
+  "k": "d7060eb921bdd4d587cd",
+  "m": "2653f6f57a32aa89a8ada6589f40629baf1aa44b"
+ },
+ "readme/station-03-zh-dark.webp": {
+  "k": "ef314eb91917bbd85001",
+  "m": "2653f6f57a32aa89a8ada6589f40629baf1aa44b"
+ },
+ "readme/station-03-zh-light.webp": {
+  "k": "3bfccdf05bf05f039f97",
+  "m": "2653f6f57a32aa89a8ada6589f40629baf1aa44b"
+ },
+ "readme/station-04-en-dark.webp": {
+  "k": "e642a8493f2ddfb6ad70",
+  "m": "799f3fbe3217500d9c9fee0f72acf23a4dbe3ed9"
+ },
+ "readme/station-04-en-light.webp": {
+  "k": "13fbb00922e769fb84b6",
+  "m": "799f3fbe3217500d9c9fee0f72acf23a4dbe3ed9"
+ },
+ "readme/station-04-zh-dark.webp": {
+  "k": "08f71c8a7426b0e58f0c",
+  "m": "799f3fbe3217500d9c9fee0f72acf23a4dbe3ed9"
+ },
+ "readme/station-04-zh-light.webp": {
+  "k": "fad13c2e395c2d833c49",
+  "m": "799f3fbe3217500d9c9fee0f72acf23a4dbe3ed9"
+ },
+ "readme/station-05-en-dark.webp": {
+  "k": "405c80b76d9087812fa4",
+  "m": "25c0245a671b7b92d096bb855a6f5d7196e69676"
+ },
+ "readme/station-05-en-light.webp": {
+  "k": "3ac822d66cc896454642",
+  "m": "25c0245a671b7b92d096bb855a6f5d7196e69676"
+ },
+ "readme/station-05-zh-dark.webp": {
+  "k": "f73e5e7ed01fbc6a9a38",
+  "m": "25c0245a671b7b92d096bb855a6f5d7196e69676"
+ },
+ "readme/station-05-zh-light.webp": {
+  "k": "311b6519472883aaa44a",
+  "m": "25c0245a671b7b92d096bb855a6f5d7196e69676"
+ },
+ "readme/station-06-en-dark.webp": {
+  "k": "9a34a67892971d607de0",
+  "m": "2572ab7493a0c63cacce2dadf0efcd855d43a263"
+ },
+ "readme/station-06-en-light.webp": {
+  "k": "b8046ff930ca90718b6c",
+  "m": "2572ab7493a0c63cacce2dadf0efcd855d43a263"
+ },
+ "readme/station-06-zh-dark.webp": {
+  "k": "971e5f5642ec4a7b017f",
+  "m": "2572ab7493a0c63cacce2dadf0efcd855d43a263"
+ },
+ "readme/station-06-zh-light.webp": {
+  "k": "0040282eb8fb131fc383",
+  "m": "2572ab7493a0c63cacce2dadf0efcd855d43a263"
+ },
+ "readme/station-07-en-dark.webp": {
+  "k": "cd271161499480103206",
+  "m": "60ec059169190d06a9d73b34b0bf552a611fe4fe"
+ },
+ "readme/station-07-en-light.webp": {
+  "k": "325fc39308606f078d4e",
+  "m": "60ec059169190d06a9d73b34b0bf552a611fe4fe"
+ },
+ "readme/station-07-zh-dark.webp": {
+  "k": "c1e0eeb7eeed8a09f65f",
+  "m": "60ec059169190d06a9d73b34b0bf552a611fe4fe"
+ },
+ "readme/station-07-zh-light.webp": {
+  "k": "686058407d84ec1d4144",
+  "m": "60ec059169190d06a9d73b34b0bf552a611fe4fe"
+ },
+ "readme/station-08-en-dark.webp": {
+  "k": "2aabcb4f9c8f2d1fa3ee",
+  "m": "1175f1a37cd3a6322f7ac9b5287d60fb34c328a8"
+ },
+ "readme/station-08-en-light.webp": {
+  "k": "014096b18243687eb1b7",
+  "m": "1175f1a37cd3a6322f7ac9b5287d60fb34c328a8"
+ },
+ "readme/station-08-zh-dark.webp": {
+  "k": "487e951b68a768d58eef",
+  "m": "1175f1a37cd3a6322f7ac9b5287d60fb34c328a8"
+ },
+ "readme/station-08-zh-light.webp": {
+  "k": "08a273b08edbface0c96",
+  "m": "1175f1a37cd3a6322f7ac9b5287d60fb34c328a8"
+ },
+ "readme/station-09-en-dark.webp": {
+  "k": "ee96800888e5336d4771",
+  "m": "dd19cac72f7878c8bdd3c8e28ae7b26b1ed2fbe2"
+ },
+ "readme/station-09-en-light.webp": {
+  "k": "10ad9934c6d5fca62f3b",
+  "m": "dd19cac72f7878c8bdd3c8e28ae7b26b1ed2fbe2"
+ },
+ "readme/station-09-zh-dark.webp": {
+  "k": "6126ca05f386b1f4225c",
+  "m": "dd19cac72f7878c8bdd3c8e28ae7b26b1ed2fbe2"
+ },
+ "readme/station-09-zh-light.webp": {
+  "k": "60ca0eada7e32b821ab0",
+  "m": "dd19cac72f7878c8bdd3c8e28ae7b26b1ed2fbe2"
+ },
+ "readme/station-10-en-dark.webp": {
+  "k": "826d1734f99debcf2f62",
+  "m": "3cebe55a655ed7e8ed2cfb51fea8425d453775f9"
+ },
+ "readme/station-10-en-light.webp": {
+  "k": "8749a155363191bc25ec",
+  "m": "3cebe55a655ed7e8ed2cfb51fea8425d453775f9"
+ },
+ "readme/station-10-zh-dark.webp": {
+  "k": "4672d839247bd6451c7c",
+  "m": "3cebe55a655ed7e8ed2cfb51fea8425d453775f9"
+ },
+ "readme/station-10-zh-light.webp": {
+  "k": "939b2bd4c129786444f6",
+  "m": "3cebe55a655ed7e8ed2cfb51fea8425d453775f9"
+ },
+ "readme/station-11-en-dark.webp": {
+  "k": "33c15513fa818f2cd1ae",
+  "m": "0ad45a2e1b6b743a2d16ce0e494b5f29eeb517a2"
+ },
+ "readme/station-11-en-light.webp": {
+  "k": "522b3d7344fcae48c884",
+  "m": "0ad45a2e1b6b743a2d16ce0e494b5f29eeb517a2"
+ },
+ "readme/station-11-zh-dark.webp": {
+  "k": "e1ad20776cf16946c7c1",
+  "m": "0ad45a2e1b6b743a2d16ce0e494b5f29eeb517a2"
+ },
+ "readme/station-11-zh-light.webp": {
+  "k": "a4f9b2037f6c61dbe327",
+  "m": "0ad45a2e1b6b743a2d16ce0e494b5f29eeb517a2"
+ },
+ "readme/station-12-en-dark.webp": {
+  "k": "03acf088d4a305dc0139",
+  "m": "ad1c3c029564610b76fb8000e19c92aed10ffbf0"
+ },
+ "readme/station-12-en-light.webp": {
+  "k": "faecd10e1ead3d1f4a26",
+  "m": "ad1c3c029564610b76fb8000e19c92aed10ffbf0"
+ },
+ "readme/station-12-zh-dark.webp": {
+  "k": "c5a48b88eb5f1a701173",
+  "m": "ad1c3c029564610b76fb8000e19c92aed10ffbf0"
+ },
+ "readme/station-12-zh-light.webp": {
+  "k": "f9b05809ef8e1f762646",
+  "m": "ad1c3c029564610b76fb8000e19c92aed10ffbf0"
+ },
+ "readme/station-13-en-dark.webp": {
+  "k": "66f79e40da65b542117a",
+  "m": "cf04029a8a1039586496f053015103809e284923"
+ },
+ "readme/station-13-en-light.webp": {
+  "k": "bc922230a049c513b5b7",
+  "m": "cf04029a8a1039586496f053015103809e284923"
+ },
+ "readme/station-13-zh-dark.webp": {
+  "k": "332984b0abcc81c04aca",
+  "m": "cf04029a8a1039586496f053015103809e284923"
+ },
+ "readme/station-13-zh-light.webp": {
+  "k": "b0e8b5b8af1003b2ff9b",
+  "m": "cf04029a8a1039586496f053015103809e284923"
+ },
+ "readme/station-14-en-dark.webp": {
+  "k": "28efc47cc49464d19509",
+  "m": "0e64526b9d5968f93d8502c494dd5b842346b7ee"
+ },
+ "readme/station-14-en-light.webp": {
+  "k": "c9b7eb1d64e454d0a0fe",
+  "m": "0e64526b9d5968f93d8502c494dd5b842346b7ee"
+ },
+ "readme/station-14-zh-dark.webp": {
+  "k": "f131aa1912999ca6f978",
+  "m": "0e64526b9d5968f93d8502c494dd5b842346b7ee"
+ },
+ "readme/station-14-zh-light.webp": {
+  "k": "8b8bac1c65f8008b1cea",
+  "m": "0e64526b9d5968f93d8502c494dd5b842346b7ee"
+ },
+ "readme/station-15-en-dark.webp": {
+  "k": "789620bb6da045bdb738",
+  "m": "802005f53e72542e4e7d4c40133728b1fcdbc03a"
+ },
+ "readme/station-15-en-light.webp": {
+  "k": "cf7c9133a2395e7a3eba",
+  "m": "802005f53e72542e4e7d4c40133728b1fcdbc03a"
+ },
+ "readme/station-15-zh-dark.webp": {
+  "k": "96bdd39bc094712f1298",
+  "m": "802005f53e72542e4e7d4c40133728b1fcdbc03a"
+ },
+ "readme/station-15-zh-light.webp": {
+  "k": "4663d4dfce288c5258c1",
+  "m": "802005f53e72542e4e7d4c40133728b1fcdbc03a"
+ },
+ "readme/thanks/stars2000-en-dark.webp": {
+  "k": "d2f72135a4d5065b0901"
+ },
+ "readme/thanks/stars2000-en-light.webp": {
+  "k": "9d6885a3ecb52fbbb86c"
+ },
+ "readme/thanks/stars2000-poster.webp": {
+  "k": "b675e9a5d289cf438a0e"
+ },
+ "readme/thanks/stars2000-zh-dark.webp": {
+  "k": "6d902975a6590e9b2106"
+ },
+ "readme/thanks/stars2000-zh-light.webp": {
+  "k": "165dac9068d41c2bd74e"
+ },
+ "readme/thanks/stars300-en-dark.webp": {
+  "k": "54bffc425b4ca9773798"
+ },
+ "readme/thanks/stars300-en-light.webp": {
+  "k": "e4755aac51517fe2ad95"
+ },
+ "readme/thanks/stars300-poster.webp": {
+  "k": "fcf4d09aa857171d11be"
+ },
+ "readme/thanks/stars300-zh-dark.webp": {
+  "k": "e62d8afb9e7f23fa9949"
+ },
+ "readme/thanks/stars300-zh-light.webp": {
+  "k": "d9b61588cabc2d3afb0d"
+ },
+ "readme/thanks/stars3000-en-dark.webp": {
+  "k": "cec5d94de21b24fd3801"
+ },
+ "readme/thanks/stars3000-en-light.webp": {
+  "k": "517c2798fcb6fbfd66ee"
+ },
+ "readme/thanks/stars3000-poster.webp": {
+  "k": "ef33e594ace93f1a1b2c"
+ },
+ "readme/thanks/stars3000-zh-dark.webp": {
+  "k": "c46c523260f174cece20"
+ },
+ "readme/thanks/stars3000-zh-light.webp": {
+  "k": "1a42741455258dc03b17"
+ },
+ "readme/thanks/stars6000-en-dark.webp": {
+  "k": "bd15ab0c42f38ca093d8"
+ },
+ "readme/thanks/stars6000-en-light.webp": {
+  "k": "a4abeac4d21d2b00e038"
+ },
+ "readme/thanks/stars6000-poster.webp": {
+  "k": "7fe74e0e01530617656d"
+ },
+ "readme/thanks/stars6000-zh-dark.webp": {
+  "k": "fc32cec52fbbe19016cb"
+ },
+ "readme/thanks/stars6000-zh-light.webp": {
+  "k": "e851a6dd9121dbb4930c"
+ },
+ "readme/thanks/stars800-en-dark.webp": {
+  "k": "16059c8a1ff7ba2e640a"
+ },
+ "readme/thanks/stars800-en-light.webp": {
+  "k": "6e5a928357a753ffd2eb"
+ },
+ "readme/thanks/stars800-poster.webp": {
+  "k": "27e4daa5b075efbeeeab"
+ },
+ "readme/thanks/stars800-zh-dark.webp": {
+  "k": "948774cf28717050fe86"
+ },
+ "readme/thanks/stars800-zh-light.webp": {
+  "k": "f6a7cb421a011ae6345c"
+ },
+ "social.jpg": {
+  "k": "2bfb4b877deb8256700a",
+  "m": "a1aa0a73bf30f4033e022d3d389884950d6a71b6"
+ }
+}

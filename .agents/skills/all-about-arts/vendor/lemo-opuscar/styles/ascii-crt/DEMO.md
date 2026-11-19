@@ -1,15 +1,15 @@
-# ASCII / CRT Terminal — our demo
+# CRT ASCII Terminal — our demo
 
 One example among many. Don't reuse its story, arc, shots, props or timings.
 
 Demo: *TRANQUILITY.LOG* (59.8 s) · `ascii-crt.mp4` · source in [`demo/`](demo/)
 
 
-Brief the demo was made to: a 30–60 second film in the ASCII / CRT Terminal style.
+Brief the demo was made to: a 30–60 second film in the CRT ASCII Terminal style.
 
 ## Story & structure
 
-A machine left on the Moon has logged `NO SIGNAL` for 40 years. A message arrives; it replies `I AM STILL HERE.`, and the letters of that reply become an earthrise. We picked a story where **text is the only way the character can act**: a machine, a remote operator, a message across distance or time. How the native powers were used:
+A machine left on the Moon has logged `NO SIGNAL` for 40 years. A message arrives; it replies `I AM STILL HERE.`, and the letters of that reply become an earthrise. The story is one where **text is the only way the character can act**: a machine, a remote operator, a message across distance or time. How the native powers were used:
 
 | Native power | Story use |
 |---|---|
@@ -19,7 +19,7 @@ A machine left on the Moon has logged `NO SIGNAL` for 40 years. A message arrive
 | **CRT physics** | The screen powers on as a dot, then a line, then the full frame, and powers off by collapsing to a dot. Used for the opening and the ending. |
 | **A single color change** | Blue-white `#BFE4FF` for Earth, the only non-amber thing, is the emotional peak. Switched on a musical downbeat. |
 
-Adapting ideas we noted while writing it (examples, not rules): a product launch becomes a spec sheet that assembles into the product's silhouette; a love letter becomes its own words raining into a face; a history lesson becomes a log file whose dates zoom out into a map.
+Other adaptations (examples, not rules): a product launch becomes a spec sheet that assembles into the product's silhouette; a love letter becomes its own words raining into a face; a history lesson becomes a log file whose dates zoom out into a map.
 
 **Emotional arc (59.8 s):** dark and a cursor, then waking (boot log, a date jumping), then disturbance (handshake noise, a line of text), then holding breath (cursor blinks), then setback (`NOT FOUND` ×3 on three beats), then decision (typing the reply), then **near-silence for 1–1.5 s**, then the climax (letters become the image, the one color appears), then the scale reveal, then waiting, then a tiny reply, then an echo (pull out of the screen, power off to a dot).
 
@@ -74,7 +74,7 @@ Why this route, for this story: the title typed as a file the machine opens made
 
 - **Font and grids**: VT323 atlas prerendered at 160 px with a 2.2 px stroke. Grids used: title 20 columns (cell width 84 px), terminal 80 columns (21 px), picture 240 columns (8 px), room 213 columns (9 px), fractal push-in up to a 450 px cell with a 40-column sub-grid inside each cell.
 - **Ramp values**: attributes dim / normal / bold = 0.42 / 0.7 / 1.0; dither amplitude 0.7; cells with luminance < 0.05 stay blank. Negative sampled 3×6 per cell: R = amber luminance, G = second-color luminance, B = a flag such as "night side". Rooms get a 3×3 local-contrast boost.
-- **Earth that reads as Earth**: continent polygons in lon/lat (rasterized once to an equirectangular mask) rather than noise. Ocean albedo 0.14 (sparse dim glyphs), land 0.96 (dense bold glyphs), clouds 0.5 (mid-density swirls). A narrow terminator (smoothstep −0.03…0.10) and the night side as sparse `.` only. Angle with a clear silhouette: Africa and Europe.
+- **Earth that reads as Earth**: continent polygons in lon/lat (rasterized once to an equirectangular mask) rather than noise. Ocean albedo 0.14 (sparse dim glyphs), land 0.96 (dense bold glyphs), clouds 0.5 (mid-density swirls). A narrow terminator (smoothstep −0.03…0.10) and the night side as sparse `.` only. Angle with a clear silhouette: Africa and Europe. Every continent that can come into view is drawn, Asia included as one landmass with Taiwan and Hainan, even where it lies on the night side; no borders.
 - **Lunar ground**: far ground darker and sparser (×0.3), near ground brighter and denser. The horizon gets a thin bright rim (10 px falloff). Craters: the left inner wall is in black shadow, the right inner wall is lit, the rim lip is bright. A few big defined foreground craters.
 - **CRT post** (`demo/crt.js`): R maps to amber: dim `#FF6605`, mid `#FFB000`, overexposed toward `#FFEBB8`. G maps to `#B8E0FF`. Four-level bloom at 0.55 plus a halo at 0.22. 3 px scanlines at 0.3; barrel curvature 0.045; unlit glass `#090604`; faint top-left reflection, 1.2% HV flicker.
 - **Afterglow**: τ = 0.12 s; one extra trail sample at t − 35 ms × 0.3.
@@ -102,9 +102,9 @@ styles/ascii-crt/demo/
 
 Pitfalls tied to this demo's props:
 
-- **Offscreen negative drift** showed up as doubled stars and misaligned crater edges across 200 columns.
+- **Offscreen negative drift** shows up as doubled stars and misaligned crater edges across 200 columns.
 - **A noise-textured Earth reads as a textured ball.** Use continent silhouettes, a dark sparse ocean and a dot-only night side.
 - **Particles bursting from 13 letter centers stack into a glowing bar.**
 - **Earth letters rising through the still-visible sentence look messy.** Send them all behind the horizon first, then rise.
 - **The thick (stroked) atlas glyph closes the gaps of `M`.** For the fractal mask, sample a separate *thin* (fill-only) glyph bitmap.
-- **Lazily built data**: without building the particle schedule first, the foley for the fall was silent.
+- **Lazily built data**: build the particle schedule before the foley pass, or the fall's foley is silent.

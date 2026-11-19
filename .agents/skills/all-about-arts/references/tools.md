@@ -1,6 +1,6 @@
 # Tools and installation
 
-From this package run `npm ci --ignore-scripts` once to install locked JavaScript dependencies. The core uses Node >=22, an existing Chrome/Chromium, FFmpeg and ffprobe. Optional Python voice tools target Python 3.12. Run `node scripts/aaa.mjs doctor --json`; set `AAA_CHROME` to an existing browser executable when autodetection is insufficient. No upstream clone or automatic update is used.
+From this package run `npm ci --ignore-scripts` once to install locked JavaScript dependencies. The core uses Node >=22, an existing Chrome/Chromium, FFmpeg 7+ and ffprobe. Optional Python voice tools target Python 3.12. Run `node scripts/aaa.mjs doctor --json`; set `AAA_CHROME` to an existing browser executable when autodetection is insufficient. No upstream clone or automatic update is used.
 
 This repository stores its single canonical package directly in `.agents/skills/all-about-arts`; Codex and Antigravity discover it there, and Claude Code uses a link to it. Register in another repository with `node scripts/install.mjs --host both --root <repo>`. This creates `.agents/skills/all-about-arts` for Codex and `.claude/skills/all-about-arts` for Claude Code, pointing to the canonical package. Running registration in this repository reuses the existing package. `--scope user --host codex` or `--host claude` registers in the corresponding user's skill directory. The installer refuses to overwrite an existing unrelated skill. For independent distribution add `--copy --dependencies`; the package lock is preserved.
 
@@ -8,7 +8,7 @@ For Google Antigravity App/IDE use `node scripts/install.mjs --host antigravity 
 
 Use an absolute script path when your working directory is a film. `node <skill>/scripts/aaa.mjs help` lists commands. After `npm link` (only when requested), the same entrypoint is `aaa`; no global link is needed.
 
-For new films use the [native flow](native-lemo.md): `aaa lemo init <film> --style <slug>`, author the original page, then `aaa lemo still`, `video`, `events` and `readcheck`. All 59 styles have full native source. `aaa lemo doctor --json` reports native prerequisites. This route does not use legacy Studio/export automatically.
+For new films use the [native flow](native-lemo.md): `aaa lemo init <film> --style <slug>`, author the original page, then `aaa lemo still`, `video`, `events` and `readcheck`. All 99 styles have full native source. `aaa lemo doctor --json` reports native prerequisites. This route does not use legacy Studio/export automatically.
 
 Legacy Studio flow (eight preset renderers):
 

@@ -64,14 +64,16 @@ function hexPrism(r, h, top, side, y0 = -2.4) {
   return g;
 }
 function gable(w, d, h, over = .08) {   // gable roof: a triangular prism along x (the slopes), gable ends built separately
+  // counter-clockwise seen from outside: the slopes face out and the underside faces down. (Wound the other way, the slopes were culled and
+  // the camera saw the upward-facing underside, which lies in the same plane as the top of the wall box → the roofs z-fought / flickered.)
   const W = w / 2 + over, D = d / 2 + over, g = new THREE.BufferGeometry();
-  const v = [-W, 0, -D, W, 0, -D, W, h, 0, -W, 0, -D, W, h, 0, -W, h, 0, -W, 0, D, -W, h, 0, W, h, 0, -W, 0, D, W, h, 0, W, 0, D,
-    -W, 0, -D, -W, 0, D, W, 0, D, -W, 0, -D, W, 0, D, W, 0, -D];
+  const v = [-W, 0, -D, W, h, 0, W, 0, -D, -W, 0, -D, -W, h, 0, W, h, 0, -W, 0, D, W, h, 0, -W, h, 0, -W, 0, D, W, 0, D, W, h, 0,
+    -W, 0, -D, W, 0, D, -W, 0, D, -W, 0, -D, W, 0, -D, W, 0, D];
   g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.computeVertexNormals(); return g;
 }
 function gableEnds(w, d, h) {
   const W = w / 2, D = d / 2, g = new THREE.BufferGeometry();
-  const v = [W, 0, -D, W, 0, D, W, h, 0, -W, 0, D, -W, 0, -D, -W, h, 0];
+  const v = [W, 0, -D, W, h, 0, W, 0, D, -W, 0, D, -W, h, 0, -W, 0, -D];   // facing out, like the roof
   g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.computeVertexNormals(); return g;
 }
 

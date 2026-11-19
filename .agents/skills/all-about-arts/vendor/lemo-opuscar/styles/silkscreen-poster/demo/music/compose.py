@@ -1,294 +1,115 @@
-# compose.py · score for "Three Trails": American outdoor folk, 100 BPM, D major, open D tuning (DADF#AD)
-# All sync points are read from ../events.json (if picture timing changes, rerun this script to realign).
-#
-# Instrumentation and sources (all CC0 or synthesized in code):
-#   - steel-string folk guitar: core/audio/pluck.py `acoustic_guitar` physical model (strums / rakes / arpeggios / single open-string notes)
-#   - slide guitar: synthesized in numpy in this file (phase integration for continuous slides, steel-string harmonics, body-resonance filter, slide friction noise, vibrato)
-#   - harmonica: core/audio/sampler.py `harmonica` (VCSL, CC0 1.0)
-#   - bass: sampler `jazz_bass` (Karoryfer Sneakybass, CC0 1.0)
-#   - drums: sampler `cajon` (VCSL, CC0 1.0) as the kick; `snare2:taps` (VCSL, CC0) + `shaker` (VCSL, CC0) as the brush groove;
-#         `sus_cymbal` (VSCO 2 CE, CC0 1.0) for the cymbal swell on reprint 2 and the cymbal at the peak
-#   - reverb: sampler.room()
-# Run from the repo root:  .venv/bin/python styles/silkscreen-poster/demo/music/compose.py
+"""compose.py · original score for "The Long Way Home": a 108 BPM waltz in F major (3/4, bar = 1.6667 s), 30 bars = 50 s.
+Each ink pull lands on a beat (events.json); the glockenspiel answers only the bright accent ink.
+
+Shape: Beijing (bars 0-5, guitar waltz) → Istanbul (6-8, darbuka joins) → Paris (8-10, accordion musette tune)
+→ Buenos Aires (10-12, the bass turns syncopated) → the push into the number (13-15: instruments leave one by one, nothing after 25.0 s)
+→ silence → the clamp (bar 16 beat 3, 27.78 s) → the way home (17-21, guitar in eighths, harmonica joins) → the snap (bar 22, 36.67 s,
+the loudest downbeat) → home (22-29, harmonica tune, the last F chord rings out).
+
+Instruments (all CC0): guitar_nylon, accordion, world_perc (FreePats); jazz_bass (Karoryfer Sneakybass);
+glockenspiel, harmonica, snare2 taps, shaker, cajon (VCSL); sus_cymbal (VSCO 2 CE).
+Run from the library root:  .venv/bin/python styles/silkscreen-poster/demo/music/compose.py   → music/score.wav (+ music/stems/)."""
 import sys, os, json
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..'))
+HERE = os.path.dirname(os.path.abspath(__file__)); D = os.path.dirname(HERE)
+ROOT = os.environ.get('LIB') or os.path.abspath(os.path.join(D, '../../..'))
 sys.path.insert(0, ROOT)
 import numpy as np, soundfile as sf
-from scipy.signal import butter, sosfilt
-from core.audio import sampler as S, pluck as P
+from core.audio import sampler as S
 from core.audio.sfx import SR, add
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-EVJ = json.load(open(os.path.join(HERE, '..', 'events.json')))
-DUR = EVJ['dur']; EV = EVJ['ev']; TOT = DUR + 1.5
-BEAT = .6; E8 = .3
-S.seed(7); rng = np.random.default_rng(7)
-
-def evs(tp, **kw): return [e for e in EV if e['type'] == tp and all(e.get(k) == v for k, v in kw.items())]
+BPM = 108; B = 60 / BPM; BAR = 3 * B
+def bt(bar, beat=0.): return bar * BAR + beat * B
+EV = json.load(open(os.path.join(D, 'events.json')))['ev']
 def ev1(tp, **kw):
-    r = evs(tp, **kw); return r[0] if r else None
-
+    for e in EV:
+        if e['type'] == tp and all(e.get(k) == v for k, v in kw.items()): return e
+TOT = 50 + 3.0
 N = int(TOT * SR)
-stem = {k: np.zeros((N, 2), np.float32) for k in ['guitar', 'slide', 'harmonica', 'drums', 'bass']}
+S.seed(5); rng = np.random.default_rng(5)
+stem = {k: np.zeros((N, 2), np.float32) for k in ['guitar', 'melody', 'bass', 'glock', 'perc', 'squeeze', 'harp']}
 
-# ---------------- chords (real fingerings in open D tuning) ----------------
-CH = {
-    'D':   ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4'],
-    'D/F#': ['F#2', 'A2', 'D3', 'F#3', 'A3', 'D4'],
-    'G':   ['G2', 'D3', 'G3', 'B3', 'D4', 'G4'],      # barre at fret 5
-    'A':   ['A2', 'E3', 'A3', 'C#4', 'E4', 'A4'],     # barre at fret 7
-    'Bm':  ['B2', 'F#3', 'B3', 'D4', 'F#4', 'B4'],
-    'Dhi': ['D3', 'A3', 'D4', 'F#4', 'A4', 'D5'],     # fret 12
-}
-_cache = {}
-def strum(ch, at, vel=.7, dur=1.2, up=False, spread=.018, gain=1., pan=0., top=6, mute=False):
-    key = (ch, round(vel, 2), round(dur, 2), up, round(spread, 3), top, mute)
-    if key not in _cache:
-        ps = CH[ch][-top:] if not up else CH[ch][-top:]
-        kw = dict(damp=.85, t60=.08) if mute else {}
-        _cache[key] = P.strum('acoustic_guitar', ps, dur, vel, spread=spread, up=up, **kw)
-    add(stem['guitar'], _cache[key], at, gain, pan)
+def g(p, at, dur=1.6, vel=.6, gain=1., pan=0., st='guitar'):
+    add(stem[st], S.note('guitar_nylon', p, dur, vel), at + rng.normal(0, .004), gain, pan)
+def chord(ps, at, vel=.42, dur=.5, spread=.012, gain=1., pan=.15):
+    for i, p in enumerate(ps): g(p, at + i * spread, dur, vel * (1 - .06 * i), gain, pan + .05 * i)
+def bass(p, at, dur=1.0, vel=.6, gain=1.): add(stem['bass'], S.note('jazz_bass', p, dur, vel), at, gain, 0)
+def glock(p, at, vel=.5, gain=1., pan=.3): add(stem['glock'], S.note('glockenspiel', p, 2.5, vel), at, gain, pan)
+def brush(at, vel=.35, gain=1.): add(stem['perc'], S.hit('snare2', 'taps', vel), at, gain * .5, -.2)
+def shake(at, vel=.3, up=False, gain=1.): add(stem['perc'], S.hit('shaker', 'up' if up else 'down', vel), at, gain * .35, .35)
+def drum(at, var, vel=.5, gain=1., pan=-.25): add(stem['perc'], S.hit('world_perc', var, vel), at, gain, pan)
+def cajon(at, vel=.6, gain=1.): add(stem['perc'], S.hit('cajon', 'bass', vel), at, gain * 1.1, 0)
+def acc(p, at, dur, vel=.45, gain=1., pan=-.15): add(stem['squeeze'], S.note('accordion', p, dur, vel, attack=.03, release=.2), at - .02, gain, pan)
+def harm(p, at, dur, vel=.55, gain=1., pan=.1): add(stem['harp'], S.note('harmonica', p, dur, vel, attack=.04, release=.25), at - .035, gain, pan)
 
-def pick(p, at, vel=.7, dur=2., gain=1., pan=0.):
-    add(stem['guitar'], P.pluck('acoustic_guitar', p, dur, vel), at, gain, pan)
+# ---------------- harmony: (guitar bass, double bass, chord) per bar ----------------
+F = ('F2', 'F1', ['A3', 'C4', 'F4']); Am = ('A2', 'A1', ['A3', 'C4', 'E4']); Dm = ('D3', 'D2', ['A3', 'D4', 'F4'])
+Bb = ('Bb2', 'Bb1', ['Bb3', 'D4', 'F4']); C = ('C3', 'C2', ['G3', 'C4', 'E4']); A7 = ('A2', 'A1', ['G3', 'C#4', 'E4'])
+Gm = ('G2', 'G1', ['G3', 'Bb3', 'D4']); C7 = ('C3', 'C2', ['G3', 'Bb3', 'E4'])
+HARM = [F, Am, Dm, Bb, C, F,  Dm, A7, Gm, C7, F,  Dm, Bb, Gm, C, C,  C, F, Dm, Bb, C, C7,  F, Am, Bb, F, Dm, Bb, C, F]
+CLAMP = ev1('clamp')['t']; SNAP = ev1('snap')['t']; DROP = ev1('drop')['t']
+for bar, (gb, bb, ch) in enumerate(HARM):
+    t0 = bt(bar)
+    if 13 <= bar <= 16:                                       # the push into the number: the band leaves, one part at a time
+        if bar == 13: g(gb, t0, 1.6, .55); chord(ch, t0 + B, .32); chord(ch, t0 + 2 * B, .26); bass(bb, t0, 1.2, .5)
+        if bar == 14: g(gb, t0, 1.8, .45); chord(ch, t0 + B, .22); bass(bb, t0, 1.6, .42)
+        if bar == 15 and t0 < DROP: g(ch[1], t0, 2.0, .3)
+        if bar == 16:                                         # after the silence: the clamp, then everything comes back on beat 3
+            bass('F1', CLAMP, 1.0, .85); g('F2', CLAMP, 1.2, .7); chord(['A3', 'C4', 'F4'], CLAMP + .01, .55, .5); cajon(CLAMP, .85)
+        continue
+    last = bar == 29
+    g(gb, t0, 3.4 if last else 1.6, .62)
+    if last: chord(ch, t0 + B * .5, .36, dur=3.0, spread=.06)
+    elif 17 <= bar <= 21:                                     # the way home: eighth-note arpeggios (faster by subdivision, same tempo)
+        arp = [ch[0], ch[1], ch[2], ch[1], ch[2], ch[1]]
+        for k, p in enumerate(arp[1:], 1): g(p, t0 + k * B / 2, .45, .36 + .02 * (bar - 17))
+    else:
+        chord(ch, t0 + B, .40); chord(ch, t0 + 2 * B, .34)
+    if bar >= 1:
+        if 10 <= bar <= 12:                                   # Buenos Aires: the bass leans on the "and" of two
+            bass(bb, t0, .5, .6); bass(bb, t0 + 1.5 * B, .45, .5); bass(bb, t0 + 2.5 * B, .3, .35)
+        else:
+            bass(bb, t0, 2.6 if last else 1.2, .6 if bar != 22 else .8)
+    if bar >= 2 and not last:
+        brush(t0 + B, .28 + .02 * min(bar, 6)); brush(t0 + 2 * B, .24 + .02 * min(bar, 6))
+    if (3 <= bar <= 12 or 17 <= bar <= 28):
+        for k in range(6): shake(t0 + k * B / 2, .2 + (.06 if k % 2 == 0 else 0), up=k % 2 == 1)
+    if 6 <= bar <= 8:                                         # Istanbul: darbuka
+        drum(t0, 'darbuka_doom', .55); drum(t0 + B, 'darbuka_tak', .4); drum(t0 + 1.5 * B, 'darbuka_tak', .28); drum(t0 + 2 * B, 'darbuka_tak', .4)
+    if 17 <= bar <= 21: cajon(t0, .45)
+    if bar >= 22 and not last: cajon(t0, .4)
 
-def harm(p, at, dur, vel=.6, gain=1., pan=.15, attack=.04):
-    ps = p if isinstance(p, (list, tuple)) else [p]
-    # the harmonica samples' breathy attack takes 30–60 ms to reach 30–50%, so trigger 35 ms early to make the perceived attack land on the sync point
-    for q in ps: add(stem['harmonica'], S.note('harmonica', q, dur, vel, attack=attack, release=.25), at - .035, gain / np.sqrt(len(ps)), pan)
+# ---------------- melodies ----------------
+for bar, beat, p, n in [(2, 0, 'A4', 1), (2, 1, 'F4', 1), (2, 2, 'D4', 1), (3, 0, 'D5', 2), (3, 2, 'C5', 1),
+                        (4, 0, 'Bb4', 1), (4, 1, 'A4', 1), (4, 2, 'G4', 1), (5, 0, 'A4', 3),
+                        (6, 0, 'A4', 1), (6, 1, 'Bb4', 1), (6, 2, 'A4', 1), (7, 0, 'G4', 1), (7, 1, 'F4', 1), (7, 2, 'E4', 1)]:
+    g(p, bt(bar, beat), n * B + .4, .48, .9, -.2, st='melody')
+for bar, beat, p, n in [(8, 1, 'D5', 1), (8, 2, 'Bb4', 1), (9, 0, 'E5', 2), (9, 2, 'C5', 1), (10, 0, 'F5', 2), (10, 2, 'C5', 1),
+                        (11, 0, 'D5', 1), (11, 1, 'F5', 1), (11, 2, 'A5', 1), (12, 0, 'F5', 3)]:
+    acc(p, bt(bar, beat), n * B * .95, .5)
+for bar in (10, 11, 12): acc('A3', bt(bar), BAR * .95, .22, pan=.2); acc('F3', bt(bar), BAR * .95, .2, pan=.2)
+for bar, beat, p, n in [(19, 0, 'C5', 2), (19, 2, 'D5', 1), (20, 0, 'E5', 2), (20, 2, 'G5', 1), (21, 0, 'E5', 3),
+                        (22, 0, 'F5', 2), (22, 2, 'C5', 1), (23, 0, 'E5', 1), (23, 1, 'C5', 1), (23, 2, 'A4', 1),
+                        (24, 0, 'D5', 2), (24, 2, 'Bb4', 1), (25, 0, 'A4', 3), (26, 0, 'F4', 1), (26, 1, 'A4', 1), (26, 2, 'D5', 1),
+                        (27, 0, 'D5', 2), (27, 2, 'C5', 1), (28, 0, 'Bb4', 1), (28, 1, 'A4', 1), (28, 2, 'G4', 1), (29, 0, 'F4', 5)]:
+    harm(p, bt(bar, beat), n * B * .95, .5 if bar < 22 else .58)
+for bar in range(22, 29): acc(HARM[bar][2][0][:-1] + '3', bt(bar), BAR * .95, .16, pan=-.3)
 
-def bass(p, at, dur=.55, vel=.75, gain=1.):
-    add(stem['bass'], S.note('jazz_bass', p, dur, vel), at, gain, 0)
+# ---------------- accents ----------------
+glock('F6', 0.0, .55); glock('C6', 0.0, .35)                                         # the first sound: the sun
+for e in EV:
+    if e['type'] == 'pull' and e.get('layer') == 'acc': glock('A5', e['t'], .32)
+    if e['type'] == 'item' and e.get('accent'): glock('F6', e['t'], .42); glock('A5', e['t'] + .01, .22)
+add(stem['perc'], S.hit('sus_cymbal', 'hit', .55), SNAP, .7, -.2); cajon(SNAP, .95); glock('F6', SNAP, .55); glock('C6', SNAP, .4)
+glock('F5', bt(29), .4); glock('A5', bt(29) + .12, .3); glock('C6', bt(29) + .24, .3)
 
-def kick(at, vel=.8, gain=1.): add(stem['drums'], S.hit('cajon', 'bass', vel), at, gain * 1.2, 0)
-def slap(at, vel=.55, gain=1.): add(stem['drums'], S.hit('cajon', 'slap', vel), at, gain * .7, .1)
-def brush(at, vel=.5, gain=1.):
-    add(stem['drums'], S.hit('snare2', 'taps', vel), at, gain * .55, -.15)
-    n = rng.standard_normal(int(.16 * SR)).astype(np.float32)
-    n = sosfilt(butter(2, [1800, 7000], 'band', fs=SR, output='sos'), n).astype(np.float32)
-    n *= np.exp(-np.arange(len(n)) / SR / .05).astype(np.float32)
-    add(stem['drums'], n * .12, at, gain, -.2)
-def shake(at, vel=.4, gain=1., up=False): add(stem['drums'], S.hit('shaker', 'up' if up else 'down', vel), at, gain * .5, .3)
-def cymbal(at, var='hit', vel=.6, gain=1., dur=None): add(stem['drums'], S.hit('sus_cymbal', var, vel, dur), at, gain, -.25)
-
-# ---------------- slide guitar (numpy synthesis) ----------------
-def hz(p): return S.hz(p)
-def slide(at, path, dur, vel=.7, gain=1., pan=-.2, vib=(5.2, .12, .45), t60=3.2):
-    """path = [(t, note name or midi), ...] piecewise-linear slides (in semitones); returns and places it"""
-    n = int(dur * SR); t = np.arange(n) / SR
-    ts = [a for a, _ in path]; ms = [S.midi(b) for _, b in path]
-    m = np.interp(t, ts, ms)
-    vd = np.clip((t - vib[2]) / .3, 0, 1) * vib[1] * np.sin(2 * np.pi * vib[0] * t)
-    f = 440 * 2 ** ((m + vd - 69) / 12)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    y = np.zeros(n)
-    bright = np.exp(-t / .9)
-    for k in range(1, 16):
-        amp = (1 / k) * (0.35 + 0.65 * bright ** (k / 4))
-        y += amp * np.sin(k * ph + k * .3) * (f * k < 9000)
-    env = np.minimum(1, t / .008) * np.exp(-t * 6.9 / t60)
-    y *= env
-    # body resonance + steel-string brightness
-    body = sosfilt(butter(2, [90, 260], 'band', fs=SR, output='sos'), y) * .6
-    y = y + body + sosfilt(butter(2, [2200, 3800], 'band', fs=SR, output='sos'), y) * .5
-    # slide friction: follows slide speed
-    speed = np.abs(np.gradient(m) * SR)
-    fr = sosfilt(butter(2, [1500, 5000], 'band', fs=SR, output='sos'), rng.standard_normal(n)) * np.clip(speed / 12, 0, 1) * .05
-    y = (y + fr) * env ** 0
-    y = y / (np.abs(y).max() + 1e-9) * .5 * vel
-    k = min(n, 960); y[-k:] *= np.linspace(1, 0, k)
-    add(stem['slide'], y.astype(np.float32), at, gain, pan)
-
-# ================= Arrangement =================
-def T(tp, **kw):
-    e = ev1(tp, **kw); return e['t'] if e else None
-
-# ---- Intro: an open-D tremolo strum already under way at 0 s ----
-lift0 = T('lift')                                   # 1.0
-t = 0.0; i = 0
-while t < lift0 - .05:
-    strum('D', t, .38 + .12 * (t / lift0), dur=.35, up=bool(i % 2), spread=.008, gain=.8, top=5)
-    t += .15; i += 1
-strum('D', lift0, .6, dur=.08, mute=True, gain=1.1)          # screen lifts: muted "chk"
-title = [e for e in evs('squeegee') if e.get('ink') == 'title'][0]['t']   # 1.2
-kick(title, .9); strum('D', title, .85, dur=3.2, spread=.02, gain=1.2); bass('D2', title, 2.2, .7, .9)
-ht = T('title')                                     # 1.5
-harm(['D4', 'F#4', 'A4'], ht, 3.1, .62, 1.0, attack=.03)
-tilt = T('tilt', i=0)
-strum('G', ht + 4 * BEAT - .3, .5, dur=1.2, spread=.02, gain=.7)   # light strum around 3.6
-strum('A', tilt - E8, .5, dur=.5, up=True, spread=.012, gain=.7)   # upward rake before the tilt down
-
-# ---- Section A: poster 1, one strum per layer, chords climbing layer by layer ----
-pulls0 = sorted(evs('pull', i=0), key=lambda e: e['t'])
-for e, ch in zip(pulls0, ['D', 'D/F#', 'G', 'A']):
-    strum(ch, e['t'], .72 + .05 * e['n'], dur=1.4, spread=.022, gain=1.05)
-    if e['n'] == 0: kick(e['t'], .55, .7)
-lift1 = T('lift', i=0)                              # 7.8
-kick(lift1, .9); bass('D2', lift1, .55, .8)
-band0 = T('band', i=0); name0 = T('name', i=0)
-strum('D', band0, .8, dur=2.0, spread=.05, gain=1.0)        # long downstrum
-harm('A4', name0, .28, .7); harm('B4', name0 + .3, .28, .7); harm('D5', name0 + .6, 1.2, .72)
-for e, p in zip(sorted(evs('item', i=0), key=lambda e: e['t']), ['D4', 'F#4', 'A4', 'D5']):
-    pick(p, e['t'], .8, 1.6, 1.1, .2)
-# Groove: from lift1 to the transition, bass on beats 1 and 3, cajon on 1 and 3, brushes on 2 and 4, guitar light eighth-note strums
-w1 = T('wipe', i=1)                                 # 13.2
-prog = ['D', 'D', 'G', 'G', 'D', 'D', 'A', 'A']
-t = lift1 + BEAT; k = 0
-while t < w1 - .35:
-    beat = int(round(t / BEAT)) % 4
-    if beat in (0, 2): kick(t, .6, .75); bass(['D2', 'G2', 'D2', 'A2'][(k // 4) % 4], t, .5, .7, .9)
-    else: brush(t, .5)
-    if t >= name0 + 1.4:
-        ch = prog[(k // 2) % len(prog)]
-        strum(ch, t, .42, dur=.5, spread=.012, gain=.55, top=4); strum(ch, t + E8, .32, dur=.3, up=True, spread=.01, gain=.45, top=4)
-    t += BEAT; k += 1
-strum('A', w1 - E8, .8, dur=.6, up=True, spread=.03, gain=1.0)     # upward rake half a beat before the transition (also poster 2's sky pull)
-
-# ---- Section B: poster 2, eighth-note strums + four-on-the-floor (picking up speed) ----
-pulls1 = sorted(evs('pull', i=1), key=lambda e: e['t'])
-for e, ch in zip(pulls1[1:], ['G', 'A', 'D']):
-    strum(ch, e['t'], .85, dur=.5, spread=.012, gain=1.1)
-sil1 = [e for e in evs('silence') if e.get('pre')][0]; s1a, s1b = sil1['t'], sil1['t'] + sil1['dur']
-band1 = T('band', i=1); name1 = T('name', i=1)
-t = w1; k = 0; progB = ['D', 'G', 'A', 'D', 'Bm', 'G', 'A', 'A']
-while t < s1a - .01:
-    kick(t, .75, .85)
-    if k % 2 == 1: brush(t, .55)
-    shake(t + E8, .35); shake(t, .25, up=True)
-    bass(['D2', 'G2', 'A2', 'D2', 'B1', 'G2', 'A2', 'A2'][(k // 2) % 8], t, .28, .75, .85)
-    ch = progB[(k // 2) % 8]
-    if not any(abs(t - e['t']) < .05 for e in pulls1):
-        strum(ch, t, .5, dur=.3, spread=.01, gain=.6, top=5)
-    strum(ch, t + E8, .38, dur=.25, up=True, spread=.008, gain=.5, top=4)
-    t += BEAT; k += 1
-strum('D', band1, .82, dur=1.6, spread=.045, gain=.95)
-slide(name1, [(0, 'A3'), (.08, 'A3'), (.42, 'D4')], 1.6, .8, 1.0)
-for e, p in zip(sorted(evs('item', i=1), key=lambda e: e['t']), ['A4', 'D5', 'F#5', 'A5']):
-    pick(p, e['t'], .8, 1.4, 1.0, .2)
-
-# ---- Section C: the signature climb ----
-asc = ev1('ascent'); a0 = asc['t']; a1 = a0 + asc['dur']
-sil2 = [e for e in evs('silence') if not e.get('pre')][0]; s2a, s2b = sil2['t'], sil2['t'] + sil2['dur']
-slide(a0, [(0, 'D3'), (.1, 'D3'), (.9, 'A3'), (1.3, 'A3'), (1.8, 'D4')], 3.2, .95, .7, vib=(5.0, .15, 1.9), t60=4.5)
-t = a0 + BEAT; k = 1
-while t < s2a - .01:
-    g = .35 + .8 * (t - a0) / (a1 - a0)                          # crescendo (about +9 dB at the top)
-    kick(t, .5 + .35 * g, .8 * g + .2)
-    if t >= a0 + 2 * BEAT: bass(['D2', 'D2', 'G2', 'A2'][(k // 2) % 4], t, .5, .75, g)
-    if t >= a0 + 3 * BEAT:
-        ch = ['D', 'D', 'G', 'A', 'Bm', 'G', 'A', 'A'][(k // 2) % 8]
-        strum(ch, t, .45 + .3 * g, dur=.5, spread=.012, gain=1.0 * g, top=5)
-        strum(ch, t + E8, .35 + .2 * g, dur=.3, up=True, spread=.01, gain=.6 * g, top=4)
-    if t >= a0 + 4 * BEAT and k % 2 == 1: brush(t, .5 * g + .2)
-    if t >= a0 + 4 * BEAT and (k % 4 == 0): harm(['D4', 'F#4', 'A4'] if (k // 4) % 2 == 0 else ['D4', 'G4', 'B4'], t, 4 * BEAT * .95, .45 + .25 * g, .7 * g, attack=.08)
-    t += BEAT; k += 1
-for e in evs('swap'):
-    big = e['k'] >= 2
-    strum('Dhi' if big else 'A', e['t'], .95, dur=1.6, up=True, spread=.03 if big else .025, gain=1.3 if big else 1.1)
-    if big: cymbal(e['t'], 'cresc', .7, .9)
-for j, e in enumerate(sorted(evs('part'), key=lambda e: e['t'])):
-    tgt = ['A3', 'B3', 'D4', 'E4'][j % 4]
-    slide(e['t'], [(0, S.midi(tgt) - 2), (.12, tgt)], .9, .8, 1.25, pan=-.35, vib=(5.5, .1, .3), t60=1.4)
-
-# ---- Peak: the click = full-band downbeat ----
-cl = T('clack')
-kick(cl, 1.0, 1.4); add(stem['drums'], S.hit('snare2', 'on', .8), cl, .7, 0); cymbal(cl, 'hit', .9, 1.0)
-strum('D', cl, 1.0, dur=2.6, spread=.015, gain=1.5); strum('Dhi', cl + .01, .9, dur=2.4, spread=.012, gain=1.0, pan=.3)
-bass('D2', cl, 1.2, .95, 1.2); harm(['D4', 'F#4', 'A4', 'D5'], cl, .75, .75, 1.2, attack=.01)
-slide(cl, [(0, 'D4'), (.3, 'D4'), (.9, 'F#4')], 2.4, .8, .9, pan=-.3)
-
-# ---- Section D: reading the numbers (one bar of groove → guitar + harmonica) ----
-wp = T('wallpull'); land = T('land'); endc = T('endcard')
-band2 = T('band', i=2); name2 = T('name', i=2)
-items2 = sorted(evs('item', i=2), key=lambda e: e['t'])
-t = cl + BEAT; k = 1
-while t < wp - .05:
-    full = t < cl + 4 * BEAT
-    if full:
-        kick(t, .75 if k % 2 == 0 else .6, .9)
-        if k % 2 == 1: brush(t, .55)
-        bass(['D2', 'D2', 'G2', 'A2'][k % 4], t, .5, .75, .9)
-    ch = ['D', 'D', 'G', 'G', 'D', 'D', 'A', 'A'][(k // 2) % 8]
-    if not any(abs(t - x) < .05 for x in [band2, name2] + [e['t'] for e in items2]):
-        strum(ch, t, .45 if full else .35, dur=.5, spread=.012, gain=.65 if full else .5, top=5)
-    t += BEAT; k += 1
-strum('D', band2, .85, dur=2.0, spread=.035, gain=1.05)
-harm('A4', name2, .28, .8, 1.3, attack=.01); harm('B4', name2 + .3, .28, .75, 1.2); harm('F#5', name2 + .6, 1.1, .75, 1.2)
-base = ['D4', 'F#4', 'A4', 'D4']
-for j, e in enumerate(items2):
-    p = base[j % 4]
-    if e.get('climb'): p = S.midi(p) + 12
-    pick(p, e['t'], .85, 1.8, 1.15, .2)
-
-# ---- Tail: breathing room, arpeggios + a closing harmonica phrase, resolving on D ----
-arp = [('G', wp), ('A', wp + 2 * BEAT)]
-for ch, t0 in arp:
-    for j, p in enumerate(CH[ch][1:]):
-        pick(p, t0 + j * E8 * .5, .5, 1.6, .7, -.1 + .05 * j)
-harm('B4', wp, .55, .55); harm('A4', wp + .6, .55, .55); harm('E4', wp + 1.2 - .01, .3, .5)
-strum('D', land, .6, dur=4.0, spread=.06, gain=.95)
-harm(['D4', 'F#4', 'A4'], land, 3.9, .5, .9, attack=.3)
-bass('D2', land, 3.8, .6, .8)
-for j, p in enumerate(['A3', 'D4', 'F#4', 'A4', 'D5', 'A4', 'F#4', 'D4']):
-    pick(p, land + BEAT * (1 + j * .75), .35, 1.5, .55, .2 * np.sin(j))
-# ---- End card ----
-strum('Dhi', endc, .45, dur=4.5, spread=.05, gain=.8)
-harm('A4', endc + .2, 3.8, .45, .75, attack=.6)
-
-# ================= Silence gate, reverb, output =================
-def gate(x):
-    g = np.ones(len(x), np.float32); tt = np.arange(len(x)) / SR
-    for a, b in [(s1a, s1b), (s2a, s2b)]:
-        g *= np.where(tt < a, 1, np.where(tt >= b, 1, np.clip(1 - (tt - a) / .06, 0, 1))).astype(np.float32)
-    return x * g[:, None]
-gains = {'guitar': .95, 'slide': .8, 'harmonica': .7, 'drums': .9, 'bass': .95}
-wet = {'guitar': .16, 'slide': .22, 'harmonica': .2, 'drums': .08, 'bass': .03}
+mix = stem['guitar'] * 1.0 + stem['melody'] * .8 + stem['bass'] * .9 + stem['glock'] * .55 + stem['perc'] * .8 + stem['squeeze'] * .7 + stem['harp'] * .75
+# hard silence before the clamp (nothing may ring into it)
+a, b = int((DROP + .9) * SR), int(CLAMP * SR); mix[a:b] = 0
+fo = int(.9 * SR); mix[a - fo:a] *= np.linspace(1, 0, fo)[:, None]
+mix = S.room(mix, size=.35, mix=.16)
+mix[int((DROP + 1.6) * SR):b] = 0
+pk = np.abs(mix).max(); mix = mix / pk * .8
 os.makedirs(os.path.join(HERE, 'stems'), exist_ok=True)
-out = {}
-for k, x in stem.items():
-    y = S.room(x * gains[k], size=.42, mix=wet[k])
-    y = gate(y)                                       # reverb tails are cut in the silence zones too
-    out[k] = y.astype(np.float32)
-mix = sum(out.values())
-pk = np.abs(mix).max(); sc = 10 ** (-1.5 / 20) / pk
-mix *= sc
-for k in out: out[k] *= sc; sf.write(os.path.join(HERE, 'stems', k + '.wav'), out[k], SR, subtype='FLOAT')
-sf.write(os.path.join(HERE, 'score.wav'), mix, SR, subtype='FLOAT')
-
-# ================= Self-check =================
-assert np.isfinite(mix).all()
-print(f'dur {len(mix)/SR:.2f}s  peak {20*np.log10(np.abs(mix).max()):.2f} dBFS')
-def rms_db(a, b):
-    x = mix[int(a * SR):int(b * SR)]; return 20 * np.log10(np.sqrt((x ** 2).mean()) + 1e-12)
-print(f'silence1 {s1a:.2f}-{s1b:.2f}: {rms_db(s1a + .08, s1b - .005):.1f} dBFS   silence2 {s2a:.2f}-{s2b:.2f}: {rms_db(s2a + .08, s2b - .005):.1f} dBFS')
-import librosa
-mono = mix.mean(1)
-# Onset detection: hop 64 (1.3 ms), onset_detect + backtrack to where energy starts rising (removes onset_strength's inherent lag)
-hop = 64
-of = librosa.onset.onset_strength(y=mono, sr=SR, hop_length=hop)
-ons = librosa.onset.onset_detect(onset_envelope=of, sr=SR, hop_length=hop, backtrack=True, units='time', delta=.02, wait=4)
-tt = librosa.times_like(of, sr=SR, hop_length=hop)
-hm = out['harmonica'].mean(1)
-hof = librosa.onset.onset_strength(y=hm, sr=SR, hop_length=hop)
-hons = librosa.onset.onset_detect(onset_envelope=hof, sr=SR, hop_length=hop, backtrack=False, units='time', delta=.02, wait=4)
-def onset_near(t0, w=.04, src=None):
-    src = ons if src is None else src
-    c = src[(src >= t0 - w) & (src <= t0 + w)]
-    if not len(c): return None
-    d = c[np.argmin(np.abs(c - t0))]; j = np.searchsorted(tt, d + .01)
-    return d - t0, of[min(j, len(of) - 1)] / (np.median(of) + 1e-9)
-chk = [('lift', lift0), ('title', title), ('harm', ht)] + [(f'pull0.{e["n"]}', e['t']) for e in pulls0] + [('lift1', lift1), ('band0', band0), ('name0', name0)] \
-    + [(f'item0.{e["k"]}', e['t']) for e in evs('item', i=0)] + [(f'pull1.{e["n"]}', e['t']) for e in pulls1] + [('band1', band1), ('name1', name1)] \
-    + [(f'item1.{e["k"]}', e['t']) for e in evs('item', i=1)] + [('ascent', a0)] + [(f'swap{e["k"]}', e['t']) for e in evs('swap')] \
-    + [(f'part.{e["layer"]}', e['t']) for e in evs('part')] + [('clack', cl), ('band2', band2), ('name2', name2)] \
-    + [(f'item2.{e["k"]}', e['t']) for e in items2] + [('wallpull', wp), ('land', land), ('endcard', endc)]
-print(f'{"cue":14s} {"t":>7s} {"Δms":>6s} {"strength":>8s}')
-bad = 0
-for nm, t0 in chk:
-    r = onset_near(t0)
-    if r is None and nm in ('harm', 'name0', 'name2'): r = onset_near(t0, src=hons); nm += '(口琴分轨)'
-    if r is None: print(nm, 'none'); bad += 1; continue
-    d, s = r; flag = '' if abs(d) <= .010 else '  <-- >10ms'
-    bad += abs(d) > .010
-    print(f'{nm:14s} {t0:7.2f} {d*1000:6.1f} {s:8.1f}{flag}')
-print('cues >10ms:', bad)
+for k, v in stem.items(): sf.write(os.path.join(HERE, 'stems', k + '.wav'), v, SR)
+sf.write(os.path.join(HERE, 'score.wav'), mix.astype(np.float32), SR)
+print('score.wav', f'{TOT:.2f}s')

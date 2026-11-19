@@ -1,225 +1,205 @@
-// poster.js · travel-poster layout: scene layers + header + standard info band at the bottom (name, difficulty, distance, time, elevation gain) + banner
-// All copy comes from content.json; this file only handles layout and "how it gets printed"
-import { hex2rgb, ink, wipeRegion, wipeFront, inkFinish, paperSheet, texFill, rectPath, polyPath, circlePath, ringPath, clamp, lerp, hash } from './silk.js';
-import { buildScene, PW, PH, ART } from './scenes.js';
+// poster.js · the full-bleed 16:9 travel print of "The Long Way Home": art to every edge, the city name printed into the sky,
+// a ticket stub (DAY · FROM HOME · landmark) printed last on the right. Every piece is printed by a named pull;
+// st.prog(name) → 0..1 says how far that pull has gone.
+import { hex2rgb, ink, wipeRegion, wipeFront, inkFinish, paperSheet, rectPath, circlePath, unionPath, clamp, hash } from './silk.js';
+import { AW, AH, BLEED } from './scenes.js';
+export { AW, AH, BLEED };
 
-export { PW, PH, ART };
-const FONT_D = 'BigShoulders', FONT_T = 'Outfit';
-const LEVEL = { easy: 1, moderate: 2, hard: 3, expert: 3 };
+export const FONT_D = 'BigShoulders', FONT_T = 'Outfit', FONT_C = 'NotoSC';
+export const STUB = [1478, 236, 350, 556];        // x, y, w, h
+const NOTCH_Y = 352;
 
-function fitFont(ctx, text, weight, family, maxW, maxS, minS, ls = 0) {
-  let s = maxS;
-  for (; s > minS; s -= 2) { ctx.font = `${weight} ${s}px ${family}`; ctx.letterSpacing = (ls * s) + 'px'; if (ctx.measureText(text).width <= maxW) break; }
-  return s;
-}
-const fmtNum = (v) => typeof v === 'number' ? v.toLocaleString('en-US') : String(v);
-
-// Stat items: generated from content (if elevation is empty it doesn't appear)
-export function statItems(trail, units = { distance: 'km', elevation: 'm' }) {
-  const it = [];
-  it.push({ key: 'difficulty', label: 'LEVEL', value: String(trail.difficulty || '').toUpperCase(), level: LEVEL[(trail.difficulty || '').toLowerCase()] || 1 });
-  if (trail.distance != null) it.push({ key: 'distance', label: 'DISTANCE', value: `${fmtNum(trail.distance)} ${units.distance.toUpperCase()}` });
-  if (trail.time) it.push({ key: 'time', label: 'TIME', value: String(trail.time).toUpperCase() });
-  if (trail.elevation != null) it.push({ key: 'elevation', label: 'CLIMB', value: `↑${fmtNum(trail.elevation)} ${units.elevation.toUpperCase()}`, climb: true });
-  return it;
-}
-// Minimum hold for one piece of information (BRIEF_SCENE: characters/12 + 1, at least 1.5 s)
-export const readTime = (s) => Math.max(1.5, String(s).length / 12 + 1);
-
-export function buildPoster(content, trail, idx, n) {
-  const sc = buildScene(trail.scene, 11 + idx * 17);
-  const items = statItems(trail, content.units);
-  // cumulative length of the trail polyline
-  let L = 0; const tr = sc.trail.map((q, i, a) => { if (i) L += Math.hypot(q.x - a[i - 1].x, q.y - a[i - 1].y); return { ...q, s: L }; });
-  return { sc, trail, items, idx, n, paper: content.palette.paper, park: content.park, trailPts: tr, trailLen: L, seed: idx * 13 + 5 };
-}
-
-// Trail dashed line (draws only the segment on this plane; reveal = fraction of arc length already printed)
-function trailDashes(ctx, P, plane, reveal, color) {
-  const pts = P.trailPts, maxS = reveal * P.trailLen, dash = 16, gap = 12;
-  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 7; ctx.lineCap = 'butt';
-  for (let i = 1; i < pts.length; i++) {
-    const a = pts[i - 1], b = pts[i]; if (b.plane !== plane && a.plane !== plane) continue;
-    if (b.plane !== plane) continue;
-    const len = b.s - a.s;
-    for (let s = Math.ceil(a.s / (dash + gap)) * (dash + gap); s < b.s && s < maxS; s += dash + gap) {
-      const t0 = (s - a.s) / len, t1 = Math.min(1, (Math.min(s + dash, maxS) - a.s) / len);
-      ctx.beginPath(); ctx.moveTo(lerp(a.x, b.x, t0), lerp(a.y, b.y, t0)); ctx.lineTo(lerp(a.x, b.x, t1), lerp(a.y, b.y, t1)); ctx.stroke();
-    }
-  }
-  ctx.restore();
-}
-
-
-// Contrast: pick an ink with enough contrast against the background by WCAG relative luminance (so text doesn't "vanish" when content or palette changes)
+// WCAG contrast: text inks are chosen against the ink underneath
 const lum = (h) => { const c = hex2rgb(h).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
 export const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
 export function pickInk(bgs, cands, need = 3) { bgs = [].concat(bgs); for (const c of cands) if (c && bgs.every(b => contrast(c, b) >= need)) return c; return cands.filter(Boolean).sort((a, b) => Math.min(...bgs.map(x => contrast(b, x))) - Math.min(...bgs.map(x => contrast(a, x))))[0]; }
-// ---- layout constants ----
-// The picture area runs to y=1140; the whole scene shifts up by SHIFT (cropping a little sky) to make room for a taller info band
-export const ARTV = [26, 26, 948, 1114], SHIFT = 50, BAND = [26, 1148, 948, 326];
-const NAME_Y = 1262, RULE_Y = 1290, LABEL_Y = 1348, VALUE_Y = 1440;
 
-// Ink-pull area in a rotated frame (for the colour-swap reprint, pushed diagonally)
-function tiltedWipe(ctx, p, angle, seed) {
-  const m = ctx.getTransform();
-  ctx.translate(PW / 2, PH / 2); ctx.rotate(angle); ctx.translate(-PW / 2, -PH / 2);
-  const box = [-400, -300, PW + 800, PH + 600];
-  ctx.clip(wipeRegion(box, 'up', p, seed, 50, 7));
-  ctx.setTransform(m);
+// a pull's printed region with the squeegee travelling at an angle (rotated about the print's centre)
+const BOX = [-300, -300, AW + 600, AH + 600];
+function rot(angle) { return new DOMMatrix().translate(AW / 2, AH / 2).rotate(angle * 180 / Math.PI).translate(-AW / 2, -AH / 2); }
+export function tiltRegion(p, angle, seed, tail = 34) {
+  if (p >= 1) return null;
+  const out = new Path2D(); out.addPath(wipeRegion(BOX, 'down', p, seed, tail, 6), rot(angle)); return out;
 }
-export function swapFrontLine(p, angle) {    // squeegee position (poster coordinates): returns both ends of the blade
-  const box = [-400, -300, PW + 800, PH + 600], y = wipeFront(box, 'up', p, 50);
-  const c = Math.cos(angle), s = Math.sin(angle), rot = (x, yy) => { const dx = x - PW / 2, dy = yy - PH / 2; return [PW / 2 + dx * c - dy * s, PH / 2 + dx * s + dy * c]; };
-  return [rot(-400, y), rot(PW + 400, y)];
+export function tiltFront(p, angle, tail = 34) {
+  const y = wipeFront(BOX, 'down', p, tail), m = rot(angle);
+  const a = m.transformPoint(new DOMPoint(-300, y)), b = m.transformPoint(new DOMPoint(AW + 300, y));
+  const d = m.transformPoint(new DOMPoint(0, 1)), o = m.transformPoint(new DOMPoint(0, 0));
+  return { a: [a.x, a.y], b: [b.x, b.y], lead: [d.x - o.x, d.y - o.y] };
+}
+const R2 = (seed, amp) => [(hash(seed * 3.1 + 1) - .5) * 2 * amp, (hash(seed * 7.7 + 1.3) - .5) * 2 * amp];
+function inverse(p) { const q = new Path2D(); q.rect(-1e4, -1e4, 2e4, 2e4); q.addPath(p); return q; }
+
+// the stub panel: near ink, two half-round notches and a perforation row knocked out to paper
+export function stubPath() {
+  const [x, y, w, h] = STUB, p = rectPath(x, y, w, h);
+  const knock = new Path2D();
+  knock.arc(x, NOTCH_Y, 18, -Math.PI / 2, Math.PI / 2); knock.closePath();
+  knock.moveTo(x + w, NOTCH_Y - 18); knock.arc(x + w, NOTCH_Y, 18, -Math.PI / 2, Math.PI / 2, true); knock.closePath();
+  for (let xx = x + 34; xx < x + w - 26; xx += 22) { knock.moveTo(xx + 4.5, NOTCH_Y); knock.arc(xx, NOTCH_Y, 4.5, 0, Math.PI * 2); }
+  return { path: p, knock };
 }
 
-// ---- draw one poster (under the current transform, in poster units) ----
-// st: { pal, T, prog(id)->0..1, off(id)->[dx,dy], reg, sep(0..1 paper-stencil separation), trail, band, name, header, items[], swap:{pal,p,angle}, finish }
-export function drawPoster(ctx, P, st) {
-  paperSheet(ctx, st.T, 0, 0, PW, PH);
-  body(ctx, P, st, st.pal);
-  if (st.swap && st.swap.p > 0) {
-    ctx.save(); tiltedWipe(ctx, st.swap.p, st.swap.angle ?? -.2, 7 + P.idx);
-    paperSheet(ctx, st.T, 0, 0, PW, PH);
-    body(ctx, P, st, st.swap.pal);
-    ctx.restore();
-  }
-  if (st.finish !== false) inkFinish(ctx, st.T, 0, 0, PW, PH, .6, 1);
-}
-const R2 = (seed, k, amp) => [(hash(seed * 3.1 + k) - .5) * 2 * amp, (hash(seed * 7.7 + k * 1.3) - .5) * 2 * amp];
-
-function body(ctx, P, st, pal) {
-  const prog = st.prog || (() => 1), off = st.off || (() => [0, 0]), regAmt = st.reg ?? 1, sep = st.sep || 0;
-  ctx.save(); ctx.beginPath(); ctx.rect(ARTV[0], ARTV[1], ARTV[2], ARTV[3]); ctx.clip();
-  ctx.translate(0, -SHIFT);
-  P.sc.planes.forEach((pl, k) => {
-    const p = prog(pl.id); if (p <= 0) return;
-    const [ox, oy] = off(pl.id, pl);
-    ctx.save(); ctx.translate(ox, oy);
-    const box = [ART[0] - ox, ART[1] - oy - 60, ART[2], ART[3] + 180];
-    // paper-stencil separation: offset this stencil's outline upward a little to print a paper-white gap, then one more step up a paper-thickness shadow (falling on the layer below)
-    if (sep > 0 && k > 1 && p >= 1) {
-      const sil = pl.parts[0].path;
-      ctx.save(); ctx.translate(0, -9 * sep); ctx.globalAlpha = .28 * Math.min(1, sep * 1.5); ctx.fillStyle = '#140f14'; ctx.fill(sil); ctx.restore();
-      ctx.save(); ctx.translate(1.5 * sep, -3.2 * sep); ctx.fillStyle = P.paper; ctx.fill(sil); ctx.restore();
-    }
-    pl.parts.forEach((pt, j) => {
-      const pp = pt.sub ? clamp(p * 1.35 - .35) : clamp(p * 1.35);    // accent colour half a beat later
-      if (pp <= 0) return;
-      const reg = R2(P.seed + k * 5 + j, 1, 2.2 * regAmt);
-      ink(ctx, pt, { color: pal[pt.ink] || (pt.ink === 'glow' ? pal.sky2 : pal.far), reg, clip: pp < 1 ? wipeRegion(box, st.dir || 'down', pp, P.seed + k * 3 + j, 30, 5) : null, sheen: 1, trap: 1, lw: 1.8 });
-    });
-    if (st.trail != null ? st.trail > 0 : true) {
-      const rv = st.trail ?? 1;
-      ctx.save(); ctx.translate(...R2(P.seed + 91, 1, 1.5 * regAmt)); trailDashes(ctx, P, pl.id, rv, pal.sun); ctx.restore();
-    }
+// P = { scene, city, cityZh, day, km, landmark, built, seed }; st = { pal, T, prog(name), angle, reg, imprint, off(pull) }
+export function drawPrint(ctx, P, st) {
+  const pal = st.pal, prog = st.prog, reg = st.reg ?? 1, ang = st.angle ?? -.08;
+  paperSheet(ctx, st.T, -BLEED, -BLEED, AW + 2 * BLEED, AH + 2 * BLEED, .6);
+  P.scene.parts.forEach((pt, j) => {
+    const p = prog(pt.pull); if (p <= 0) return;
+    const off = st.off ? st.off(pt.pull) : [0, 0];
+    ctx.save(); ctx.translate(off[0], off[1]);
+    if (pt.cut) ctx.clip(inverse(pt.cut), 'evenodd');
+    ink(ctx, pt, { color: pal[pt.ink], reg: R2(P.seed + j * 5, 2.2 * reg), clip: tiltRegion(p, ang, P.seed + j * 3), sheen: 1, trap: pt.lit ? 0 : 1, lw: 1.8 });
     ctx.restore();
   });
-  ctx.restore();
-  // header: park name (printed over the sky)
-  const hp = st.header ?? 1;
+  // ---- the city, printed into the sky ----
+  const hp = prog('header');
   if (hp > 0) {
-    ink(ctx, { paint: (c) => { c.font = `800 62px ${FONT_D}`; c.letterSpacing = '14px'; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(P.park.toUpperCase(), PW / 2 + 7, 112); } },
-      { color: pickInk([pal.sky2, pal.sky1], [pal.near, pal.sun, pal.sky1], 3), reg: R2(P.seed + 44, 1, 1.4 * regAmt), clip: hp < 1 ? wipeRegion([0, 40, PW, 100], 'right', hp, 3) : null });
-  }
-  // info band
-  const bp = st.band ?? 1;
-  if (bp > 0) {
-    ink(ctx, { path: rectPath(...BAND) }, { color: pal.near, reg: R2(P.seed + 51, 1, 1.2 * regAmt), clip: bp < 1 ? wipeRegion(BAND, 'right', bp, 9, 40) : null, sheen: 1 });
-  }
-  const np = st.name ?? 1;
-  if (np > 0) {
+    const clip = hp < 1 ? wipeRegion([80, 60, 900, 200], 'right', hp, 13, 40) : null;
+    const col = pickInk([pal.sky2, pal.sky1], [pal.near, pal.mid], 3);
     ink(ctx, { paint: (c) => {
-      const s = fitFont(c, P.trail.name.toUpperCase(), 900, FONT_D, 690, 122, 60, .01);
-      c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillText(P.trail.name.toUpperCase(), 64, NAME_Y);
-    } }, { color: pickInk(pal.near, [pal.sky1, pal.sun, pal.glow], 4.5), reg: R2(P.seed + 61, 1, 1.4 * regAmt), clip: np < 1 ? wipeRegion([40, 1150, 900, 130], 'right', np, 21, 30) : null });
-    ink(ctx, { paint: (c) => { c.font = `900 122px ${FONT_D}`; c.letterSpacing = '0px'; c.textAlign = 'right'; c.fillText(String(P.idx + 1).padStart(2, '0'), 938, NAME_Y); } },
-      { color: pal.sun, reg: R2(P.seed + 62, 1, 1.4 * regAmt), clip: np < 1 ? wipeRegion([780, 1150, 170, 130], 'down', np, 23, 30) : null });
-    ink(ctx, { path: rectPath(64, RULE_Y, 874, 6) }, { color: pal.sun, reg: R2(P.seed + 63, 1, 1.2 * regAmt), clip: np < 1 ? wipeRegion([60, RULE_Y - 10, 880, 26], 'right', np, 5, 20) : null });
+      c.font = `900 150px ${FONT_D}`; c.letterSpacing = '16px'; c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillText(P.city, 104, 214);
+      const w = c.measureText(P.city).width;
+      c.font = `600 54px ${FONT_C}`; c.letterSpacing = '6px'; c.fillText(P.cityZh, 104 + w + 18, 210);
+    } }, { color: col, reg: R2(P.seed + 44, 1.4 * reg), clip });
   }
-  // stat items: one row of n columns; labels 38u (≥18 px on the wall), values 64u condensed (≥30 px on the wall); column widths allocated by content
-  const L = statLayout(ctx, P);
-  P.items.forEach((it, i) => {
-    const ip = st.items ? (st.items[i] ?? 0) : 1; if (ip <= 0) return;
-    const x = L.xs[i], cw = L.ws[i], box = [x - 6, LABEL_Y - 44, cw + 12, 150];
-    const clip = ip < 1 ? wipeRegion(box, 'right', ip, 31 + i, 24) : null;
-    ink(ctx, { paint: (c) => { c.font = `600 ${L.ls}px ${FONT_T}`; c.letterSpacing = (L.ls * .1) + 'px'; c.textAlign = 'left'; c.fillText(it.label, x, LABEL_Y); } },
-      { color: pickInk(pal.near, [pal.sky2, pal.glow, pal.far, pal.sky1], 3), reg: R2(P.seed + 70 + i, 1, 1.2 * regAmt), clip });
-    ink(ctx, { paint: (c) => {
-      let tx = x;
-      if (it.key === 'difficulty') { icons(c, x, it.level, L.vs); tx = x + L.vs * 1.3; }
-      c.font = `800 ${L.vs}px ${FONT_D}`; c.letterSpacing = (L.vs * .01) + 'px'; c.textAlign = 'left'; c.fillText(it.value, tx, VALUE_Y);
-    } }, { color: it.climb || it.key === 'difficulty' ? pickInk(pal.near, [pal.sun, pal.sky1], 4.5) : pickInk(pal.near, [pal.sky1, pal.sun, pal.glow], 4.5), reg: R2(P.seed + 80 + i, 1, 1.2 * regAmt), clip });
-  });
-}
-function icons(c, x, level, vs) {        // three small mountain icons: filled = difficulty level
-  const w = vs * .34, h = vs * .52, g = vs * .4;
-  for (let k = 0; k < 3; k++) {
-    const px = x + k * g; c.beginPath(); c.moveTo(px, VALUE_Y); c.lineTo(px + w / 2, VALUE_Y - h); c.lineTo(px + w, VALUE_Y); c.closePath();
-    if (k < level) c.fill(); else { c.save(); c.lineWidth = vs * .055; c.strokeStyle = c.fillStyle; c.globalAlpha *= .6; c.stroke(); c.restore(); }
+  // ---- the ticket stub, printed last ----
+  const sp = prog('stub');
+  if (sp > 0) {
+    const s = stubPath();
+    ink(ctx, s, { color: pal.near, reg: R2(P.seed + 51, 1.2 * reg), clip: sp < 1 ? wipeRegion([STUB[0] - 30, STUB[1] - 20, STUB[2] + 60, STUB[3] + 40], 'down', sp, 9, 40) : null, sheen: 1 });
   }
-}
-function statLayout(ctx, P) {
-  if (P._stat) return P._stat;
-  const x0 = 64, x1 = 938, avail = x1 - x0, n = P.items.length;
-  let vs = 68, ls = 38, ws;
-  for (; ; vs -= 2, ls = Math.max(34, ls - 1)) {
-    ctx.save();
-    ws = P.items.map(it => {
-      ctx.font = `600 ${ls}px ${FONT_T}`; ctx.letterSpacing = (ls * .1) + 'px'; const lw = ctx.measureText(it.label).width;
-      ctx.font = `800 ${vs}px ${FONT_D}`; ctx.letterSpacing = (vs * .01) + 'px'; const vw = ctx.measureText(it.value).width + (it.key === 'difficulty' ? vs * 1.3 : 0);
-      return Math.max(lw, vw);
-    });
-    ctx.restore();
-    if (ws.reduce((a, b) => a + b, 0) + (n - 1) * 30 <= avail || vs <= 48) break;
-  }
-  const gap = n > 1 ? (avail - ws.reduce((a, b) => a + b, 0)) / (n - 1) : 0;
-  const xs = []; let x = x0; ws.forEach(w => { xs.push(x); x += w + Math.min(gap, 140); });
-  return (P._stat = { xs, ws, vs, ls });
+  const [X, Y, Wd] = STUB, lx = X + 34;
+  const lab = pickInk(pal.near, [pal.sky1, pal.glow, pal.sky2], 4.5), val = pickInk(pal.near, [pal.sky1, pal.sun], 4.5), key = pickInk(pal.near, [pal.sun, pal.sky1], 3);
+  const item = (name, fn, color, box) => { const p = prog(name); if (p <= 0) return; ink(ctx, { paint: fn }, { color, reg: R2(P.seed + name.length * 7, 1.2 * reg), clip: p < 1 ? wipeRegion(box, 'right', p, 31 + name.length, 24) : null }); };
+  item('day', (c) => { c.font = `600 30px ${FONT_T}`; c.letterSpacing = '6px'; c.textAlign = 'left'; c.fillText('DAY', lx, Y + 76); c.font = `800 64px ${FONT_D}`; c.letterSpacing = '1px'; c.fillText(String(P.day), lx + 96, Y + 82); }, lab, [X, Y + 10, Wd, 100]);
+  item('km', (c) => {
+    c.font = `600 30px ${FONT_T}`; c.letterSpacing = '6px'; c.textAlign = 'left'; c.fillStyle = lab; c.fillText('FROM HOME', lx, Y + 186);
+    c.fillStyle = key; c.font = `900 ${P.km.length > 5 ? 112 : 132}px ${FONT_D}`; c.letterSpacing = '2px'; c.fillText(P.km + ' KM', lx - 4, Y + 318);
+    c.fillRect(lx, Y + 344, Wd - 68, 6);
+  }, key, [X, Y + 140, Wd, 230]);
+  item('landmark', (c) => {
+    c.font = `600 25px ${FONT_T}`; c.letterSpacing = '4px'; c.textAlign = 'left'; c.fillStyle = lab; c.fillText(P.landmark, lx, Y + 414);
+    c.fillStyle = val; c.font = `800 62px ${FONT_D}`; c.letterSpacing = '1px'; c.fillText('BUILT ' + P.built, lx, Y + 488);
+  }, val, [X, Y + 380, Wd, 130]);
+  // ---- optional printer's imprint, bottom right (page option ?sign=1; off in the film) ----
+  const ip = st.imprint ? prog('sign') : 0;
+  if (ip > 0) ink(ctx, { paint: (c) => { c.font = `600 26px ${FONT_T}`; c.letterSpacing = '4px'; c.textAlign = 'right'; c.textBaseline = 'alphabetic'; c.fillText('LemoLab × Claude Opus 5.5', AW - 52, AH - 30); } },
+    { color: pickInk(pal.near, ['#F3EAD8', pal.sky1], 4.5), reg: R2(P.seed + 95, reg), clip: ip < 1 ? wipeRegion([AW - 520, AH - 70, 500, 60], 'right', ip, 41, 24) : null });
+  if (st.finish !== false) inkFinish(ctx, st.T, -BLEED, -BLEED, AW + 2 * BLEED, AH + 2 * BLEED, .6, 1);
 }
 
-// ---- Banner (title): 1800×440 units (about 4:1; in the opening close-up it fills the frame width and about 40% of the frame height) ----
-export const BW = 1800, BH = 440, BANNER_ART = [14, 14, 1772, 360];
-export const BANNER_BANDS = { sky2: [0, 150], sky1: [150, 300], far: [300, 374] };   // ink-bead segments for the split-fountain pull
-function splitTitle(ctx, text, family, size) {       // two lines: break where widths are most balanced
-  const w = text.split(' '); if (w.length < 2) return [text];
-  ctx.font = `900 ${size}px ${family}`; let best = null;
-  for (let i = 1; i < w.length; i++) { const a = w.slice(0, i).join(' '), b = w.slice(i).join(' '); const d = Math.max(ctx.measureText(a).width, ctx.measureText(b).width); if (!best || d < best.d) best = { d, l: [a, b] }; }
-  return best.l;
+// boxes of the printed texts (art units), for window.TEXTS
+export function textBoxes(P) {
+  const [X, Y, Wd] = STUB;
+  return [
+    { id: 'header', pull: 'header', text: P.city + ' ' + P.cityZh, box: [104, 90, 980, 224] },
+    { id: 'day', pull: 'day', text: 'DAY ' + P.day, box: [X + 30, Y + 30, X + 220, Y + 92] },
+    { id: 'km', pull: 'km', text: 'FROM HOME ' + P.km + ' KM', box: [X + 26, Y + 156, X + Wd - 20, Y + 350] },
+    { id: 'landmark', pull: 'landmark', text: P.landmark + ' BUILT ' + P.built, box: [X + 30, Y + 390, X + Wd - 20, Y + 496] },
+  ];
 }
-export function drawBanner(ctx, content, st) {
-  const pal = st.pal, T = st.T;
-  paperSheet(ctx, T, 0, 0, BW, BH);
-  const sp = st.sky ?? 1;
-  ctx.save(); ctx.beginPath(); ctx.rect(...BANNER_ART); ctx.clip();
-  if (sp > 0) {
-    const clip = sp < 1 ? wipeRegion([0, 0, BW, BH], 'right', sp, 4, 34, 4) : null;
-    ink(ctx, { path: rectPath(0, 0, BW, BH), knock: ringPath(1590, 300, 118, 132) }, { color: pal.sky1, reg: [0, 0], clip, sheen: 1 });
-    const top = new Path2D(); top.rect(0, 0, BW, 96);
-    for (let i = 0; i < 5; i++) { const cell = 22, th = cell * (1 - (i + .5) / 5) * .95 + 1.5; top.rect(0, 96 + i * cell, BW, th); }
-    ink(ctx, { path: top }, { color: pal.sky2, reg: [1.2, .6], clip, sheen: 1, trap: .35 });
-    ink(ctx, { path: circlePath(1590, 300, 96) }, { color: pal.sun || pal.sky1, reg: [2, 1], clip, sheen: 1 });
-    const mt = []; mt.push([-10, 400]); for (let x = 0; x <= BW + 20; x += 20) { const y = 352 - 44 * Math.abs(Math.sin(x * .0035 + 1.3)) - 22 * Math.abs(Math.sin(x * .011)); mt.push([x, y]); } mt.push([BW + 20, 400]);
-    ink(ctx, { path: polyPath(mt) }, { color: pal.far, reg: [-.8, 1], clip, sheen: 1 });
-  }
-  ctx.restore();
-  const tp = st.title ?? 1;
-  if (tp > 0) {
+
+// ======================================================================================================
+// Generic pieces for the rest of the film: any scene (any width/height), loose layers, split fountain,
+// a re-ink sweep between two prints, and the ticket stub drawn on its own (it stays put on screen).
+// ======================================================================================================
+// S = scene from scenes.js; st = { pal, T, prog(pull) (default 1), angle, reg, off(pull, depth), sep, header: {text, zh, p}, seed }
+export function drawArt(ctx, S, st) {
+  const W0 = S.w || AW, H0 = S.h || AH, pal = st.pal, reg = st.reg ?? 1, ang = st.angle ?? -.08, seed = st.seed || 1;
+  const prog = st.prog || (() => 1), sep = st.sep || 0;
+  paperSheet(ctx, st.T, -BLEED, -BLEED, W0 + 2 * BLEED, H0 + 2 * BLEED, .6);
+  const box = [-300, -300, W0 + 600, H0 + 600];
+  const region = (p, sd) => { if (p >= 1) return null; const m = new DOMMatrix().translate(W0 / 2, H0 / 2).rotate(ang * 180 / Math.PI).translate(-W0 / 2, -H0 / 2); const o = new Path2D(); o.addPath(wipeRegion(box, 'down', p, sd, 34, 6), m); return o; };
+  S.parts.forEach((pt, j) => {
+    const p = prog(pt.pull); if (p <= 0) return;
+    const d = (S.depth && S.depth[pt.pull]) ?? .5;
+    const off = st.off ? st.off(pt.pull, d) : [0, 0];
+    ctx.save(); ctx.translate(off[0], off[1]);
+    if (pt.cut) ctx.clip(inverse(pt.cut), 'evenodd');
+    // loose layers: a sliver of bare paper and a paper-thickness shadow along the upper edge of each loose stencil
+    if (sep > 0 && d >= .25 && p >= 1 && !pt.lit) {
+      ctx.save(); ctx.translate(0, -9 * sep * d); ctx.globalAlpha = .26 * Math.min(1, sep * 1.5); ctx.fillStyle = '#140f14'; ctx.fill(pt.path); ctx.restore();
+      ctx.save(); ctx.translate(1.5 * sep, -3.4 * sep); ctx.fillStyle = '#F3EAD8'; ctx.fill(pt.path); ctx.restore();
+    }
+    const clip = region(p, seed + j * 3), rg = R2(seed + j * 5, 2.2 * reg);
+    if (pt.ink === 'fountain') {
+      for (const s of S.fountain) { ctx.save(); ctx.beginPath(); ctx.rect(s.x0 - .5, -BLEED - 100, s.x1 - s.x0 + 1, H0 + 2 * BLEED + 200); ctx.clip(); ink(ctx, pt, { color: s.color, reg: rg, clip, sheen: 1, trap: 1, lw: 1.8 }); ctx.restore(); }
+    } else ink(ctx, pt, { color: pal[pt.ink], reg: rg, clip, sheen: 1, trap: pt.lit ? 0 : 1, lw: 1.8 });
+    ctx.restore();
+  });
+  const hd = st.header, hdr = S.header;
+  if (hd && hdr && hd.p > 0) {
+    const off = st.off ? st.off('sky', 0) : [0, 0];
+    ctx.save(); ctx.translate(off[0], off[1]);
+    const clip = hd.p < 1 ? wipeRegion([hdr.x - 20, hdr.y - hdr.size, 1700, hdr.size * 1.3], 'right', hd.p, 13, 40) : null;
+    const col = pickInk([pal.sky2, pal.sky1], [pal.near, pal.mid, pal.sun, '#F3EAD8'], 3);
     ink(ctx, { paint: (c) => {
-      const T0 = content.title.toUpperCase(); let size = 150, lines = splitTitle(c, T0, FONT_D, size);
-      if (lines.length === 1) { size = fitFont(c, T0, 900, FONT_D, BW - 200, 170, 60, .02); }
-      else { c.font = `900 ${size}px ${FONT_D}`; c.letterSpacing = (size * .02) + 'px'; const m = Math.max(...lines.map(l => c.measureText(l).width)); if (m > BW - 200) size = Math.floor(size * (BW - 200) / m); c.font = `900 ${size}px ${FONT_D}`; c.letterSpacing = (size * .02) + 'px'; }
-      c.textAlign = 'center'; c.textBaseline = 'alphabetic';
-      if (lines.length === 1) c.fillText(T0, BW / 2, 200 + size * .35);
-      else { c.fillText(lines[0], BW / 2, 160); c.fillText(lines[1], BW / 2, 160 + size * .98); }
-    } }, { color: pickInk([pal.sky1, pal.sky2], [pal.near, pal.far], 3), reg: [1.5, -1], clip: tp < 1 ? wipeRegion([0, 20, BW, 330], 'right', tp, 17, 40) : null });
+      c.font = `900 ${hdr.size}px ${FONT_D}`; c.letterSpacing = (hdr.size * .1) + 'px'; c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillText(hd.text, hdr.x, hdr.y);
+      const w = c.measureText(hd.text).width;
+      c.font = `600 ${Math.round(hdr.size * .36)}px ${FONT_C}`; c.letterSpacing = '6px'; c.fillText(hd.zh, hdr.x + w + 18, hdr.y - 4);
+    } }, { color: col, reg: R2(seed + 44, 1.4 * reg), clip });
+    ctx.restore();
   }
-  const fp = st.footer ?? 1;
-  if (fp > 0) {
-    const clip = fp < 1 ? wipeRegion([0, 378, BW, 56], 'right', fp, 19, 30) : null;
-    ink(ctx, { path: rectPath(14, 382, BW - 28, 44) }, { color: pal.near, reg: [0, 0], clip, sheen: 1 });
-    ink(ctx, { paint: (c) => { c.font = `600 25px ${FONT_T}`; c.letterSpacing = '9px'; c.textAlign = 'center'; c.fillText(content.footer.toUpperCase(), BW / 2, 413); } }, { color: pickInk(pal.near, [pal.sky1, pal.sun], 4.5), reg: [.8, .6], clip });
+  if (st.finish !== false) inkFinish(ctx, st.T, -BLEED, -BLEED, W0 + 2 * BLEED, H0 + 2 * BLEED, .6, 1);
+}
+// header boxes in art units (two pieces, read separately)
+export function headerBoxes(S, hd) {
+  const h = S.header; if (!h) return [];
+  const w = hd.text.length * h.size * .56;
+  return [{ id: 'hdr-en', text: hd.text, box: [h.x, h.y - h.size * .8, h.x + w, h.y + 4] }, { id: 'hdr-zh', text: hd.zh, box: [h.x + w + 18, h.y - h.size * .5, h.x + w + 18 + hd.zh.length * h.size * .4, h.y] }];
+}
+
+// the ticket stub on its own. st = { pal, T, panel, rows: { day:{p, n}, big:{p, label, value}, small:{p, label, value} }, seed, reg }
+export function drawStub(ctx, st) {
+  const pal = st.pal, reg = st.reg ?? 1, seed = st.seed || 3, [X, Y, Wd] = STUB, lx = X + 34;
+  if (st.panel > 0) ink(ctx, stubPath(), { color: pal.near, reg: R2(seed + 51, 1.2 * reg), clip: st.panel < 1 ? wipeRegion([X - 30, Y - 20, Wd + 60, STUB[3] + 40], 'down', st.panel, 9, 40) : null, sheen: 1 });
+  const lab = pickInk(pal.near, [pal.sky1, pal.glow, pal.sky2, '#C3CADB'], 4.5), val = pickInk(pal.near, [pal.sky1, pal.sun, '#F3EAD8'], 4.5), key = pickInk(pal.near, [pal.sun, pal.sky1], 3);
+  const R = st.rows || {};
+  const item = (r, fn, color, box, k) => { if (!r || r.p <= 0) return; ink(ctx, { paint: fn }, { color, reg: R2(seed + k * 7, 1.2 * reg), clip: r.p < 1 ? wipeRegion(box, 'right', r.p, 31 + k, 24) : null }); };
+  item(R.day, (c) => { c.font = `600 30px ${FONT_T}`; c.letterSpacing = '6px'; c.textAlign = 'left'; c.fillText('DAY', lx, Y + 76); c.font = `800 64px ${FONT_D}`; c.letterSpacing = '1px'; c.fillText(String(R.day.n), lx + 96, Y + 82); }, lab, [X, Y + 10, Wd, 100], 1);
+  item(R.big, (c) => {
+    c.font = `600 30px ${FONT_T}`; c.letterSpacing = '6px'; c.textAlign = 'left'; c.fillStyle = lab; c.fillText(R.big.label, lx, Y + 186);
+    const v = R.big.value + ' KM'; c.fillStyle = key; let fs = 132; c.font = `900 ${fs}px ${FONT_D}`; c.letterSpacing = '2px';
+    while (c.measureText(v).width > Wd - 60 && fs > 60) { fs -= 4; c.font = `900 ${fs}px ${FONT_D}`; }
+    c.fillText(v, lx - 4, Y + 318); c.fillRect(lx, Y + 344, Wd - 68, 6);
+  }, key, [X, Y + 140, Wd, 230], 2);
+  item(R.small, (c) => {
+    c.font = `600 25px ${FONT_T}`; c.letterSpacing = '4px'; c.textAlign = 'left'; c.fillStyle = lab; c.fillText(R.small.label, lx, Y + 414);
+    c.fillStyle = val; c.font = `800 62px ${FONT_D}`; c.letterSpacing = '1px'; c.fillText(R.small.value, lx, Y + 488);
+  }, val, [X, Y + 380, Wd, 130], 3);
+  if (st.finish !== false && st.panel > 0) { ctx.save(); ctx.clip(stubPath().path); inkFinish(ctx, st.T, X - 30, Y - 20, Wd + 60, STUB[3] + 40, .6, 1); ctx.restore(); }
+}
+export function stubBoxes(rows) {
+  const [X, Y, Wd] = STUB, out = [];
+  if (rows.day) out.push({ id: 'day', text: 'DAY ' + rows.day.n, p: rows.day.p, box: [X + 30, Y + 30, X + 220, Y + 92] });
+  if (rows.big) out.push({ id: 'big', text: rows.big.label + ' ' + rows.big.value + ' KM', p: rows.big.p, box: [X + 26, Y + 156, X + Wd - 20, Y + 350], live: rows.big.live });
+  if (rows.small) out.push({ id: 'small', text: rows.small.label + ' ' + rows.small.value, p: rows.small.p, box: [X + 30, Y + 390, X + Wd - 20, Y + 496], live: rows.small.live });
+  return out;
+}
+
+// the end card: a wider ticket printed over the right side in two pulls
+export const CARD = [1300, 236, 560, 600];
+export function drawEndCard(ctx, pal, T, p1, p2) {
+  const [X, Y, Wd, Hd] = CARD;
+  if (p1 > 0) {
+    const knock = new Path2D(); const ny = Y + 300;
+    knock.arc(X, ny, 20, -Math.PI / 2, Math.PI / 2); knock.closePath();
+    knock.moveTo(X + Wd, ny - 20); knock.arc(X + Wd, ny, 20, -Math.PI / 2, Math.PI / 2, true); knock.closePath();
+    for (let xx = X + 40; xx < X + Wd - 30; xx += 24) { knock.moveTo(xx + 5, ny); knock.arc(xx, ny, 5, 0, Math.PI * 2); }
+    ink(ctx, { path: rectPath(X, Y, Wd, Hd), knock }, { color: pal.near, reg: [1, -.6], clip: p1 < 1 ? wipeRegion([X - 30, Y - 20, Wd + 60, Hd + 40], 'down', p1, 5, 40) : null, sheen: 1 });
   }
-  if (st.finish !== false) inkFinish(ctx, T, 0, 0, BW, BH, .6, 1);
+  if (p2 > 0) {
+    const hi = pickInk(pal.near, [pal.sky1, '#F3EAD8'], 4.5), key = pickInk(pal.near, [pal.sun, pal.sky1], 3), lo = pickInk(pal.near, [pal.glow, pal.sky1, '#AEB8CF'], 4.5);
+    ink(ctx, { paint: (c) => {
+      const lx = X + 44; c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+      c.fillStyle = key; c.font = `900 96px ${FONT_D}`; c.letterSpacing = '3px'; c.fillText('THE LONG', lx, Y + 116); c.fillText('WAY HOME', lx, Y + 206);
+      c.fillStyle = hi; c.font = `600 44px ${FONT_C}`; c.letterSpacing = '8px'; c.fillText('绕远路回家', lx, Y + 268);
+      c.fillStyle = lo; c.font = `600 26px ${FONT_T}`; c.letterSpacing = '5px'; c.fillText('SILKSCREEN TRAVEL POSTER', lx, Y + 372);
+      c.font = `600 30px ${FONT_C}`; c.letterSpacing = '6px'; c.fillText('丝印旅行海报', lx, Y + 420);
+      c.fillStyle = key; c.fillRect(lx, Y + 456, Wd - 88, 5);
+      c.fillStyle = hi; c.font = `600 30px ${FONT_T}`; c.letterSpacing = '3px'; c.fillText('LemoLab × Claude Opus 5.5', lx, Y + 520);
+    } }, { color: hi, reg: [1.2, .6], clip: p2 < 1 ? wipeRegion([X, Y, Wd, Hd], 'right', p2, 9, 50) : null });
+  }
+  if (p1 > 0) { ctx.save(); ctx.clip(rectPath(X, Y, Wd, Hd)); inkFinish(ctx, T, X - 30, Y - 20, Wd + 60, Hd + 40, .6, 1); ctx.restore(); }
 }

@@ -92,3 +92,22 @@
 - Skill 格式校验、活动指南本地链接检查、文件校验和补丁空白检查通过。风格目录现在明确标注旧预设限制的适用范围，避免把纸雕的旧 Canvas 限制误认为完整原生引擎的限制。
 
 初轮并发验证发现浏览器别名兼容问题，已修正；原有取消测试在并发负载下也触发过超时，未确认资源泄漏，后续独立复查及完整串行回归均通过。全量 59 个原始示例的素材准备与重建、完整新片的有声播放评审未进行。完整保存和技术通过不能替代具体影片的艺术与内容验收。
+
+## 2026-11-19 更新至 Lemo-Opuscar 2.0.x
+
+快照从 `3961ddb`（2026-10-22，59 套风格）更新到上游 main 的 `00a7f9ec99c8686265a8ca4ed9a3fdaaf27ea6f4`（2026-11-17，96 个新提交，含 2.0.0 发布）。来源是在本机临时目录克隆的干净检出，导入脚本本身仍不联网。
+
+| 项目 | 3961ddb | 00a7f9e |
+| --- | ---: | ---: |
+| 上游跟踪文件 | 2,304 | 3,942 |
+| 保留 / 排除 | 2,289 / 15 | 3,922 / 20 |
+| 保留字节 | 104,869,201 | 142,318,570 |
+| 风格 | 59 | 99（15 个类别） |
+
+- **新增 40 套风格**，没有删除旧风格。其中 Memphis Diorama（EianLu）与 Crayon World 3D（2nd1st）是外部贡献。comic-history、manga-panels 和 text-flash-cuts 需要用户自己的图像生成工具（`core/image/gen_image.py`）。firefly-pointillism 和 oscilloscope-math 用 Python 渲染画面，不是网页。目录里分别记为 `requires`、`native.engine`、`contributedBy`；若干风格改了名，曾用名记为 `aka`，`styles` 搜索也能找到。
+- **新增排除**：`tools/films_repo.sh`、`tools/site_media.sh`（上游成片/站点发布）。原有插件、目录版、Pages 与发布脚本仍排除，vendor 中没有嵌套 `SKILL.md`。
+- **许可变化**：2.0.0 起，代码 MIT；全部 Markdown 文档与图像提示词改为 CC BY-NC 4.0，并另行允许用于制作自己的影片（含商业与客户影片）；示例影片、字幕、海报与静帧为 CC BY 4.0；Clawd 与第三方商标不授权。之前从早期版本移植的代码仍按 MIT（`licenses/lemo-opuscar.txt`），新规则文档另存为 `licenses/lemo-opuscar-2.0.txt`。详见 THIRD_PARTY.md。
+- **换行问题修复**：全局 `core.autocrlf=input` 在提交时把上游 CRLF 文件改成了 LF，所以旧快照在新克隆里有 23 个文件的哈希对不上。仓库根新增 `.gitattributes`，对 vendor 设置 `-text`，保持字节原样。
+- **导入脚本**：新增 `--replace <checkout>`。先校验现有快照，导入失败时恢复旧包与生成文件。本次因上述换行问题，改为把旧包移到临时目录后全新导入；旧内容仍在 Git 历史中。
+- **Skill 指南**：吸收上游的新规则：FFmpeg 7+（`lemo doctor` 会检查）、地图规则（DIRECTOR.md §13）、屏幕文字语言跟随影片、烧录字幕的 SRT 命名、`LEMO_FETCH=0` 避免采样库自动下载，以及图像生成风格的检查流程。
+- **验证**：`migrate-lemo.mjs --verify` 显示 3,922 个文件的大小与 SHA-256 全部匹配。完整 `npm test` 共 **109 项，全部通过**（集成测试也在其中），包括 99 套风格的初始化、搜索和曾用名检索，以及新增的 2.0 许可与排除检查。`lemo doctor` 全部通过。用新风格 chalkboard 执行 `lemo init` 和 `lemo still` 已出图。没有重建 40 个新示例影片，没有调用图像生成，也没有做听觉评审。

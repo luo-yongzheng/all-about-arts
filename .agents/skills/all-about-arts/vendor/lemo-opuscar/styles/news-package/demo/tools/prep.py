@@ -32,13 +32,16 @@ for name, crop in [('datacenter', None), ('wafer', None)]:
     meta[name] = im.size
 
 # —— Europe map: world-atlas countries-50m (Natural Earth, public domain) → Lambert azimuthal equal-area projection (centre 10°E 52°N, same idea as EPSG:3035) ——
+# Only the 27 EU member states are drawn as countries, each as one whole shape (Cyprus is the whole island; Åland is part of Finland).
+# Every other piece of land is merged into a single "land" shape with no borders inside it: the film is about the EU only,
+# and the source data's de facto lines (Kosovo, Crimea, northern Cyprus, Western Sahara and the like) never reach the screen.
 topo = json.load(open(os.path.join(RAW, 'countries-50m.json')))
 sx, sy = topo['transform']['scale']; tx, ty = topo['transform']['translate']
-arcs = []
+arcs = []                                                   # quantised integer points: shared arc ends match exactly
 for a in topo['arcs']:
     x = y = 0; pts = []
     for dx, dy in a:
-        x += dx; y += dy; pts.append((x * sx + tx, y * sy + ty))
+        x += dx; y += dy; pts.append((x, y))
     arcs.append(pts)
 L0, P0 = math.radians(10), math.radians(52)
 def laea(lon, lat):
@@ -47,30 +50,52 @@ def laea(lon, lat):
     x = k * math.cos(p) * math.sin(l - L0)
     y = k * (math.cos(P0) * math.sin(p) - math.sin(P0) * math.cos(p) * math.cos(l - L0))
     return round(x * 6371, 1), round(-y * 6371, 1)          # km, y points down
-def ring(r):
-    pts = []
-    for i in r:
-        s = arcs[i] if i >= 0 else arcs[~i][::-1]
-        pts += s if not pts else s[1:]
-    return pts
+def arc_pts(i): return arcs[i] if i >= 0 else arcs[~i][::-1]
+def merge(geoms):
+    """Outline of the union of several countries (as topojson.merge): keep the arcs used exactly once, chain them into rings."""
+    use = {}
+    for g in geoms:
+        for poly in (g['arcs'] if g['type'] == 'MultiPolygon' else [g['arcs']]):
+            for r in poly:
+                for i in r: use.setdefault(i if i >= 0 else ~i, []).append(i)
+    segs = [arc_pts(v[0]) for v in use.values() if len(v) == 1]
+    by_start = {}
+    for k, sg in enumerate(segs): by_start.setdefault(sg[0], []).append(k)
+    done, rings = set(), []
+    for k in range(len(segs)):
+        if k in done: continue
+        done.add(k); pts = list(segs[k])
+        while pts[-1] != pts[0]:
+            nxt = next((j for j in by_start.get(pts[-1], []) if j not in done), None)
+            if nxt is None: break
+            done.add(nxt); pts += segs[nxt][1:]
+        rings.append([(x * sx + tx, y * sy + ty) for x, y in pts])
+    return rings
 EU27 = {'040', '056', '100', '191', '196', '203', '208', '233', '246', '250', '276', '300', '348', '372', '380', '428', '440', '442',
         '470', '528', '616', '620', '642', '703', '705', '724', '752'}
-WIN = (-32, 25, 60, 75)  # lon/lat window: keep only countries that intersect the Europe window; ring points outside the window are clamped to its edge
-countries = {}
+PART_OF = {'N. Cyprus': '196', 'Åland': '246'}             # drawn inside the member state they belong to
+WIN = (-32, 25, 60, 75)  # lon/lat window: keep only rings that intersect the Europe window; ring points outside the window are clamped to its edge
+def clip(rings):
+    out = []
+    for pts in rings:
+        if not any(WIN[0] <= x <= WIN[2] and WIN[1] <= y <= WIN[3] for x, y in pts): continue
+        pts = [(min(max(x, WIN[0] - 8), WIN[2] + 8), min(max(y, WIN[1] - 6), WIN[3] + 6)) for x, y in pts]
+        out.append([laea(x, y) for x, y in pts])
+    return out
+groups, names, rest = {}, {}, []
 for g in topo['objects']['countries']['geometries']:
     if 'arcs' not in g: continue
-    polys = g['arcs'] if g['type'] == 'MultiPolygon' else [g['arcs']]
-    rings = []
-    for p in polys:
-        for r in p:
-            pts = ring(r)
-            if not any(WIN[0] <= x <= WIN[2] and WIN[1] <= y <= WIN[3] for x, y in pts): continue
-            pts = [(min(max(x, WIN[0] - 8), WIN[2] + 8), min(max(y, WIN[1] - 6), WIN[3] + 6)) for x, y in pts]
-            rings.append([laea(x, y) for x, y in pts])
-    if rings:
-        countries[g.get('id', g['properties']['name'])] = {'name': g['properties']['name'], 'eu': g.get('id') in EU27, 'rings': rings}
+    cid = PART_OF.get(g['properties']['name'], g.get('id'))
+    if cid in EU27:
+        groups.setdefault(cid, []).append(g)
+        if g.get('id') == cid: names[cid] = g['properties']['name']
+    else: rest.append(g)
+countries = {'land': {'name': 'land', 'eu': False, 'rings': clip(merge(rest))}}
+for cid in groups:
+    rings = clip(merge(groups[cid]))
+    if rings: countries[cid] = {'name': names[cid], 'eu': True, 'rings': rings}
 DUBLIN = laea(-6.2603, 53.3498)
 json.dump({'countries': countries, 'dublin': DUBLIN, 'brussels': laea(4.3517, 50.8503)}, open(os.path.join(OUT, 'europe.json'), 'w'), separators=(',', ':'))
 
 json.dump(meta, open(os.path.join(OUT, 'meta.json'), 'w'), indent=1)
-print(meta, len(countries), 'countries; Dublin', DUBLIN, 'EU', sum(c['eu'] for c in countries.values()))
+print(meta, len(countries) - 1, 'EU members + one land shape; Dublin', DUBLIN, 'EU', sum(c['eu'] for c in countries.values()))
